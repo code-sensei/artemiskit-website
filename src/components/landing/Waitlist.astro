@@ -1,12 +1,13 @@
 ---
 import GradientOrb from '../ui/GradientOrb.astro';
+import GridPattern from '../ui/GridPattern.astro';
 import WaitlistForm from './WaitlistForm';
 
-const cloudFeatures = [
+const upcomingFeatures = [
   {
     title: 'Team Workspaces',
     description: 'Collaborate on evaluation suites',
-    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
       <circle cx="9" cy="7" r="4" />
       <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
@@ -16,33 +17,33 @@ const cloudFeatures = [
   {
     title: 'Scheduled Runs',
     description: 'Automated periodic testing',
-    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <circle cx="12" cy="12" r="10" />
       <polyline points="12 6 12 12 16 14" />
     </svg>`,
   },
   {
     title: 'Historical Analytics',
-    description: 'Track quality over time',
-    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <line x1="18" y1="20" x2="18" y2="10" />
-      <line x1="12" y1="20" x2="12" y2="4" />
-      <line x1="6" y1="20" x2="6" y2="14" />
+    description: 'Track trends over time',
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M3 3v18h18" />
+      <path d="M18 9l-5 5-4-4-3 3" />
     </svg>`,
   },
   {
-    title: 'Managed Infrastructure',
-    description: 'No setup required',
-    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-      <line x1="8" y1="21" x2="16" y2="21" />
-      <line x1="12" y1="17" x2="12" y2="21" />
+    title: 'Dashboard',
+    description: 'Visualize results at a glance',
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="4" rx="1" />
+      <rect x="14" y="10" width="7" height="11" rx="1" />
+      <rect x="3" y="13" width="7" height="8" rx="1" />
     </svg>`,
   },
   {
-    title: 'API Access',
+    title: 'REST API & SDKs',
     description: 'Programmatic control',
-    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <polyline points="16 18 22 12 16 6" />
       <polyline points="8 6 2 12 8 18" />
     </svg>`,
@@ -50,64 +51,130 @@ const cloudFeatures = [
   {
     title: 'Integrations',
     description: 'Slack, PagerDuty, Jira',
-    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <rect x="3" y="3" width="7" height="7" />
-      <rect x="14" y="3" width="7" height="7" />
-      <rect x="14" y="14" width="7" height="7" />
-      <rect x="3" y="14" width="7" height="7" />
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="12" cy="12" r="3" />
+      <path d="M12 1v6m0 6v10" />
+      <path d="M21 12h-6m-6 0H1" />
     </svg>`,
   },
 ];
 ---
 
-<section id="waitlist" class="section relative overflow-hidden">
+<section id="waitlist" class="relative py-24 md:py-32 overflow-hidden">
   <!-- Background Effects -->
+  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary-500/[0.02] to-transparent"></div>
+  <GridPattern fade="both" class="opacity-30" />
   <GradientOrb position="center" size="xl" intensity="subtle" />
+
+  <!-- Decorative elements -->
+  <div class="absolute top-20 left-10 w-72 h-72 bg-primary-500/5 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-20 right-10 w-96 h-96 bg-primary-600/5 rounded-full blur-3xl"></div>
 
   <div class="container relative">
     <div class="max-w-5xl mx-auto">
-      <div class="grid lg:grid-cols-2 gap-12 items-center">
-        <!-- Left - Content -->
-        <div>
-          <span class="badge badge-primary mb-4 inline-block">Coming Soon</span>
-          <h2 class="text-3xl md:text-4xl font-semibold text-stone-50 mb-4 tracking-tight">
-            ArtemisKit Cloud is Coming
-          </h2>
-          <p class="text-lg text-stone-400 mb-8">
-            The power of ArtemisKit with managed infrastructure, team collaboration, and advanced analytics.
-          </p>
 
-          <!-- Cloud Features Preview -->
-          <div class="grid sm:grid-cols-2 gap-4">
-            {cloudFeatures.map((feature) => (
-              <div class="flex items-start gap-3 p-3 rounded-lg bg-stone-900/30 border border-stone-800/50">
-                <div class="w-10 h-10 rounded-lg bg-primary-500/10 border border-primary-500/20 flex items-center justify-center flex-shrink-0 text-primary-500">
+      <!-- Section Header -->
+      <div class="text-center mb-16 reveal">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-500/10 border border-primary-500/20 mb-6">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
+          </span>
+          <span class="text-sm font-medium text-primary-400 tracking-wide">Coming Soon</span>
+        </div>
+
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-stone-50 mb-6 tracking-tight leading-[1.1]">
+          ArtemisKit Cloud
+        </h2>
+        <p class="text-lg md:text-xl text-stone-400 max-w-2xl mx-auto leading-relaxed">
+          The CLI you love, with managed infrastructure, team collaboration,
+          and advanced analytics. <span class="text-stone-300">Zero setup required.</span>
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+
+        <!-- Left - Features Grid -->
+        <div>
+          <h3 class="text-lg font-medium text-stone-300 mb-6">What's coming</h3>
+          <div class="grid sm:grid-cols-2 gap-3">
+            {upcomingFeatures.map((feature) => (
+              <div class="flex items-start gap-3 p-4 rounded-xl bg-stone-900/40 border border-stone-800/60 hover:border-primary-500/30 transition-colors reveal">
+                <div class="w-9 h-9 rounded-lg bg-primary-500/10 border border-primary-500/20 flex items-center justify-center text-primary-400 flex-shrink-0">
                   <Fragment set:html={feature.icon} />
                 </div>
                 <div>
-                  <h4 class="text-sm font-medium text-stone-200">{feature.title}</h4>
+                  <h4 class="text-sm font-medium text-stone-100">{feature.title}</h4>
                   <p class="text-xs text-stone-500">{feature.description}</p>
                 </div>
               </div>
             ))}
           </div>
+
+          <!-- Additional info -->
+          <div class="mt-8 flex flex-wrap items-center gap-4 text-sm text-stone-500 reveal">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              <span>Free tier available</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              <span>No credit card required</span>
+            </div>
+          </div>
         </div>
 
         <!-- Right - Form -->
-        <div class="lg:pl-8">
-          <div class="p-8 rounded-2xl bg-stone-900/50 border border-stone-800 backdrop-blur-sm">
-            <h3 class="text-xl font-semibold text-stone-100 mb-2">Join the Waitlist</h3>
-            <p class="text-stone-500 mb-6">Be the first to know when we launch.</p>
+        <div class="reveal" style="transition-delay: 150ms">
+          <div class="relative p-8 rounded-2xl bg-gradient-to-b from-stone-900/80 to-stone-900/40 border border-stone-800 backdrop-blur-sm shadow-2xl shadow-black/20">
+            <!-- Decorative corner accent -->
+            <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary-500/10 to-transparent rounded-tr-2xl"></div>
 
-            <WaitlistForm client:load />
+            <div class="relative">
+              <h3 class="text-2xl font-semibold text-stone-50 mb-2">Get Early Access</h3>
+              <p class="text-stone-400 mb-8">Be first in line when we launch.</p>
+
+              <WaitlistForm
+                type="cloud"
+                successTitle="You're on the list!"
+                successMessage="We'll notify you when ArtemisKit Cloud is ready. No spam."
+                client:load
+              />
+            </div>
           </div>
-
-          <!-- Social Proof -->
-          <p class="text-center text-sm text-stone-600 mt-4">
-            Join 500+ developers on the waitlist
-          </p>
         </div>
       </div>
+
     </div>
   </div>
 </section>
+
+<style>
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  // Intersection Observer for reveal animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('#waitlist .reveal').forEach(el => observer.observe(el));
+</script>
