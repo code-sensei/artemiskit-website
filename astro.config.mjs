@@ -66,10 +66,6 @@ export default defineConfig({
                 { label: "OpenAI", link: "/docs/cli/providers/openai/" },
                 { label: "Azure OpenAI", link: "/docs/cli/providers/azure/" },
                 { label: "Anthropic", link: "/docs/cli/providers/anthropic/" },
-                {
-                  label: "OpenRouter",
-                  link: "/docs/cli/providers/openrouter/",
-                },
               ],
             },
             { label: "CI/CD Integration", link: "/docs/cli/ci-cd/" },
