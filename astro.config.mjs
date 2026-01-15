@@ -11,18 +11,16 @@ export default defineConfig({
     starlight({
       title: "ArtemisKit",
       favicon: "/favicon.svg",
+      logo: {
+        src: "./public/favicon.svg",
+        alt: "ArtemisKit",
+      },
       social: [
         {
           icon: "github",
           label: "GitHub",
           href: "https://github.com/code-sensei/artemiskit",
         },
-        {
-          icon: "discord",
-          label: "Discord",
-          href: "https://discord.gg/artemiskit",
-        },
-        { icon: "x.com", label: "X", href: "https://twitter.com/artemiskit" },
       ],
       customCss: ["./src/styles/global.css"],
       sidebar: [

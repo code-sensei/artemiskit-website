@@ -779,8 +779,13 @@ samp {
     border-radius: 0;
 }
 
-/* Starlight Overrides */
+/* ============================================
+   Starlight Documentation Overrides
+   Editorial Typography & Refined Spacing
+   ============================================ */
+
 :root {
+    /* Core Starlight Colors */
     --sl-color-accent-low: #431407;
     --sl-color-accent: #f97316;
     --sl-color-accent-high: #fed7aa;
@@ -792,12 +797,811 @@ samp {
     --sl-color-gray-5: #1c1917;
     --sl-color-gray-6: #0c0a09;
     --sl-color-black: #0c0a09;
+
+    /* Background overrides */
+    --sl-color-bg: var(--color-bg-primary);
+    --sl-color-bg-nav: var(--color-bg-secondary);
+    --sl-color-bg-sidebar: var(--color-bg-primary);
+    --sl-color-hairline-light: var(--color-stone-800);
+    --sl-color-hairline: var(--color-stone-700);
+
+    /* Typography */
     --sl-font: var(--font-family-body);
     --sl-font-mono: var(--font-family-mono);
+
+    /* Content sizing */
+    --sl-content-width: 50rem;
+    --sl-sidebar-width: 18rem;
+    --sl-content-pad-x: 2rem;
+
+    /* Text scale */
+    --sl-text-xs: 0.75rem;
+    --sl-text-sm: 0.8125rem;
+    --sl-text-base: 0.9375rem;
+    --sl-text-body: 1rem;
+    --sl-text-h4: 1.125rem;
+    --sl-text-h3: 1.25rem;
+    --sl-text-h2: 1.5rem;
+    --sl-text-h1: 2rem;
+
+    /* Line heights */
+    --sl-line-height: 1.7;
+    --sl-line-height-headings: 1.2;
 }
 
 [data-theme="light"] {
     --sl-color-accent-low: #ffedd5;
     --sl-color-accent: #ea580c;
     --sl-color-accent-high: #7c2d12;
+}
+
+/* ============================================
+   Header - Logo & Navigation
+   ============================================ */
+
+.site-title {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-weight: 600;
+    font-size: 1.125rem;
+    letter-spacing: -0.02em;
+    color: var(--color-stone-50) !important;
+}
+
+.site-title img {
+    width: 1.75rem;
+    height: 1.75rem;
+}
+
+.site-title:hover {
+    color: var(--color-primary-400) !important;
+}
+
+header.header {
+    background: rgba(12, 10, 9, 0.92) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--color-stone-800) !important;
+    height: 4rem;
+}
+
+/* Search box styling */
+site-search {
+    --sl-search-border-color: var(--color-stone-700);
+}
+
+site-search button {
+    background: var(--color-bg-secondary) !important;
+    border: 1px solid var(--color-stone-700) !important;
+    border-radius: 0.5rem !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+    color: var(--color-stone-400) !important;
+    transition: all 0.15s ease !important;
+}
+
+site-search button:hover {
+    border-color: var(--color-stone-600) !important;
+    background: var(--color-bg-tertiary) !important;
+}
+
+site-search .sl-flex {
+    gap: 0.5rem;
+}
+
+/* Social icons in header */
+.social-icons a {
+    color: var(--color-stone-400);
+    transition: color 0.15s ease;
+}
+
+.social-icons a:hover {
+    color: var(--color-primary-400);
+}
+
+/* ============================================
+   Left Sidebar - Navigation
+   ============================================ */
+
+.sidebar-pane {
+    background: var(--color-bg-primary);
+    border-right: 1px solid var(--color-stone-800);
+}
+
+/* Sidebar content wrapper */
+.sidebar-content {
+    padding: 1.5rem 1rem;
+}
+
+/* Top-level groups */
+.top-level > li {
+    margin-bottom: 1.5rem;
+}
+
+/* Group labels (HOME, CLI, API) */
+.top-level > li > details > summary,
+.large {
+    font-size: 0.6875rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    color: var(--color-stone-400) !important;
+    padding: 0.5rem 0.75rem !important;
+    margin-bottom: 0.25rem;
+}
+
+.top-level > li > details > summary:hover,
+.large:hover {
+    color: var(--color-stone-200) !important;
+}
+
+/* Chevron for collapsible groups */
+.top-level > li > details > summary .caret {
+    color: var(--color-stone-500);
+}
+
+/* Sidebar links */
+.sidebar-content a {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.125rem 0;
+    font-size: 0.875rem;
+    color: var(--color-stone-400);
+    border-radius: 0.375rem;
+    transition: all 0.15s ease;
+    text-decoration: none;
+}
+
+.sidebar-content a:hover {
+    color: var(--color-stone-100);
+    background: var(--color-bg-tertiary);
+}
+
+/* Active sidebar link */
+.sidebar-content a[aria-current="page"],
+.sidebar-content a[data-current="true"] {
+    color: var(--color-primary-400) !important;
+    background: rgba(249, 115, 22, 0.1) !important;
+    font-weight: 500;
+}
+
+/* Nested navigation groups */
+.sidebar-content ul ul {
+    margin-left: 0.75rem;
+    padding-left: 0.875rem;
+    border-left: 1px solid var(--color-stone-800);
+    margin-top: 0.25rem;
+}
+
+/* Badge in sidebar (Coming Soon) */
+.sl-badge {
+    font-size: 0.5625rem !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.1875rem 0.5rem;
+    border-radius: 9999px;
+    margin-left: 0.5rem;
+}
+
+/* ============================================
+   Main Content Area
+   ============================================ */
+
+.main-frame {
+    background: var(--color-bg-primary);
+}
+
+.content-panel {
+    padding: 2.5rem 2rem;
+}
+
+/* Page title in content header */
+.content-panel h1#_top {
+    font-size: 2.25rem !important;
+    font-weight: 700 !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.03em !important;
+    color: var(--color-stone-50) !important;
+    margin-bottom: 0.5rem !important;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+/* Page header section (title + description area) */
+.content-panel header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-stone-800);
+}
+
+/* ============================================
+   Markdown Content Styling
+   ============================================ */
+
+.sl-markdown-content {
+    font-size: 1rem;
+    line-height: 1.75;
+    letter-spacing: -0.01em;
+    color: var(--color-stone-300);
+}
+
+/* Headings in content */
+.sl-markdown-content h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    color: var(--color-stone-50);
+    margin-top: 0;
+    margin-bottom: 1.25rem;
+}
+
+.sl-markdown-content h2 {
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: var(--color-stone-100);
+    margin-top: 2.5rem;
+    margin-bottom: 0.875rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-stone-800);
+}
+
+.sl-markdown-content h2:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+.sl-markdown-content h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+    color: var(--color-stone-100);
+    margin-top: 2rem;
+    margin-bottom: 0.625rem;
+}
+
+.sl-markdown-content h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--color-stone-200);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Paragraphs */
+.sl-markdown-content p {
+    margin-bottom: 1.25rem;
+    color: var(--color-stone-300);
+}
+
+.sl-markdown-content strong {
+    font-weight: 600;
+    color: var(--color-stone-100);
+}
+
+.sl-markdown-content em {
+    font-style: italic;
+    color: var(--color-stone-200);
+}
+
+/* Lead paragraph styling */
+.sl-markdown-content > p:first-of-type {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--color-stone-300);
+}
+
+/* ============================================
+   Links
+   ============================================ */
+
+.sl-markdown-content a:not([class]) {
+    color: var(--color-primary-400);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.sl-markdown-content a:not([class]):hover {
+    color: var(--color-primary-300);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* ============================================
+   Lists
+   ============================================ */
+
+.sl-markdown-content ul,
+.sl-markdown-content ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.25rem;
+}
+
+.sl-markdown-content li {
+    margin-bottom: 0.375rem;
+    padding-left: 0.25rem;
+    color: var(--color-stone-300);
+}
+
+.sl-markdown-content li::marker {
+    color: var(--color-stone-500);
+}
+
+.sl-markdown-content ul > li::marker {
+    content: "—  ";
+    color: var(--color-primary-500);
+}
+
+.sl-markdown-content ol {
+    list-style-type: decimal;
+}
+
+.sl-markdown-content ol > li::marker {
+    font-weight: 600;
+    color: var(--color-primary-500);
+}
+
+/* Nested lists */
+.sl-markdown-content li > ul,
+.sl-markdown-content li > ol {
+    margin-top: 0.375rem;
+    margin-bottom: 0.375rem;
+}
+
+/* ============================================
+   Inline Code
+   ============================================ */
+
+.sl-markdown-content :not(pre) > code {
+    font-family: var(--font-family-mono);
+    font-size: 0.8125em;
+    font-weight: 500;
+    padding: 0.1875em 0.4em;
+    background: rgba(249, 115, 22, 0.1);
+    border: 1px solid rgba(249, 115, 22, 0.2);
+    border-radius: 0.3125rem;
+    color: var(--color-primary-300);
+}
+
+/* ============================================
+   Code Blocks (Expressive Code)
+   ============================================ */
+
+.expressive-code {
+    margin: 1.5rem 0;
+}
+
+.expressive-code .frame {
+    border-radius: 0.625rem !important;
+    border: 1px solid var(--color-stone-800) !important;
+    overflow: hidden;
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.15),
+        0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.expressive-code pre {
+    background: var(--color-bg-secondary) !important;
+    padding: 1rem 1.25rem !important;
+    font-size: 0.8125rem !important;
+    line-height: 1.65 !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.expressive-code .frame.has-title pre,
+.expressive-code .frame.is-terminal pre {
+    border-radius: 0 0 0.625rem 0.625rem !important;
+}
+
+.expressive-code .header {
+    background: var(--color-bg-tertiary) !important;
+    border-bottom: 1px solid var(--color-stone-800) !important;
+    padding: 0.625rem 1rem !important;
+}
+
+.expressive-code .title {
+    font-family: var(--font-family-mono);
+    font-size: 0.75rem !important;
+    font-weight: 500;
+    color: var(--color-stone-400) !important;
+    letter-spacing: 0.01em;
+}
+
+/* Copy button */
+.expressive-code .copy button {
+    background: var(--color-bg-tertiary) !important;
+    border: 1px solid var(--color-stone-700) !important;
+    border-radius: 0.375rem !important;
+    color: var(--color-stone-400) !important;
+    opacity: 0;
+    transition: all 0.15s ease !important;
+}
+
+.expressive-code:hover .copy button {
+    opacity: 1;
+}
+
+.expressive-code .copy button:hover {
+    background: var(--color-bg-card-hover) !important;
+    border-color: var(--color-stone-600) !important;
+    color: var(--color-stone-200) !important;
+}
+
+/* ============================================
+   Tables
+   ============================================ */
+
+.sl-markdown-content table {
+    width: 100%;
+    margin: 1.5rem 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.875rem;
+    border: 1px solid var(--color-stone-800);
+    border-radius: 0.625rem;
+    overflow: hidden;
+}
+
+.sl-markdown-content th {
+    font-weight: 600;
+    text-align: left;
+    color: var(--color-stone-300);
+    background: var(--color-bg-tertiary);
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-stone-800);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.sl-markdown-content td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-stone-800);
+    color: var(--color-stone-300);
+    vertical-align: top;
+}
+
+.sl-markdown-content tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.sl-markdown-content tbody tr:hover td {
+    background: rgba(249, 115, 22, 0.03);
+}
+
+.sl-markdown-content td code {
+    font-size: 0.75rem;
+}
+
+/* ============================================
+   Blockquotes
+   ============================================ */
+
+.sl-markdown-content blockquote {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    background: rgba(249, 115, 22, 0.05);
+    border-left: 3px solid var(--color-primary-500);
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.sl-markdown-content blockquote p {
+    margin: 0;
+    font-style: italic;
+    color: var(--color-stone-300);
+}
+
+/* ============================================
+   Horizontal Rules
+   ============================================ */
+
+.sl-markdown-content hr {
+    margin: 2.5rem 0;
+    border: none;
+    height: 1px;
+    background: var(--color-stone-800);
+}
+
+/* ============================================
+   Starlight Cards Component
+   ============================================ */
+
+.card-grid {
+    display: grid;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.card-grid > * {
+    background: var(--color-bg-secondary) !important;
+    border: 1px solid var(--color-stone-800) !important;
+    border-radius: 0.625rem !important;
+    padding: 1.25rem !important;
+    transition: all 0.2s ease !important;
+}
+
+.card-grid > *:hover {
+    background: var(--color-bg-tertiary) !important;
+    border-color: rgba(249, 115, 22, 0.3) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(249, 115, 22, 0.08);
+}
+
+.card-grid .title {
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    color: var(--color-stone-100) !important;
+    margin-bottom: 0.375rem !important;
+}
+
+.card-grid .card .body {
+    font-size: 0.875rem;
+    color: var(--color-stone-400);
+    line-height: 1.5;
+}
+
+/* Card icons */
+.card-grid .icon {
+    color: var(--color-primary-500);
+    margin-bottom: 0.75rem;
+}
+
+/* ============================================
+   Asides / Callouts
+   ============================================ */
+
+.starlight-aside {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    border-radius: 0.625rem;
+    border: 1px solid;
+}
+
+.starlight-aside__title {
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.starlight-aside--note {
+    background: rgba(56, 189, 248, 0.06);
+    border-color: rgba(56, 189, 248, 0.2);
+}
+
+.starlight-aside--tip {
+    background: rgba(34, 197, 94, 0.06);
+    border-color: rgba(34, 197, 94, 0.2);
+}
+
+.starlight-aside--caution {
+    background: rgba(234, 179, 8, 0.06);
+    border-color: rgba(234, 179, 8, 0.2);
+}
+
+.starlight-aside--danger {
+    background: rgba(239, 68, 68, 0.06);
+    border-color: rgba(239, 68, 68, 0.2);
+}
+
+/* ============================================
+   Right Sidebar - Table of Contents
+   ============================================ */
+
+.right-sidebar {
+    border-left: 1px solid var(--color-stone-800);
+}
+
+.right-sidebar-panel {
+    padding: 1.5rem 1rem;
+}
+
+starlight-toc nav {
+    position: sticky;
+    top: 5rem;
+}
+
+/* TOC heading */
+starlight-toc h2,
+.right-sidebar-panel h2 {
+    font-size: 0.625rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.12em !important;
+    color: var(--color-stone-500) !important;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-stone-800);
+}
+
+/* TOC links */
+starlight-toc a,
+.right-sidebar-panel a {
+    display: block;
+    padding: 0.375rem 0;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--color-stone-400);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+starlight-toc a:hover,
+.right-sidebar-panel a:hover {
+    color: var(--color-stone-100);
+}
+
+starlight-toc a[aria-current="true"],
+.right-sidebar-panel a[aria-current="true"] {
+    color: var(--color-primary-400);
+    font-weight: 500;
+}
+
+/* TOC nested levels */
+starlight-toc ul ul {
+    padding-left: 0.75rem;
+    border-left: 1px solid var(--color-stone-800);
+    margin-left: 0.25rem;
+}
+
+/* ============================================
+   Pagination Links (Prev/Next)
+   ============================================ */
+
+.pagination-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-stone-800);
+}
+
+.pagination-links a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 1.25rem;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-stone-800);
+    border-radius: 0.625rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.pagination-links a:hover {
+    background: var(--color-bg-tertiary);
+    border-color: rgba(249, 115, 22, 0.3);
+    transform: translateY(-1px);
+}
+
+.pagination-links a[rel="prev"] {
+    align-items: flex-start;
+}
+
+.pagination-links a[rel="next"] {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.link-title {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--color-stone-100);
+}
+
+.link-hint {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-stone-500);
+}
+
+/* ============================================
+   Mobile Menu
+   ============================================ */
+
+.mobile-preferences {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-stone-800);
+    border-radius: 0.5rem;
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================ */
+
+@media (max-width: 72rem) {
+    .sl-markdown-content {
+        font-size: 0.9375rem;
+    }
+
+    .sl-markdown-content h1 {
+        font-size: 1.75rem;
+    }
+
+    .sl-markdown-content h2 {
+        font-size: 1.25rem;
+        margin-top: 2rem;
+    }
+
+    .sl-markdown-content h3 {
+        font-size: 1.0625rem;
+    }
+
+    .content-panel {
+        padding: 2rem 1.5rem;
+    }
+}
+
+@media (max-width: 50rem) {
+    .sl-markdown-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .sl-markdown-content h2 {
+        font-size: 1.125rem;
+    }
+
+    .content-panel {
+        padding: 1.5rem 1rem;
+    }
+
+    .expressive-code .frame {
+        border-radius: 0 !important;
+        margin-left: -1rem;
+        margin-right: -1rem;
+        border-left: none !important;
+        border-right: none !important;
+    }
+
+    .sl-markdown-content table {
+        font-size: 0.8125rem;
+    }
+
+    .pagination-links {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+
+@media print {
+    .sl-markdown-content {
+        font-size: 11pt;
+        line-height: 1.5;
+        color: #000;
+    }
+
+    .sl-markdown-content h1,
+    .sl-markdown-content h2,
+    .sl-markdown-content h3 {
+        color: #000;
+        page-break-after: avoid;
+    }
+
+    .expressive-code .frame {
+        border: 1px solid #ccc;
+        page-break-inside: avoid;
+    }
+
+    .sidebar-pane,
+    .right-sidebar {
+        display: none;
+    }
 }
