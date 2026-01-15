@@ -2,7 +2,7 @@
 const problems = [
   {
     title: 'Inconsistent Outputs',
-    description: 'Your chatbot gives different answers to the same question',
+    description: 'Same prompt, different answer. Users notice before you do.',
     icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <polyline points="16 3 21 3 21 8" />
       <line x1="4" y1="20" x2="21" y2="3" />
@@ -13,7 +13,7 @@ const problems = [
   },
   {
     title: 'Security Blind Spots',
-    description: 'Prompt injection attacks go undetected until production',
+    description: 'Prompt injection attacks ship to production undetected.',
     icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
       <line x1="12" y1="8" x2="12" y2="12" />
@@ -22,7 +22,7 @@ const problems = [
   },
   {
     title: 'Unknown Limits',
-    description: 'No idea how your app performs under load',
+    description: 'First real load test happens when users flood your app.',
     icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <line x1="12" y1="20" x2="12" y2="10" />
       <line x1="18" y1="20" x2="18" y2="4" />
@@ -31,7 +31,7 @@ const problems = [
   },
   {
     title: 'Manual Testing',
-    description: "Testing prompts by hand doesn't scale",
+    description: 'Copy-pasting prompts into a chat window is not a test suite.',
     icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <circle cx="12" cy="12" r="10" />
       <polyline points="12 6 12 12 16 14" />
@@ -77,7 +77,7 @@ const problems = [
         </h2>
 
         <p class="text-lg text-stone-400 mb-8">
-          Systematic evaluation of your LLM applications with automated testing, security scanning, and performance analysis.
+          One command to run quality checks, security scans, and stress tests. Get results in your terminal, HTML reports, or CI pipeline.
         </p>
 
         <ul class="space-y-4">
@@ -89,7 +89,7 @@ const problems = [
             </div>
             <div>
               <h4 class="text-stone-100 font-medium mb-1">Reproducible Results</h4>
-              <p class="text-stone-500 text-sm">Deterministic seeding ensures identical outputs across runs. Target ≥95% reproducibility.</p>
+              <p class="text-stone-500 text-sm">Deterministic seeding. Same test, same result. Every time.</p>
             </div>
           </li>
           <li class="flex items-start gap-4">
@@ -99,8 +99,8 @@ const problems = [
               </svg>
             </div>
             <div>
-              <h4 class="text-stone-100 font-medium mb-1">Comprehensive Security</h4>
-              <p class="text-stone-500 text-sm">5 attack categories with 50+ patterns. Injection, jailbreak, extraction, hallucination, PII disclosure.</p>
+              <h4 class="text-stone-100 font-medium mb-1">50+ Attack Patterns</h4>
+              <p class="text-stone-500 text-sm">Injection, jailbreak, extraction, hallucination, PII disclosure. Five categories, one command.</p>
             </div>
           </li>
           <li class="flex items-start gap-4">
@@ -110,8 +110,8 @@ const problems = [
               </svg>
             </div>
             <div>
-              <h4 class="text-stone-100 font-medium mb-1">CI/CD Integration</h4>
-              <p class="text-stone-500 text-sm">GitHub Actions ready. Fail builds on quality regressions. Mean time to detect: &lt;1 day.</p>
+              <h4 class="text-stone-100 font-medium mb-1">Ship with Confidence</h4>
+              <p class="text-stone-500 text-sm">Fail builds on regressions. Catch issues in CI, not production.</p>
             </div>
           </li>
         </ul>
