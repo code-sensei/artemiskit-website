@@ -1,0 +1,16 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import UseCaseTabs from './UseCaseTabs';
+---
+
+<section class="section relative bg-bg-secondary">
+  <div class="container">
+    <SectionHeading
+      badge="Use Cases"
+      title="Trusted Across the LLM Lifecycle"
+      subtitle="From development to production, ArtemisKit supports every stage of your LLM application journey."
+    />
+
+    <UseCaseTabs client:visible />
+  </div>
+</section>

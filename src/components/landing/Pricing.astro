@@ -1,0 +1,164 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import Button from '../ui/Button.astro';
+import Badge from '../ui/Badge.astro';
+
+const plans = [
+  {
+    name: 'Open Source',
+    price: 'Free',
+    period: 'forever',
+    description: 'Everything you need for local development and CI/CD',
+    features: [
+      'Unlimited local CLI usage',
+      'All scenario testing features',
+      'Security red teaming',
+      'Stress testing',
+      'HTML & JSON reports',
+      'Multi-provider support',
+      'GitHub Actions integration',
+      'Community support',
+    ],
+    cta: {
+      label: 'Get Started',
+      href: '/docs/cli/getting-started',
+      variant: 'secondary' as const,
+    },
+    highlight: false,
+  },
+  {
+    name: 'Pro',
+    price: '$49',
+    period: '/month',
+    description: 'For teams that need cloud collaboration and scheduling',
+    badge: 'Most Popular',
+    features: [
+      'Everything in Open Source',
+      'Unlimited cloud runs',
+      '10 projects',
+      '90-day result retention',
+      'Scheduled runs',
+      'Email notifications',
+      'Priority support',
+    ],
+    cta: {
+      label: 'Join Waitlist',
+      href: '#waitlist',
+      variant: 'primary' as const,
+    },
+    highlight: true,
+  },
+  {
+    name: 'Team',
+    price: '$149',
+    period: '/month',
+    description: 'For organizations with advanced needs',
+    features: [
+      'Everything in Pro',
+      'Unlimited projects',
+      '1-year result retention',
+      'Team workspaces',
+      'API access',
+      'Webhooks & integrations',
+      'Slack notifications',
+      'Dedicated support',
+    ],
+    cta: {
+      label: 'Join Waitlist',
+      href: '#waitlist',
+      variant: 'secondary' as const,
+    },
+    highlight: false,
+  },
+  {
+    name: 'Enterprise',
+    price: 'Custom',
+    period: '',
+    description: 'For large organizations with compliance needs',
+    features: [
+      'Everything in Team',
+      'Unlimited seats',
+      'Unlimited retention',
+      'SSO / SAML',
+      'Audit logging',
+      'Data residency options',
+      'SLA guarantees',
+      'Self-hosted option',
+    ],
+    cta: {
+      label: 'Contact Sales',
+      href: 'mailto:enterprise@artemiskit.dev',
+      variant: 'secondary' as const,
+    },
+    highlight: false,
+  },
+];
+---
+
+<section id="pricing" class="section relative">
+  <div class="container">
+    <SectionHeading
+      badge="Pricing"
+      title="Simple, Transparent Pricing"
+      subtitle="Start free with the open source CLI. Upgrade when you need cloud features."
+    />
+
+    <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+      {plans.map((plan, index) => (
+        <div
+          class:list={[
+            'relative p-6 rounded-2xl border flex flex-col reveal',
+            plan.highlight
+              ? 'bg-gradient-to-b from-primary-500/10 to-transparent border-primary-500/50 shadow-glow-lg'
+              : 'bg-bg-card border-stone-800 hover:border-stone-700',
+          ]}
+          style={`transition-delay: ${index * 100}ms`}
+        >
+          {plan.badge && (
+            <Badge variant="primary" class="absolute -top-3 left-1/2 -translate-x-1/2">
+              {plan.badge}
+            </Badge>
+          )}
+
+          <div class="mb-6">
+            <h3 class="text-xl font-semibold text-stone-100 mb-2">{plan.name}</h3>
+            <div class="flex items-baseline gap-1 mb-2">
+              <span class="text-4xl font-bold text-stone-50">{plan.price}</span>
+              {plan.period && <span class="text-stone-500">{plan.period}</span>}
+            </div>
+            <p class="text-sm text-stone-500">{plan.description}</p>
+          </div>
+
+          <ul class="space-y-3 mb-8 flex-grow">
+            {plan.features.map((feature) => (
+              <li class="flex items-start gap-3 text-sm">
+                <svg class="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span class="text-stone-400">{feature}</span>
+              </li>
+            ))}
+          </ul>
+
+          <Button
+            href={plan.cta.href}
+            variant={plan.cta.variant}
+            class="w-full justify-center"
+          >
+            {plan.cta.label}
+          </Button>
+        </div>
+      ))}
+    </div>
+
+    <!-- Enterprise CTA -->
+    <div class="mt-12 text-center">
+      <p class="text-stone-500">
+        Need custom deployment or compliance features?{' '}
+        <a href="mailto:enterprise@artemiskit.dev" class="text-primary-400 hover:text-primary-300 underline underline-offset-2">
+          Talk to our team
+        </a>
+      </p>
+    </div>
+  </div>
+</section>

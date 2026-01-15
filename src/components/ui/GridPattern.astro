@@ -1,0 +1,41 @@
+---
+interface Props {
+  class?: string;
+  fade?: 'top' | 'bottom' | 'both' | 'none';
+}
+
+const { class: className, fade = 'both' } = Astro.props;
+
+const fadeClasses = {
+  top: 'mask-gradient-to-b',
+  bottom: 'mask-gradient-to-t',
+  both: 'mask-gradient-to-b-and-t',
+  none: '',
+};
+---
+
+<div
+  class:list={[
+    'absolute inset-0 grid-pattern pointer-events-none',
+    fadeClasses[fade],
+    className,
+  ]}
+  aria-hidden="true"
+/>
+
+<style>
+  .mask-gradient-to-b {
+    mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+  }
+
+  .mask-gradient-to-t {
+    mask-image: linear-gradient(to top, black 0%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to top, black 0%, transparent 100%);
+  }
+
+  .mask-gradient-to-b-and-t {
+    mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+  }
+</style>

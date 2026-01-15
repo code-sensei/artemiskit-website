@@ -1,0 +1,89 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const steps = [
+  {
+    number: '01',
+    title: 'Install',
+    description: 'Install globally with npm, yarn, pnpm, or bun',
+    code: `npm install -g @artemiskit/cli
+# or
+bunx artemiskit --help`,
+  },
+  {
+    number: '02',
+    title: 'Define',
+    description: 'Define your test scenarios in simple YAML',
+    code: `# scenarios/my-test.yaml
+name: chatbot-test
+config:
+  provider: openai
+  model: gpt-4
+
+scenarios:
+  - name: basic-qa
+    turns:
+      - role: user
+        content: "What is 2+2?"
+      - role: assistant
+        expect:
+          contains: ["4"]`,
+  },
+  {
+    number: '03',
+    title: 'Run',
+    description: 'Run tests and get beautiful reports',
+    code: `$ akit run scenarios/my-test.yaml --save
+
+Running chatbot-test...
+✓ Scenario: basic-qa .............. PASS
+
+Results: 1/1 passed (100%)
+Report: artemis-output/report.html`,
+  },
+];
+---
+
+<section class="section relative bg-bg-secondary">
+  <div class="container">
+    <SectionHeading
+      badge="Quick Start"
+      title="Get Started in 3 Steps"
+      subtitle="From installation to your first test results in under 5 minutes."
+    />
+
+    <div class="relative">
+      <!-- Connection Line (Desktop) -->
+      <div class="hidden lg:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary-500/30 to-transparent" aria-hidden="true"></div>
+
+      <div class="grid lg:grid-cols-3 gap-8 lg:gap-6">
+        {steps.map((step, index) => (
+          <div class="relative reveal" style={`transition-delay: ${index * 150}ms`}>
+            <!-- Step Number -->
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-14 h-14 rounded-2xl bg-primary-500/10 border border-primary-500/30 flex items-center justify-center relative z-10">
+                <span class="text-2xl font-bold text-primary-500">{step.number}</span>
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-stone-50">{step.title}</h3>
+                <p class="text-sm text-stone-500">{step.description}</p>
+              </div>
+            </div>
+
+            <!-- Code Block -->
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-block-dot code-block-dot-red"></span>
+                <span class="code-block-dot code-block-dot-yellow"></span>
+                <span class="code-block-dot code-block-dot-green"></span>
+              </div>
+              <div class="code-block-content">
+                <pre class="text-sm"><code class="text-stone-300">{step.code}</code></pre>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

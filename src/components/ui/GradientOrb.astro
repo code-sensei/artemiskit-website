@@ -1,0 +1,53 @@
+---
+interface Props {
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  position?: 'top-left' | 'top-center' | 'top-right' | 'center' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+  intensity?: 'subtle' | 'medium' | 'strong';
+  animate?: boolean;
+  class?: string;
+}
+
+const {
+  size = 'lg',
+  position = 'top-center',
+  intensity = 'medium',
+  animate = true,
+  class: className,
+} = Astro.props;
+
+const sizeClasses = {
+  sm: 'w-64 h-64',
+  md: 'w-96 h-96',
+  lg: 'w-[500px] h-[500px]',
+  xl: 'w-[700px] h-[700px]',
+};
+
+const positionClasses = {
+  'top-left': '-top-32 -left-32',
+  'top-center': '-top-48 left-1/2 -translate-x-1/2',
+  'top-right': '-top-32 -right-32',
+  'center': 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+  'bottom-left': '-bottom-32 -left-32',
+  'bottom-center': '-bottom-48 left-1/2 -translate-x-1/2',
+  'bottom-right': '-bottom-32 -right-32',
+};
+
+const intensityOpacity = {
+  subtle: 'opacity-20',
+  medium: 'opacity-40',
+  strong: 'opacity-60',
+};
+---
+
+<div
+  class:list={[
+    'absolute rounded-full blur-3xl pointer-events-none',
+    'bg-gradient-to-br from-primary-500/50 via-primary-600/30 to-transparent',
+    sizeClasses[size],
+    positionClasses[position],
+    intensityOpacity[intensity],
+    animate && 'animate-pulse-glow',
+    className,
+  ]}
+  aria-hidden="true"
+/>

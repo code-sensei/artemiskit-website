@@ -1,0 +1,44 @@
+---
+interface Props {
+  language?: string;
+  filename?: string;
+  showHeader?: boolean;
+  class?: string;
+}
+
+const {
+  language = 'bash',
+  filename,
+  showHeader = true,
+  class: className
+} = Astro.props;
+---
+
+<div class:list={['code-block', className]}>
+  {showHeader && (
+    <div class="code-block-header">
+      <span class="code-block-dot code-block-dot-red"></span>
+      <span class="code-block-dot code-block-dot-yellow"></span>
+      <span class="code-block-dot code-block-dot-green"></span>
+      {filename && (
+        <span class="ml-3 text-stone-500 text-sm font-mono">{filename}</span>
+      )}
+    </div>
+  )}
+  <div class="code-block-content">
+    <pre><code class={`language-${language}`}><slot /></code></pre>
+  </div>
+</div>
+
+<style>
+  .code-block pre {
+    margin: 0;
+    background: transparent;
+    border: none;
+  }
+
+  .code-block code {
+    background: transparent;
+    padding: 0;
+  }
+</style>

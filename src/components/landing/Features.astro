@@ -1,0 +1,153 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import FeatureCard from './FeatureCard.astro';
+
+const features = [
+  {
+    title: 'Scenario-Based Testing',
+    description: 'Define test cases in YAML, run them across providers, and get consistent, reproducible results.',
+    icon: `<svg class="w-6 h-6 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 11l3 3L22 4" />
+      <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+    </svg>`,
+    features: [
+      'Multi-turn conversation support',
+      'Variable injection & templating',
+      'Custom evaluation criteria',
+    ],
+    code: `scenarios:
+  - name: greeting
+    turns:
+      - role: user
+        content: "Hello!"
+      - role: assistant
+        expect:
+          contains: ["Hi", "Hello"]`,
+  },
+  {
+    title: 'Security Red Teaming',
+    description: 'Automatically test for prompt injection, jailbreaks, and data extraction vulnerabilities.',
+    icon: `<svg class="w-6 h-6 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    </svg>`,
+    features: [
+      '50+ built-in attack patterns',
+      'Custom attack definitions',
+      'Vulnerability reports',
+    ],
+    code: `$ akit redteam \\
+  --target "system prompt" \\
+  --categories injection,jailbreak`,
+  },
+  {
+    title: 'Stress Testing',
+    description: "Understand your LLM's behavior under pressure with concurrent request testing.",
+    icon: `<svg class="w-6 h-6 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </svg>`,
+    features: [
+      'Configurable concurrency',
+      'Latency percentiles (p50, p95, p99)',
+      'Rate limiting detection',
+    ],
+    code: `$ akit stress \\
+  --concurrency 50 \\
+  --iterations 500`,
+  },
+  {
+    title: 'Multi-Provider Support',
+    description: 'Native support for major LLM providers with unified configuration and results.',
+    icon: `<svg class="w-6 h-6 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="3" width="7" height="7" />
+      <rect x="14" y="3" width="7" height="7" />
+      <rect x="14" y="14" width="7" height="7" />
+      <rect x="3" y="14" width="7" height="7" />
+    </svg>`,
+    features: [
+      'OpenAI, Azure, Anthropic, Google',
+      'Local models via Ollama',
+      'Consistent API across providers',
+    ],
+    code: `provider: openrouter
+model: anthropic/claude-3-opus`,
+  },
+  {
+    title: 'Rich Reports',
+    description: 'HTML and JSON reports with detailed metrics, pass/fail breakdowns, and configuration traceability.',
+    icon: `<svg class="w-6 h-6 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="16" y1="13" x2="8" y2="13" />
+      <line x1="16" y1="17" x2="8" y2="17" />
+      <polyline points="10 9 9 9 8 9" />
+    </svg>`,
+    features: [
+      'Interactive HTML dashboards',
+      'Machine-readable JSON export',
+      'CI/CD integration ready',
+    ],
+    code: `$ akit run test.yaml --save
+Report: artemis-output/report.html`,
+  },
+  {
+    title: 'Developer Experience',
+    description: 'CLI-first design, YAML configuration, and seamless integration with your workflow.',
+    icon: `<svg class="w-6 h-6 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="4 17 10 11 4 5" />
+      <line x1="12" y1="19" x2="20" y2="19" />
+    </svg>`,
+    features: [
+      'Zero-config defaults',
+      'Extensive customization',
+      'TypeScript/Node.js native',
+    ],
+    code: `# Install globally
+npm install -g @artemiskit/cli
+
+# Run your first test
+akit run scenarios/test.yaml`,
+  },
+];
+---
+
+<section id="features" class="section relative">
+  <div class="container">
+    <SectionHeading
+      badge="Features"
+      title="Everything You Need to Evaluate LLMs"
+      subtitle="A comprehensive toolkit for quality assurance, security testing, and performance validation of your LLM applications."
+    />
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {features.map((feature, index) => (
+        <div
+          class="reveal"
+          style={`transition-delay: ${index * 100}ms`}
+        >
+          <FeatureCard {...feature} />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Scroll reveal animation
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1,
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal').forEach((el) => {
+    observer.observe(el);
+  });
+</script>

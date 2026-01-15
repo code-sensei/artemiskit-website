@@ -1,0 +1,121 @@
+---
+const problems = [
+  {
+    title: 'Inconsistent Outputs',
+    description: 'Your chatbot gives different answers to the same question',
+    icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="16 3 21 3 21 8" />
+      <line x1="4" y1="20" x2="21" y2="3" />
+      <polyline points="21 16 21 21 16 21" />
+      <line x1="15" y1="15" x2="21" y2="21" />
+      <line x1="4" y1="4" x2="9" y2="9" />
+    </svg>`,
+  },
+  {
+    title: 'Security Blind Spots',
+    description: 'Prompt injection attacks go undetected until production',
+    icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <line x1="12" y1="8" x2="12" y2="12" />
+      <line x1="12" y1="16" x2="12.01" y2="16" />
+    </svg>`,
+  },
+  {
+    title: 'Unknown Limits',
+    description: 'No idea how your app performs under load',
+    icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="12" y1="20" x2="12" y2="10" />
+      <line x1="18" y1="20" x2="18" y2="4" />
+      <line x1="6" y1="20" x2="6" y2="16" />
+    </svg>`,
+  },
+  {
+    title: 'Manual Testing',
+    description: "Testing prompts by hand doesn't scale",
+    icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>`,
+  },
+];
+---
+
+<section class="section relative overflow-hidden">
+  <!-- Background accent -->
+  <div class="absolute inset-0 gradient-mesh opacity-50" aria-hidden="true"></div>
+
+  <div class="container relative">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <!-- Problems -->
+      <div>
+        <span class="badge badge-secondary mb-4 inline-block">The Challenge</span>
+        <h2 class="text-3xl md:text-4xl font-semibold text-stone-50 mb-8 tracking-tight">
+          LLM Applications Are <span class="text-red-400">Unpredictable</span>
+        </h2>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          {problems.map((problem, index) => (
+            <div
+              class="p-5 rounded-xl bg-stone-900/50 border border-stone-800 hover:border-red-500/30 transition-colors group reveal"
+              style={`transition-delay: ${index * 100}ms`}
+            >
+              <div class="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-4 text-red-400 group-hover:bg-red-500/20 transition-colors">
+                <Fragment set:html={problem.icon} />
+              </div>
+              <h3 class="text-lg font-medium text-stone-200 mb-2">{problem.title}</h3>
+              <p class="text-sm text-stone-500">{problem.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Solution -->
+      <div class="lg:pl-8">
+        <span class="badge badge-primary mb-4 inline-block">The Solution</span>
+        <h2 class="text-3xl md:text-4xl font-semibold text-stone-50 mb-6 tracking-tight">
+          ArtemisKit Brings <span class="text-gradient-orange">Order to Chaos</span>
+        </h2>
+
+        <p class="text-lg text-stone-400 mb-8">
+          Systematic evaluation of your LLM applications with automated testing, security scanning, and performance analysis.
+        </p>
+
+        <ul class="space-y-4">
+          <li class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-full bg-primary-500/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-4 h-4 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="text-stone-100 font-medium mb-1">Reproducible Results</h4>
+              <p class="text-stone-500 text-sm">Deterministic seeding ensures identical outputs across runs. Target ≥95% reproducibility.</p>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-full bg-primary-500/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-4 h-4 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="text-stone-100 font-medium mb-1">Comprehensive Security</h4>
+              <p class="text-stone-500 text-sm">5 attack categories with 50+ patterns. Injection, jailbreak, extraction, hallucination, PII disclosure.</p>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-full bg-primary-500/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-4 h-4 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="text-stone-100 font-medium mb-1">CI/CD Integration</h4>
+              <p class="text-stone-500 text-sm">GitHub Actions ready. Fail builds on quality regressions. Mean time to detect: &lt;1 day.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
