@@ -65,6 +65,10 @@ export default defineConfig({
                 { label: "OpenAI", link: "/docs/cli/providers/openai/" },
                 { label: "Azure OpenAI", link: "/docs/cli/providers/azure/" },
                 { label: "Anthropic", link: "/docs/cli/providers/anthropic/" },
+                {
+                  label: "Vercel AI SDK",
+                  link: "/docs/cli/providers/vercel-ai/",
+                },
               ],
             },
             {
