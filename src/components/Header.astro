@@ -151,10 +151,11 @@ const navLinks = [
 </style>
 
 <script>
-  // Header scroll behavior
+  // Header scroll behavior with requestAnimationFrame throttling
   const header = document.getElementById('header');
+  let ticking = false;
 
-  const handleScroll = () => {
+  const updateHeader = () => {
     const currentScroll = window.scrollY;
 
     if (currentScroll > 20) {
@@ -162,10 +163,18 @@ const navLinks = [
     } else {
       header?.classList.remove('scrolled');
     }
+    ticking = false;
+  };
+
+  const handleScroll = () => {
+    if (!ticking) {
+      requestAnimationFrame(updateHeader);
+      ticking = true;
+    }
   };
 
   window.addEventListener('scroll', handleScroll, { passive: true });
-  handleScroll();
+  updateHeader();
 
   // Mobile menu toggle
   const mobileMenuButton = document.getElementById('mobile-menu-button');

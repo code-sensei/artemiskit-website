@@ -6,6 +6,18 @@
    ============================================ */
 
 /* Fonts loaded via BaseHead.astro from Vercel CDN */
+/* Font display optimization */
+@font-face {
+    font-family: "Geist";
+    font-display: swap;
+    src: local("Geist");
+}
+
+@font-face {
+    font-family: "Geist Mono";
+    font-display: swap;
+    src: local("Geist Mono");
+}
 
 /* Design Tokens */
 @theme {
@@ -1603,5 +1615,44 @@ starlight-toc ul ul {
     .sidebar-pane,
     .right-sidebar {
         display: none;
+    }
+}
+
+/* ============================================
+   Reduced Motion Accessibility
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    .hero-animate,
+    .reveal,
+    .animate-fade-in,
+    .animate-fade-up,
+    .animate-fade-down,
+    .animate-scale-in,
+    .animate-slide-in-right,
+    .animate-pulse-glow,
+    .animate-blink,
+    .animate-float {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .terminal-cursor {
+        animation: none !important;
+        opacity: 1 !important;
     }
 }

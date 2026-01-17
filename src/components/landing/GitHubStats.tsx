@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface GitHubRepo {
   stargazers_count: number;
@@ -26,7 +26,9 @@ export default function GitHubStats() {
   useEffect(() => {
     async function fetchStats() {
       try {
-        const response = await fetch('https://api.github.com/repos/code-sensei/artemiskit');
+        const response = await fetch(
+          "https://api.github.com/repos/code-sensei/artemiskit",
+        );
         if (response.ok) {
           const data: GitHubRepo = await response.json();
           setStats({
@@ -36,7 +38,7 @@ export default function GitHubStats() {
           });
         }
       } catch (error) {
-        console.error('Failed to fetch GitHub stats:', error);
+        console.error("Failed to fetch GitHub stats:", error);
       } finally {
         setLoading(false);
       }
@@ -50,19 +52,31 @@ export default function GitHubStats() {
 
   const statItems = [
     {
-      label: 'Stars',
+      label: "Stars",
       value: displayStats.stars,
       icon: (
-        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg
+          className="w-5 h-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
         </svg>
       ),
     },
     {
-      label: 'Forks',
+      label: "Forks",
       value: displayStats.forks,
       icon: (
-        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg
+          className="w-5 h-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <circle cx="12" cy="18" r="3" />
           <circle cx="6" cy="6" r="3" />
           <circle cx="18" cy="6" r="3" />
@@ -72,10 +86,16 @@ export default function GitHubStats() {
       ),
     },
     {
-      label: 'Watchers',
+      label: "Watchers",
       value: displayStats.watchers,
       icon: (
-        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg
+          className="w-5 h-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
           <circle cx="12" cy="12" r="3" />
         </svg>
@@ -90,12 +110,25 @@ export default function GitHubStats() {
           key={item.label}
           className="flex items-center gap-3 px-5 py-3 rounded-xl bg-stone-900/50 border border-stone-800"
         >
-          <span className="text-primary-500">{item.icon}</span>
+          <span className={`text-primary-500 ${loading ? "opacity-50" : ""}`}>
+            {item.icon}
+          </span>
           <div>
-            <div className={`text-2xl font-bold text-stone-50 ${loading ? 'animate-pulse' : ''}`}>
-              {loading ? '—' : formatNumber(item.value)}
-            </div>
-            <div className="text-xs text-stone-500 uppercase tracking-wider">{item.label}</div>
+            {loading ? (
+              <div className="space-y-1.5">
+                <div className="h-7 w-12 rounded-md bg-gradient-to-r from-stone-800 via-stone-700 to-stone-800 bg-[length:200%_100%] animate-[shimmer_1.5s_ease-in-out_infinite]" />
+                <div className="h-3 w-16 rounded bg-stone-800" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold text-stone-50">
+                  {formatNumber(item.value)}
+                </div>
+                <div className="text-xs text-stone-500 uppercase tracking-wider">
+                  {item.label}
+                </div>
+              </>
+            )}
           </div>
         </div>
       ))}

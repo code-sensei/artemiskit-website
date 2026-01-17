@@ -1,0 +1,11 @@
+# ArtemisKit Robots.txt
+# https://artemiskit.dev
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://artemiskit.dev/sitemap-index.xml
+
+# Crawl-delay (optional, for polite crawling)
+Crawl-delay: 1
