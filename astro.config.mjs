@@ -18,6 +18,7 @@ export default defineConfig({
       logo: {
         src: "./public/artemiskit-logo.png",
         alt: "ArtemisKit",
+        replacesTitle: true,
       },
       social: [
         {

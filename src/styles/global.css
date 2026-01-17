@@ -862,12 +862,14 @@ samp {
 }
 
 .site-title img {
-    width: 1.75rem;
     height: 1.75rem;
+    width: auto;
+    max-width: none;
 }
 
 .site-title:hover {
     color: var(--color-primary-400) !important;
+    opacity: 0.9;
 }
 
 header.header {
