@@ -61,9 +61,19 @@ export default defineConfig({
               label: "Providers",
               collapsed: true,
               items: [
+                { label: "Overview", link: "/docs/cli/providers/" },
                 { label: "OpenAI", link: "/docs/cli/providers/openai/" },
                 { label: "Azure OpenAI", link: "/docs/cli/providers/azure/" },
                 { label: "Anthropic", link: "/docs/cli/providers/anthropic/" },
+              ],
+            },
+            {
+              label: "Storage",
+              collapsed: true,
+              items: [
+                { label: "Overview", link: "/docs/cli/storage/" },
+                { label: "Local", link: "/docs/cli/storage/local/" },
+                { label: "Supabase", link: "/docs/cli/storage/supabase/" },
               ],
             },
             { label: "CI/CD Integration", link: "/docs/cli/ci-cd/" },
