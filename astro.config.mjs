@@ -7,7 +7,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://artemiskit.dev",
+  site: "https://artemiskit.vercel.app",
   integrations: [
     sitemap({
       filter: (page) => !page.includes("/admin"),

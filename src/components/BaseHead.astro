@@ -14,8 +14,8 @@ const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "ArtemisKit",
-  "url": "https://artemiskit.dev",
-  "logo": "https://artemiskit.dev/artemiskit-icon.png",
+  "url": "https://artemiskit.vercel.app",
+  "logo": "https://artemiskit.vercel.app/artemiskit-icon.png",
   "description": "Open-source LLM evaluation toolkit for developers and research teams.",
   "sameAs": [
     "https://github.com/code-sensei/artemiskit"
@@ -46,10 +46,10 @@ const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "ArtemisKit",
-  "url": "https://artemiskit.dev",
+  "url": "https://artemiskit.vercel.app",
   "potentialAction": {
     "@type": "SearchAction",
-    "target": "https://artemiskit.dev/docs/?q={search_term_string}",
+    "target": "https://artemiskit.vercel.app/docs/?q={search_term_string}",
     "query-input": "required name=search_term_string"
   }
 };
@@ -128,9 +128,6 @@ const websiteSchema = {
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 )}
 <meta name="googlebot" content={noindex ? "noindex, nofollow" : "index, follow"} />
-
-<!-- Plausible Analytics -->
-<script defer data-domain="artemiskit.dev" src="https://plausible.io/js/script.js"></script>
 
 <!-- JSON-LD Structured Data -->
 <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />

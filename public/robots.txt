@@ -7,4 +7,4 @@ Disallow: /admin
 Disallow: /admin/
 
 # Sitemap
-Sitemap: https://artemiskit.dev/sitemap-index.xml
+Sitemap: https://artemiskit.vercel.app/sitemap-index.xml
