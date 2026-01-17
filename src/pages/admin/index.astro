@@ -1,0 +1,20 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AdminDashboard from '../../components/admin/AdminDashboard';
+---
+
+<Layout
+  title="Admin Dashboard | ArtemisKit"
+  description="ArtemisKit waitlist admin dashboard"
+  hideHeader={true}
+  hideFooter={true}
+  noindex={true}
+>
+  <AdminDashboard client:load />
+</Layout>
+
+<style>
+  :global(body) {
+    background: #0c0a09;
+  }
+</style>

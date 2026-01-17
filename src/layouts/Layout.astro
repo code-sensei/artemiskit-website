@@ -10,6 +10,7 @@ interface Props {
   image?: string;
   hideHeader?: boolean;
   hideFooter?: boolean;
+  noindex?: boolean;
 }
 
 const {
@@ -18,13 +19,14 @@ const {
   image,
   hideHeader = false,
   hideFooter = false,
+  noindex = false,
 } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en" class="dark">
   <head>
-    <BaseHead title={title} description={description} image={image} />
+    <BaseHead title={title} description={description} image={image} noindex={noindex} />
   </head>
   <body class="min-h-screen bg-bg-primary text-stone-100 overflow-x-hidden">
     {!hideHeader && <Header />}

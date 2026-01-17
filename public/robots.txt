@@ -1,11 +1,10 @@
-# ArtemisKit Robots.txt
-# https://artemiskit.dev
-
+# ArtemisKit robots.txt
 User-agent: *
 Allow: /
 
+# Disallow admin pages
+Disallow: /admin
+Disallow: /admin/
+
 # Sitemap
 Sitemap: https://artemiskit.dev/sitemap-index.xml
-
-# Crawl-delay (optional, for polite crawling)
-Crawl-delay: 1

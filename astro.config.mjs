@@ -3,16 +3,20 @@ import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
+import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://artemiskit.dev",
   integrations: [
+    sitemap({
+      filter: (page) => !page.includes("/admin"),
+    }),
     starlight({
       title: "ArtemisKit",
-      favicon: "/favicon.svg",
+      favicon: "/favicon-32.png",
       logo: {
-        src: "./public/favicon.svg",
+        src: "./public/icon-192.png",
         alt: "ArtemisKit",
       },
       social: [

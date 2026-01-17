@@ -3,10 +3,11 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  noindex?: boolean;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const { title, description, image = '/og-image.png' } = Astro.props;
+const { title, description, image = '/og-image.png', noindex = false } = Astro.props;
 
 // JSON-LD Structured Data
 const organizationSchema = {
@@ -14,7 +15,7 @@ const organizationSchema = {
   "@type": "Organization",
   "name": "ArtemisKit",
   "url": "https://artemiskit.dev",
-  "logo": "https://artemiskit.dev/favicon.svg",
+  "logo": "https://artemiskit.dev/artemiskit-icon.png",
   "description": "Open-source LLM evaluation toolkit for developers and research teams.",
   "sameAs": [
     "https://github.com/code-sensei/artemiskit"
@@ -57,11 +58,27 @@ const websiteSchema = {
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+<!-- Favicon & Icons -->
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+
 <meta name="generator" content={Astro.generator} />
 
 <!-- Fonts - Geist from Vercel CDN -->
 <link rel="preconnect" href="https://cdn.vercel.com" crossorigin />
+<link
+  rel="preload"
+  as="style"
+  href="https://cdn.vercel.com/geist/fonts/geist-sans/styles.css"
+/>
+<link
+  rel="preload"
+  as="style"
+  href="https://cdn.vercel.com/geist/fonts/geist-mono/styles.css"
+/>
 <link
   rel="stylesheet"
   href="https://cdn.vercel.com/geist/fonts/geist-sans/styles.css"
@@ -85,26 +102,35 @@ const websiteSchema = {
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image, Astro.url)} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:site_name" content="ArtemisKit" />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:url" content={Astro.url} />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={new URL(image, Astro.url)} />
+<meta name="twitter:image" content={new URL('/twitter-image.png', Astro.url)} />
 
 <!-- Theme Color -->
 <meta name="theme-color" content="#0c0a09" />
+<meta name="msapplication-TileColor" content="#f97316" />
 
 <!-- Additional Meta Tags -->
 <meta name="author" content="ArtemisKit" />
-<meta name="keywords" content="LLM testing, AI evaluation, prompt testing, CLI tool, developer tools, open source, machine learning, quality assurance" />
-<meta name="robots" content="index, follow" />
-<meta name="googlebot" content="index, follow" />
+<meta name="keywords" content="LLM testing, AI evaluation, prompt testing, CLI tool, developer tools, open source, machine learning, quality assurance, red team, stress testing" />
 
-<!-- Search Engine Verification (replace with actual values) -->
-<!-- <meta name="google-site-verification" content="your-google-verification-code" /> -->
-<!-- <meta name="msvalidate.01" content="your-bing-verification-code" /> -->
+<!-- Robots -->
+{noindex ? (
+  <meta name="robots" content="noindex, nofollow" />
+) : (
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+)}
+<meta name="googlebot" content={noindex ? "noindex, nofollow" : "index, follow"} />
+
+<!-- Plausible Analytics -->
+<script defer data-domain="artemiskit.dev" src="https://plausible.io/js/script.js"></script>
 
 <!-- JSON-LD Structured Data -->
 <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
