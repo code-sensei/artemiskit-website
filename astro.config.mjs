@@ -16,7 +16,7 @@ export default defineConfig({
       title: "ArtemisKit",
       favicon: "/favicon-32.png",
       logo: {
-        src: "./public/icon-192.png",
+        src: "./public/artemiskit-logo.png",
         alt: "ArtemisKit",
       },
       social: [
