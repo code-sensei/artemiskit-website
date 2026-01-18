@@ -44,11 +44,13 @@ export default defineConfig({
               label: "Commands",
               collapsed: true,
               items: [
+                { label: "init", link: "/docs/cli/commands/init/" },
                 { label: "run", link: "/docs/cli/commands/run/" },
                 { label: "redteam", link: "/docs/cli/commands/redteam/" },
                 { label: "stress", link: "/docs/cli/commands/stress/" },
                 { label: "report", link: "/docs/cli/commands/report/" },
                 { label: "compare", link: "/docs/cli/commands/compare/" },
+                { label: "history", link: "/docs/cli/commands/history/" },
               ],
             },
             {
