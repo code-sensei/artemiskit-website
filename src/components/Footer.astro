@@ -2,11 +2,13 @@
 /**
  * Footer Component - Site-wide Footer
  *
+ * Design System: ArtemisKit
+ * - Dark theme with orange accent
+ * - Professional developer tools aesthetic
+ * - Clear information hierarchy
+ *
  * From Content Strategy - Appendix A: Key Links
  * - Website, GitHub, Documentation, npm Package
- *
- * Positioning from Content Strategy:
- * "ArtemisKit is for teams who want open-source freedom with production-grade capabilities."
  */
 
 const footerLinks = {
@@ -16,23 +18,20 @@ const footerLinks = {
     { label: 'LLM Testing', href: '/llm-testing/' },
     { label: 'AI Security Testing', href: '/ai-security-testing/' },
     { label: 'Documentation', href: '/docs/' },
-    { label: 'Sitemap', href: '/sitemap/' },
   ],
   resources: [
     { label: 'Getting Started', href: '/docs/cli/getting-started/' },
     { label: 'Red Team Testing', href: '/docs/cli/commands/redteam/' },
-    { label: 'Prompt Injection Testing', href: '/prompt-injection-testing/' },
+    { label: 'Prompt Injection', href: '/prompt-injection-testing/' },
     { label: 'AI Red Team', href: '/ai-red-team/' },
-    { label: 'Providers', href: '/docs/cli/providers/' },
     { label: 'CI/CD Integration', href: '/docs/cli/ci-cd/' },
   ],
   blog: [
     { label: 'All Posts', href: '/blog/' },
-    { label: 'Changelog', href: '/blog/category/changelog/' },
     { label: 'Tutorials', href: '/blog/category/tutorials/' },
     { label: 'Security News', href: '/blog/category/security-news/' },
     { label: 'Engineering', href: '/blog/category/engineering/' },
-    { label: 'Case Studies', href: '/blog/category/case-studies/' },
+    { label: 'Changelog', href: '/blog/category/changelog/' },
   ],
   community: [
     { label: 'GitHub', href: 'https://github.com/code-sensei/artemiskit', external: true },
@@ -41,8 +40,8 @@ const footerLinks = {
     { label: 'Contributing', href: 'https://github.com/code-sensei/artemiskit/blob/main/CONTRIBUTING.md', external: true },
   ],
   legal: [
-    { label: 'Privacy Policy', href: '/legal/privacy/' },
-    { label: 'Terms of Service', href: '/legal/terms/' },
+    { label: 'Privacy', href: '/legal/privacy/' },
+    { label: 'Terms', href: '/legal/terms/' },
   ],
 };
 
@@ -51,158 +50,218 @@ const currentYear = new Date().getFullYear();
 
 <footer class="relative bg-[var(--theme-bg-primary)] border-t border-[var(--theme-border)]">
   <!-- Gradient accent line -->
-  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-orange-500/30 to-transparent"></div>
+  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/50 to-transparent"></div>
 
-  <div class="container py-14 md:py-16">
-    <div class="grid grid-cols-2 md:grid-cols-12 gap-8 lg:gap-12">
+  <div class="max-w-7xl mx-auto px-6">
+    <!-- Main Footer Content -->
+    <div class="py-16 lg:py-20">
+      <div class="grid grid-cols-2 md:grid-cols-6 lg:grid-cols-12 gap-8 lg:gap-12">
 
-      <!-- Brand Column -->
-      <div class="col-span-2 md:col-span-4">
-        <a href="/" class="inline-flex items-center mb-5">
-          <img
-            src="/artemiskit-logo.png"
-            alt="ArtemisKit - Open Source LLM Testing Toolkit"
-            class="h-7 w-auto"
-            width="120"
-            height="28"
-            loading="lazy"
-          />
-        </a>
-
-        <!-- Tagline from USP -->
-        <p class="text-[var(--theme-text-tertiary)] text-sm leading-relaxed mb-6 max-w-xs">
-          The open-source standard for LLM reliability. Security red-teaming, quality evaluation, and stress testing in one CLI.
-        </p>
-
-        <!-- Social Links -->
-        <div class="flex items-center gap-3">
-          <a
-            href="https://github.com/code-sensei/artemiskit"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="w-9 h-9 rounded-lg bg-[var(--theme-bg-secondary)] hover:bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border)] hover:border-[var(--theme-border-hover)] flex items-center justify-center text-[var(--theme-text-muted)] hover:text-[var(--theme-text-secondary)] transition-all duration-200"
-            aria-label="GitHub"
-          >
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-            </svg>
+        <!-- Brand Column -->
+        <div class="col-span-2 md:col-span-6 lg:col-span-4">
+          <a href="/" class="inline-flex items-center gap-2 mb-6 group">
+            <img
+              src="/artemiskit-logo.png"
+              alt="ArtemisKit"
+              class="h-8 w-auto"
+              width="120"
+              height="32"
+              loading="lazy"
+            />
           </a>
+
+          <!-- Tagline -->
+          <p class="text-[var(--theme-text-secondary)] text-sm leading-relaxed mb-6 max-w-sm">
+            The open-source standard for LLM reliability. Security red-teaming, quality evaluation, and stress testing in one CLI.
+          </p>
+
+          <!-- Quick Install -->
+          <div class="mb-8">
+            <div class="inline-flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--theme-bg-secondary)] border border-[var(--theme-border)] group hover:border-[var(--theme-border-hover)] transition-colors cursor-pointer" id="footer-install">
+              <span class="text-[var(--theme-primary)] font-mono text-sm font-medium">$</span>
+              <code class="text-sm text-[var(--theme-text-secondary)] font-mono">npm i -g @artemiskit/cli</code>
+              <button
+                class="p-1.5 rounded-lg hover:bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text-secondary)] transition-colors"
+                aria-label="Copy install command"
+              >
+                <svg class="w-4 h-4 copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2"/>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+                <svg class="w-4 h-4 check-icon hidden text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Social Links -->
+          <div class="flex items-center gap-2">
+            <a
+              href="https://github.com/code-sensei/artemiskit"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-10 h-10 rounded-xl bg-[var(--theme-bg-secondary)] hover:bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border)] hover:border-[var(--theme-border-hover)] flex items-center justify-center text-[var(--theme-text-muted)] hover:text-[var(--theme-text-primary)] transition-all duration-200 cursor-pointer"
+              aria-label="GitHub"
+            >
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+            </a>
+            <a
+              href="https://www.npmjs.com/package/@artemiskit/cli"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-10 h-10 rounded-xl bg-[var(--theme-bg-secondary)] hover:bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border)] hover:border-[var(--theme-border-hover)] flex items-center justify-center text-[var(--theme-text-muted)] hover:text-[var(--theme-text-primary)] transition-all duration-200 cursor-pointer"
+              aria-label="npm"
+            >
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.323l13.837.019-.009 13.836h-3.464l.01-10.382h-3.456L12.04 19.17H5.113z"/>
+              </svg>
+            </a>
+            <a
+              href="https://twitter.com/artemiskit"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-10 h-10 rounded-xl bg-[var(--theme-bg-secondary)] hover:bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border)] hover:border-[var(--theme-border-hover)] flex items-center justify-center text-[var(--theme-text-muted)] hover:text-[var(--theme-text-primary)] transition-all duration-200 cursor-pointer"
+              aria-label="Twitter/X"
+            >
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+          </div>
         </div>
-      </div>
 
-      <!-- Links Columns -->
-      <div class="col-span-1 md:col-span-2 md:col-start-6">
-        <h3 class="text-xs font-semibold text-[var(--theme-text-muted)] uppercase tracking-wider mb-4">Product</h3>
-        <ul class="space-y-2.5">
-          {footerLinks.product.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                class="text-sm text-[var(--theme-text-tertiary)] hover:text-[var(--theme-text-secondary)] transition-colors inline-flex items-center gap-1"
-                {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-              >
-                {link.label}
-                {link.external && (
-                  <svg class="w-3 h-3 opacity-40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <!-- Links Columns -->
+        <div class="col-span-1 lg:col-span-2">
+          <h3 class="text-xs font-semibold text-[var(--theme-text-primary)] uppercase tracking-wider mb-4">Product</h3>
+          <ul class="space-y-3">
+            {footerLinks.product.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-sm text-[var(--theme-text-tertiary)] hover:text-[var(--theme-primary)] transition-colors cursor-pointer"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="col-span-1 lg:col-span-2">
+          <h3 class="text-xs font-semibold text-[var(--theme-text-primary)] uppercase tracking-wider mb-4">Resources</h3>
+          <ul class="space-y-3">
+            {footerLinks.resources.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-sm text-[var(--theme-text-tertiary)] hover:text-[var(--theme-primary)] transition-colors cursor-pointer"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="col-span-1 lg:col-span-2">
+          <h3 class="text-xs font-semibold text-[var(--theme-text-primary)] uppercase tracking-wider mb-4">Blog</h3>
+          <ul class="space-y-3">
+            {footerLinks.blog.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-sm text-[var(--theme-text-tertiary)] hover:text-[var(--theme-primary)] transition-colors cursor-pointer"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="col-span-1 lg:col-span-2">
+          <h3 class="text-xs font-semibold text-[var(--theme-text-primary)] uppercase tracking-wider mb-4">Community</h3>
+          <ul class="space-y-3">
+            {footerLinks.community.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-sm text-[var(--theme-text-tertiary)] hover:text-[var(--theme-primary)] transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {link.label}
+                  <svg class="w-3 h-3 opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M7 17L17 7M17 7H7M17 7V17" />
                   </svg>
-                )}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div class="col-span-1 md:col-span-2">
-        <h3 class="text-xs font-semibold text-[var(--theme-text-muted)] uppercase tracking-wider mb-4">Resources</h3>
-        <ul class="space-y-2.5">
-          {footerLinks.resources.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                class="text-sm text-[var(--theme-text-tertiary)] hover:text-[var(--theme-text-secondary)] transition-colors inline-flex items-center gap-1"
-                {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-              >
-                {link.label}
-                {link.external && (
-                  <svg class="w-3 h-3 opacity-40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M7 17L17 7M17 7H7M17 7V17" />
-                  </svg>
-                )}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div class="col-span-1 md:col-span-2">
-        <h3 class="text-xs font-semibold text-[var(--theme-text-muted)] uppercase tracking-wider mb-4">Blog</h3>
-        <ul class="space-y-2.5">
-          {footerLinks.blog.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                class="text-sm text-[var(--theme-text-tertiary)] hover:text-[var(--theme-text-secondary)] transition-colors inline-flex items-center gap-1"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div class="col-span-1 md:col-span-2">
-        <h3 class="text-xs font-semibold text-[var(--theme-text-muted)] uppercase tracking-wider mb-4">Community</h3>
-        <ul class="space-y-2.5">
-          {footerLinks.community.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                class="text-sm text-[var(--theme-text-tertiary)] hover:text-[var(--theme-text-secondary)] transition-colors inline-flex items-center gap-1"
-                {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-              >
-                {link.label}
-                {link.external && (
-                  <svg class="w-3 h-3 opacity-40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M7 17L17 7M17 7H7M17 7V17" />
-                  </svg>
-                )}
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        <h3 class="text-xs font-semibold text-[var(--theme-text-muted)] uppercase tracking-wider mb-4 mt-6">Legal</h3>
-        <ul class="space-y-2.5">
-          {footerLinks.legal.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                class="text-sm text-[var(--theme-text-tertiary)] hover:text-[var(--theme-text-secondary)] transition-colors"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
 
     <!-- Bottom Bar -->
-    <div class="mt-12 pt-6 border-t border-[var(--theme-border-subtle)]">
+    <div class="py-6 border-t border-[var(--theme-border-subtle)]">
       <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-        <p class="text-xs text-[var(--theme-text-muted)]">
-          &copy; {currentYear} ArtemisKit. Released under the Apache-2.0 License.
-        </p>
-
-        <div class="flex items-center gap-4">
-          <!-- Install badge -->
-          <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--theme-bg-secondary)] border border-[var(--theme-border)]">
-            <span class="text-[var(--theme-primary)] font-mono text-xs">$</span>
-            <code class="text-xs text-[var(--theme-text-tertiary)] font-mono">npm i -g @artemiskit/cli</code>
+        <!-- Copyright & Status -->
+        <div class="flex flex-col sm:flex-row items-center gap-4">
+          <p class="text-xs text-[var(--theme-text-muted)]">
+            &copy; {currentYear} ArtemisKit. Apache-2.0 License.
+          </p>
+          <div class="flex items-center gap-2">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span class="text-xs text-[var(--theme-text-muted)]">All systems operational</span>
           </div>
+        </div>
+
+        <!-- Legal Links & Theme -->
+        <div class="flex items-center gap-6">
+          <nav class="flex items-center gap-4">
+            {footerLinks.legal.map((link) => (
+              <a
+                href={link.href}
+                class="text-xs text-[var(--theme-text-muted)] hover:text-[var(--theme-text-secondary)] transition-colors cursor-pointer"
+              >
+                {link.label}
+              </a>
+            ))}
+            <a
+              href="/sitemap/"
+              class="text-xs text-[var(--theme-text-muted)] hover:text-[var(--theme-text-secondary)] transition-colors cursor-pointer"
+            >
+              Sitemap
+            </a>
+          </nav>
         </div>
       </div>
     </div>
   </div>
 </footer>
+
+<script>
+  const footerInstall = document.getElementById('footer-install');
+  const copyIcon = footerInstall?.querySelector('.copy-icon');
+  const checkIcon = footerInstall?.querySelector('.check-icon');
+
+  footerInstall?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText('npm install -g @artemiskit/cli');
+      copyIcon?.classList.add('hidden');
+      checkIcon?.classList.remove('hidden');
+      setTimeout(() => {
+        copyIcon?.classList.remove('hidden');
+        checkIcon?.classList.add('hidden');
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  });
+</script>
