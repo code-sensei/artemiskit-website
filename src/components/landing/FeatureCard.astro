@@ -8,28 +8,28 @@ interface Props {
   codeLanguage?: string;
 }
 
-const { title, description, icon, features, code, codeLanguage = 'yaml' } = Astro.props;
+const { title, description, icon, features, code } = Astro.props;
 ---
 
-<div class="card group h-full flex flex-col">
+<div class="group h-full flex flex-col p-6 rounded-xl bg-zinc-900/50 border border-zinc-800/60 hover:border-zinc-700/60 transition-all duration-300">
   <!-- Icon -->
-  <div class="w-12 h-12 rounded-xl bg-primary-500/10 border border-primary-500/20 flex items-center justify-center mb-5 group-hover:bg-primary-500/20 group-hover:border-primary-500/30 transition-colors">
+  <div class="w-11 h-11 rounded-lg bg-gradient-to-br from-orange-500/10 to-amber-500/10 border border-orange-500/20 flex items-center justify-center mb-5 group-hover:from-orange-500/15 group-hover:to-amber-500/15 transition-colors">
     <Fragment set:html={icon} />
   </div>
 
   <!-- Content -->
-  <h3 class="text-xl font-semibold text-stone-50 mb-3">{title}</h3>
-  <p class="text-stone-400 mb-4 flex-grow">{description}</p>
+  <h3 class="text-lg font-semibold text-zinc-100 mb-2">{title}</h3>
+  <p class="text-sm text-zinc-500 mb-5 leading-relaxed flex-grow">{description}</p>
 
   <!-- Feature List -->
   {features && features.length > 0 && (
-    <ul class="space-y-2 mb-5">
+    <ul class="space-y-2.5 mb-5">
       {features.map((feature) => (
-        <li class="flex items-center gap-2 text-sm text-stone-500">
-          <svg class="w-4 h-4 text-primary-500 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <li class="flex items-start gap-2.5 text-sm text-zinc-400">
+          <svg class="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <polyline points="20 6 9 17 4 12" />
           </svg>
-          {feature}
+          <span>{feature}</span>
         </li>
       ))}
     </ul>
@@ -37,8 +37,8 @@ const { title, description, icon, features, code, codeLanguage = 'yaml' } = Astr
 
   <!-- Code Preview -->
   {code && (
-    <div class="mt-auto pt-4 border-t border-stone-800">
-      <pre class="text-xs text-stone-500 font-mono overflow-x-auto"><code>{code}</code></pre>
+    <div class="mt-auto pt-4 border-t border-zinc-800/50">
+      <pre class="text-[11px] text-zinc-600 font-mono overflow-x-auto leading-relaxed"><code>{code}</code></pre>
     </div>
   )}
 </div>
