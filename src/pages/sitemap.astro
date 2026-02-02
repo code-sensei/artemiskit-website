@@ -4,8 +4,20 @@ import Layout from '../layouts/Layout.astro';
 const siteMap = {
   main: [
     { label: 'Home', href: '/', description: 'ArtemisKit homepage - open-source LLM reliability toolkit' },
+    { label: 'LLM Testing', href: '/llm-testing/', description: 'Automated testing for Large Language Models' },
+    { label: 'AI Security Testing', href: '/ai-security-testing/', description: 'Comprehensive security for LLM applications' },
+    { label: 'Prompt Injection Testing', href: '/prompt-injection-testing/', description: 'Protect your LLM from injection attacks' },
+    { label: 'AI Red Team', href: '/ai-red-team/', description: 'Adversarial testing for LLM applications' },
     { label: 'Privacy Policy', href: '/legal/privacy/', description: 'How we handle your data' },
     { label: 'Terms of Service', href: '/legal/terms/', description: 'Terms for using ArtemisKit' },
+  ],
+  blog: [
+    { label: 'Blog', href: '/blog/', description: 'Latest news, tutorials, and security insights' },
+    { label: 'Changelog', href: '/blog/category/changelog/', description: 'Product updates and releases' },
+    { label: 'Tutorials', href: '/blog/category/tutorials/', description: 'Step-by-step guides' },
+    { label: 'Security News', href: '/blog/category/security-news/', description: 'AI security incidents and analysis' },
+    { label: 'Engineering', href: '/blog/category/engineering/', description: 'Technical deep-dives' },
+    { label: 'Case Studies', href: '/blog/category/case-studies/', description: 'Real-world implementations' },
   ],
   documentation: [
     { label: 'Documentation Home', href: '/docs/', description: 'Introduction to ArtemisKit' },
@@ -71,6 +83,28 @@ const breadcrumbs = [
           </h2>
           <ul class="space-y-3">
             {siteMap.main.map((page) => (
+              <li>
+                <a href={page.href} class="group flex items-start gap-3">
+                  <span class="text-orange-500 mt-1">→</span>
+                  <div>
+                    <span class="text-[var(--theme-text-primary)] group-hover:text-orange-400 transition-colors font-medium">
+                      {page.label}
+                    </span>
+                    <p class="text-sm text-[var(--theme-text-tertiary)]">{page.description}</p>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <!-- Blog -->
+        <section>
+          <h2 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-4 pb-2 border-b border-[var(--theme-border)]">
+            Blog
+          </h2>
+          <ul class="space-y-3">
+            {siteMap.blog.map((page) => (
               <li>
                 <a href={page.href} class="group flex items-start gap-3">
                   <span class="text-orange-500 mt-1">→</span>
