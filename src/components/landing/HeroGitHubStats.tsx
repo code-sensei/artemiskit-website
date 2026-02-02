@@ -55,10 +55,10 @@ export default function HeroGitHubStats() {
         href="https://github.com/code-sensei/artemiskit"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-2 text-stone-400 hover:text-primary-400 transition-colors group"
+        className="flex items-center gap-2 text-zinc-500 hover:text-orange-400 transition-colors group"
       >
         <svg
-          className="w-5 h-5"
+          className="w-4 h-4"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -67,9 +67,9 @@ export default function HeroGitHubStats() {
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
         </svg>
         {loading ? (
-          <span className="inline-block h-5 w-8 rounded bg-gradient-to-r from-stone-800 via-stone-700 to-stone-800 bg-[length:200%_100%] animate-[shimmer_1.5s_ease-in-out_infinite]" />
+          <span className="inline-block h-5 w-8 rounded bg-zinc-800 animate-pulse" />
         ) : (
-          <span className="font-semibold text-stone-200 group-hover:text-primary-400 transition-colors">
+          <span className="font-semibold text-zinc-300 group-hover:text-orange-400 transition-colors">
             {formatNumber(displayStats.stars)}
           </span>
         )}
@@ -80,10 +80,10 @@ export default function HeroGitHubStats() {
         href="https://github.com/code-sensei/artemiskit/fork"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-2 text-stone-400 hover:text-primary-400 transition-colors group"
+        className="flex items-center gap-2 text-zinc-500 hover:text-orange-400 transition-colors group"
       >
         <svg
-          className="w-5 h-5"
+          className="w-4 h-4"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -96,25 +96,25 @@ export default function HeroGitHubStats() {
           <path d="M12 12v3" />
         </svg>
         {loading ? (
-          <span className="inline-block h-5 w-8 rounded bg-gradient-to-r from-stone-800 via-stone-700 to-stone-800 bg-[length:200%_100%] animate-[shimmer_1.5s_ease-in-out_infinite]" />
+          <span className="inline-block h-5 w-8 rounded bg-zinc-800 animate-pulse" />
         ) : (
-          <span className="font-semibold text-stone-200 group-hover:text-primary-400 transition-colors">
+          <span className="font-semibold text-zinc-300 group-hover:text-orange-400 transition-colors">
             {formatNumber(displayStats.forks)}
           </span>
         )}
         <span className="text-sm">forks</span>
       </a>
 
-      <div className="flex items-center gap-2 text-stone-500">
+      <div className="flex items-center gap-2 text-zinc-600">
         <svg
-          className="w-5 h-5"
+          className="w-4 h-4"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
         >
-          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          <path d="M12 2L3 7v7c0 5.25 3.82 10.14 9 11 5.18-.86 9-5.75 9-11V7l-9-5z" />
+          <path d="M9 12l2 2 4-4" />
         </svg>
         <span className="text-sm">Apache-2.0</span>
       </div>
