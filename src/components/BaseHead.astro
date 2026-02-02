@@ -4,10 +4,43 @@ interface Props {
   description: string;
   image?: string;
   noindex?: boolean;
+  faq?: Array<{ question: string; answer: string }>;
+  breadcrumbs?: Array<{ name: string; url: string }>;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const { title, description, image = '/og-image.png', noindex = false } = Astro.props;
+const { title, description, image = '/og-image.png', noindex = false, faq, breadcrumbs } = Astro.props;
+
+// Check if this is the homepage for FAQ schema
+const isHomepage = Astro.url.pathname === '/' || Astro.url.pathname === '';
+
+// FAQ Schema for homepage
+const homepageFAQ = [
+  {
+    question: "What is ArtemisKit?",
+    answer: "ArtemisKit is an open-source CLI toolkit for testing LLM applications. It combines security red-teaming, quality evaluation, and stress testing in a single tool, replacing the need for 3+ separate tools."
+  },
+  {
+    question: "Is ArtemisKit free to use?",
+    answer: "Yes, ArtemisKit CLI is completely free and open-source under the Apache 2.0 license. You can use it for personal and commercial projects without any cost."
+  },
+  {
+    question: "What security tests does ArtemisKit perform?",
+    answer: "ArtemisKit tests for 6 mutation types including prompt injection, jailbreak attempts, role spoofing, instruction flipping, encoding attacks, and multi-turn conversation attacks. Each vulnerability is scored using a CVSS-like severity system."
+  },
+  {
+    question: "How do I install ArtemisKit?",
+    answer: "Install ArtemisKit globally via npm with: npm install -g @artemiskit/cli. You can also use pnpm, yarn, or bun. After installation, verify with: akit --version"
+  },
+  {
+    question: "What LLM providers does ArtemisKit support?",
+    answer: "ArtemisKit supports OpenAI, Anthropic (Claude), Azure OpenAI, and any OpenAI-compatible API. It also integrates with Vercel AI SDK for additional provider support."
+  },
+  {
+    question: "Can I use ArtemisKit in CI/CD pipelines?",
+    answer: "Yes, ArtemisKit is designed for CI/CD integration. It returns proper exit codes (0 for pass, 1 for failures) and can generate JSON reports for automated processing."
+  }
+];
 
 // JSON-LD Structured Data
 const organizationSchema = {
@@ -53,6 +86,33 @@ const websiteSchema = {
     "query-input": "required name=search_term_string"
   }
 };
+
+// FAQ Schema (for homepage or custom FAQ)
+const faqItems = faq || (isHomepage ? homepageFAQ : null);
+const faqSchema = faqItems ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqItems.map(item => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer
+    }
+  }))
+} : null;
+
+// Breadcrumb Schema
+const breadcrumbSchema = breadcrumbs ? {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": breadcrumbs.map((item, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": item.name,
+    "item": item.url
+  }))
+} : null;
 ---
 
 <!-- Theme Initialization (prevents flash of wrong theme) -->
@@ -149,3 +209,5 @@ const websiteSchema = {
 <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
 <script type="application/ld+json" set:html={JSON.stringify(softwareSchema)} />
 <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+{faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
+{breadcrumbSchema && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />}

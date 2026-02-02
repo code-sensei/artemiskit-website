@@ -1,0 +1,237 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const siteMap = {
+  main: [
+    { label: 'Home', href: '/', description: 'ArtemisKit homepage - open-source LLM reliability toolkit' },
+    { label: 'Privacy Policy', href: '/legal/privacy/', description: 'How we handle your data' },
+    { label: 'Terms of Service', href: '/legal/terms/', description: 'Terms for using ArtemisKit' },
+  ],
+  documentation: [
+    { label: 'Documentation Home', href: '/docs/', description: 'Introduction to ArtemisKit' },
+    { label: 'CLI Overview', href: '/docs/cli/', description: 'Command-line interface documentation' },
+    { label: 'Installation', href: '/docs/cli/installation/', description: 'How to install ArtemisKit CLI' },
+    { label: 'Getting Started', href: '/docs/cli/getting-started/', description: 'Quick start guide' },
+    { label: 'CI/CD Integration', href: '/docs/cli/ci-cd/', description: 'Use ArtemisKit in pipelines' },
+  ],
+  commands: [
+    { label: 'run', href: '/docs/cli/commands/run/', description: 'Run scenario-based evaluations' },
+    { label: 'redteam', href: '/docs/cli/commands/redteam/', description: 'Security red team testing' },
+    { label: 'stress', href: '/docs/cli/commands/stress/', description: 'Load and stress testing' },
+    { label: 'report', href: '/docs/cli/commands/report/', description: 'Generate reports from runs' },
+    { label: 'compare', href: '/docs/cli/commands/compare/', description: 'Compare evaluation runs' },
+    { label: 'history', href: '/docs/cli/commands/history/', description: 'View run history' },
+    { label: 'init', href: '/docs/cli/commands/init/', description: 'Initialize configuration' },
+  ],
+  scenarios: [
+    { label: 'Scenario Format', href: '/docs/cli/scenarios/format/', description: 'YAML scenario file format' },
+    { label: 'Expectations', href: '/docs/cli/scenarios/expectations/', description: 'Evaluation matchers and expectations' },
+  ],
+  providers: [
+    { label: 'Providers Overview', href: '/docs/cli/providers/', description: 'Supported LLM providers' },
+    { label: 'OpenAI', href: '/docs/cli/providers/openai/', description: 'OpenAI provider configuration' },
+    { label: 'Anthropic', href: '/docs/cli/providers/anthropic/', description: 'Anthropic Claude configuration' },
+    { label: 'Azure OpenAI', href: '/docs/cli/providers/azure/', description: 'Azure OpenAI configuration' },
+    { label: 'OpenAI Compatible', href: '/docs/cli/providers/openai-compatible/', description: 'OpenAI-compatible APIs' },
+    { label: 'Vercel AI SDK', href: '/docs/cli/providers/vercel-ai/', description: 'Vercel AI SDK integration' },
+  ],
+  storage: [
+    { label: 'Storage Overview', href: '/docs/cli/storage/', description: 'Result storage backends' },
+    { label: 'Local Storage', href: '/docs/cli/storage/local/', description: 'Local file storage' },
+    { label: 'Supabase', href: '/docs/cli/storage/supabase/', description: 'Supabase cloud storage' },
+  ],
+  api: [
+    { label: 'API Overview', href: '/docs/api/', description: 'Programmatic SDK (coming soon)' },
+  ],
+};
+
+const breadcrumbs = [
+  { name: 'Home', url: 'https://artemiskit.vercel.app/' },
+  { name: 'Sitemap', url: 'https://artemiskit.vercel.app/sitemap/' },
+];
+---
+
+<Layout
+  title="Sitemap | ArtemisKit"
+  description="Complete sitemap of ArtemisKit documentation and pages. Find all CLI commands, providers, scenarios, and guides."
+  breadcrumbs={breadcrumbs}
+>
+  <div class="container py-16 md:py-24">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-4xl font-bold text-[var(--theme-text-primary)] mb-4">Sitemap</h1>
+      <p class="text-lg text-[var(--theme-text-secondary)] mb-12">
+        Complete index of all ArtemisKit pages and documentation.
+      </p>
+
+      <div class="space-y-12">
+        <!-- Main Pages -->
+        <section>
+          <h2 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-4 pb-2 border-b border-[var(--theme-border)]">
+            Main Pages
+          </h2>
+          <ul class="space-y-3">
+            {siteMap.main.map((page) => (
+              <li>
+                <a href={page.href} class="group flex items-start gap-3">
+                  <span class="text-orange-500 mt-1">→</span>
+                  <div>
+                    <span class="text-[var(--theme-text-primary)] group-hover:text-orange-400 transition-colors font-medium">
+                      {page.label}
+                    </span>
+                    <p class="text-sm text-[var(--theme-text-tertiary)]">{page.description}</p>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <!-- Documentation -->
+        <section>
+          <h2 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-4 pb-2 border-b border-[var(--theme-border)]">
+            Documentation
+          </h2>
+          <ul class="space-y-3">
+            {siteMap.documentation.map((page) => (
+              <li>
+                <a href={page.href} class="group flex items-start gap-3">
+                  <span class="text-orange-500 mt-1">→</span>
+                  <div>
+                    <span class="text-[var(--theme-text-primary)] group-hover:text-orange-400 transition-colors font-medium">
+                      {page.label}
+                    </span>
+                    <p class="text-sm text-[var(--theme-text-tertiary)]">{page.description}</p>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <!-- CLI Commands -->
+        <section>
+          <h2 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-4 pb-2 border-b border-[var(--theme-border)]">
+            CLI Commands
+          </h2>
+          <ul class="grid md:grid-cols-2 gap-3">
+            {siteMap.commands.map((page) => (
+              <li>
+                <a href={page.href} class="group flex items-start gap-3">
+                  <span class="text-orange-500 mt-1">→</span>
+                  <div>
+                    <span class="text-[var(--theme-text-primary)] group-hover:text-orange-400 transition-colors font-medium font-mono">
+                      akit {page.label}
+                    </span>
+                    <p class="text-sm text-[var(--theme-text-tertiary)]">{page.description}</p>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <!-- Scenarios -->
+        <section>
+          <h2 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-4 pb-2 border-b border-[var(--theme-border)]">
+            Scenarios
+          </h2>
+          <ul class="space-y-3">
+            {siteMap.scenarios.map((page) => (
+              <li>
+                <a href={page.href} class="group flex items-start gap-3">
+                  <span class="text-orange-500 mt-1">→</span>
+                  <div>
+                    <span class="text-[var(--theme-text-primary)] group-hover:text-orange-400 transition-colors font-medium">
+                      {page.label}
+                    </span>
+                    <p class="text-sm text-[var(--theme-text-tertiary)]">{page.description}</p>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <!-- Providers -->
+        <section>
+          <h2 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-4 pb-2 border-b border-[var(--theme-border)]">
+            LLM Providers
+          </h2>
+          <ul class="grid md:grid-cols-2 gap-3">
+            {siteMap.providers.map((page) => (
+              <li>
+                <a href={page.href} class="group flex items-start gap-3">
+                  <span class="text-orange-500 mt-1">→</span>
+                  <div>
+                    <span class="text-[var(--theme-text-primary)] group-hover:text-orange-400 transition-colors font-medium">
+                      {page.label}
+                    </span>
+                    <p class="text-sm text-[var(--theme-text-tertiary)]">{page.description}</p>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <!-- Storage -->
+        <section>
+          <h2 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-4 pb-2 border-b border-[var(--theme-border)]">
+            Storage Backends
+          </h2>
+          <ul class="space-y-3">
+            {siteMap.storage.map((page) => (
+              <li>
+                <a href={page.href} class="group flex items-start gap-3">
+                  <span class="text-orange-500 mt-1">→</span>
+                  <div>
+                    <span class="text-[var(--theme-text-primary)] group-hover:text-orange-400 transition-colors font-medium">
+                      {page.label}
+                    </span>
+                    <p class="text-sm text-[var(--theme-text-tertiary)]">{page.description}</p>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <!-- API -->
+        <section>
+          <h2 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-4 pb-2 border-b border-[var(--theme-border)]">
+            API
+          </h2>
+          <ul class="space-y-3">
+            {siteMap.api.map((page) => (
+              <li>
+                <a href={page.href} class="group flex items-start gap-3">
+                  <span class="text-orange-500 mt-1">→</span>
+                  <div>
+                    <span class="text-[var(--theme-text-primary)] group-hover:text-orange-400 transition-colors font-medium">
+                      {page.label}
+                    </span>
+                    <p class="text-sm text-[var(--theme-text-tertiary)]">{page.description}</p>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+
+      <!-- XML Sitemap Link -->
+      <div class="mt-16 pt-8 border-t border-[var(--theme-border)]">
+        <p class="text-sm text-[var(--theme-text-muted)]">
+          Looking for the machine-readable sitemap? View the
+          <a href="/sitemap-index.xml" class="text-orange-400 hover:text-orange-300 underline">XML Sitemap</a>.
+        </p>
+      </div>
+
+      <div class="mt-8">
+        <a href="/" class="text-[var(--theme-text-tertiary)] hover:text-[var(--theme-text-secondary)] text-sm">
+          ← Back to home
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>
