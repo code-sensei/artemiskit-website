@@ -3,118 +3,142 @@ const problems = [
   {
     title: 'Inconsistent Outputs',
     description: 'Same prompt, different answer. Users notice before you do.',
-    icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <polyline points="16 3 21 3 21 8" />
-      <line x1="4" y1="20" x2="21" y2="3" />
-      <polyline points="21 16 21 21 16 21" />
-      <line x1="15" y1="15" x2="21" y2="21" />
-      <line x1="4" y1="4" x2="9" y2="9" />
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
     </svg>`,
   },
   {
     title: 'Security Blind Spots',
     description: 'Prompt injection attacks ship to production undetected.',
-    icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      <line x1="12" y1="8" x2="12" y2="12" />
-      <line x1="12" y1="16" x2="12.01" y2="16" />
+      <path d="M12 8v4M12 16h.01" />
     </svg>`,
   },
   {
     title: 'Unknown Limits',
     description: 'First real load test happens when users flood your app.',
-    icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <line x1="12" y1="20" x2="12" y2="10" />
-      <line x1="18" y1="20" x2="18" y2="4" />
-      <line x1="6" y1="20" x2="6" y2="16" />
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M13 10V3L4 14h7v7l9-11h-7z" />
     </svg>`,
   },
   {
     title: 'Manual Testing',
     description: 'Copy-pasting prompts into a chat window is not a test suite.',
-    icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <circle cx="12" cy="12" r="10" />
       <polyline points="12 6 12 12 16 14" />
     </svg>`,
   },
 ];
+
+const solutions = [
+  {
+    title: 'Reproducible Results',
+    description: 'Deterministic seeding. Same test, same result. Every time.',
+  },
+  {
+    title: '50+ Attack Patterns',
+    description: 'Injection, jailbreak, extraction, hallucination, PII disclosure.',
+  },
+  {
+    title: 'Ship with Confidence',
+    description: 'Fail builds on regressions. Catch issues in CI, not production.',
+  },
+];
 ---
 
-<section class="section relative overflow-hidden">
-  <!-- Background accent -->
-  <div class="absolute inset-0 gradient-mesh opacity-50" aria-hidden="true"></div>
+<section class="relative py-24 md:py-32 overflow-hidden bg-[#09090b]">
+  <!-- Background -->
+  <div class="absolute inset-0" aria-hidden="true">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(239,68,68,0.08),transparent)]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_120%,rgba(249,115,22,0.08),transparent)]"></div>
+  </div>
 
   <div class="container relative">
-    <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-      <!-- Problems -->
+    <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+      <!-- Problems Column -->
       <div>
-        <span class="badge badge-secondary mb-4 inline-block">The Challenge</span>
-        <h2 class="text-3xl md:text-4xl font-semibold text-stone-50 mb-8 tracking-tight">
-          LLM Applications Are <span class="text-red-400">Unpredictable</span>
-        </h2>
+        <div class="mb-8">
+          <span class="inline-flex items-center gap-2 px-3 py-1 text-xs font-medium tracking-wider uppercase text-red-400 bg-red-500/10 border border-red-500/20 rounded-full mb-4">
+            <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+            The Challenge
+          </span>
+          <h2 class="text-3xl md:text-4xl font-bold text-zinc-100 tracking-tight">
+            LLM Applications Are<br />
+            <span class="text-red-400">Unpredictable</span>
+          </h2>
+        </div>
 
-        <div class="grid sm:grid-cols-2 gap-4">
+        <div class="space-y-3">
           {problems.map((problem, index) => (
             <div
-              class="p-5 rounded-xl bg-stone-900/50 border border-stone-800 hover:border-red-500/30 transition-colors group reveal"
-              style={`transition-delay: ${index * 100}ms`}
+              class="group relative p-5 rounded-xl bg-zinc-900/50 border border-zinc-800/60 hover:border-red-500/30 transition-all duration-300"
+              style={`animation-delay: ${index * 100}ms`}
             >
-              <div class="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-4 text-red-400 group-hover:bg-red-500/20 transition-colors">
-                <Fragment set:html={problem.icon} />
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center flex-shrink-0 text-red-400 group-hover:bg-red-500/15 transition-colors">
+                  <Fragment set:html={problem.icon} />
+                </div>
+                <div>
+                  <h3 class="text-base font-semibold text-zinc-200 mb-1">{problem.title}</h3>
+                  <p class="text-sm text-zinc-500 leading-relaxed">{problem.description}</p>
+                </div>
               </div>
-              <h3 class="text-lg font-medium text-stone-200 mb-2">{problem.title}</h3>
-              <p class="text-sm text-stone-500">{problem.description}</p>
             </div>
           ))}
         </div>
       </div>
 
-      <!-- Solution -->
-      <div class="lg:pl-8">
-        <span class="badge badge-primary mb-4 inline-block">The Solution</span>
-        <h2 class="text-3xl md:text-4xl font-semibold text-stone-50 mb-6 tracking-tight">
-          ArtemisKit Brings <span class="text-gradient-orange">Order to Chaos</span>
-        </h2>
+      <!-- Solution Column -->
+      <div class="lg:pt-8">
+        <div class="mb-8">
+          <span class="inline-flex items-center gap-2 px-3 py-1 text-xs font-medium tracking-wider uppercase text-orange-400 bg-orange-500/10 border border-orange-500/20 rounded-full mb-4">
+            <span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>
+            The Solution
+          </span>
+          <h2 class="text-3xl md:text-4xl font-bold text-zinc-100 tracking-tight mb-4">
+            ArtemisKit Brings<br />
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400">Order to Chaos</span>
+          </h2>
+          <p class="text-lg text-zinc-500 leading-relaxed">
+            One command to run quality checks, security scans, and stress tests. Get results in your terminal, HTML reports, or CI pipeline.
+          </p>
+        </div>
 
-        <p class="text-lg text-stone-400 mb-8">
-          One command to run quality checks, security scans, and stress tests. Get results in your terminal, HTML reports, or CI pipeline.
-        </p>
+        <div class="space-y-5">
+          {solutions.map((solution, index) => (
+            <div class="flex items-start gap-4">
+              <div class="relative flex-shrink-0">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500/20 to-amber-500/20 border border-orange-500/30 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                {index < solutions.length - 1 && (
+                  <div class="absolute top-8 left-1/2 -translate-x-1/2 w-px h-5 bg-gradient-to-b from-orange-500/30 to-transparent"></div>
+                )}
+              </div>
+              <div class="pt-0.5">
+                <h4 class="text-base font-semibold text-zinc-200 mb-1">{solution.title}</h4>
+                <p class="text-sm text-zinc-500 leading-relaxed">{solution.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
 
-        <ul class="space-y-4">
-          <li class="flex items-start gap-4">
-            <div class="w-8 h-8 rounded-full bg-primary-500/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <svg class="w-4 h-4 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            </div>
-            <div>
-              <h4 class="text-stone-100 font-medium mb-1">Reproducible Results</h4>
-              <p class="text-stone-500 text-sm">Deterministic seeding. Same test, same result. Every time.</p>
-            </div>
-          </li>
-          <li class="flex items-start gap-4">
-            <div class="w-8 h-8 rounded-full bg-primary-500/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <svg class="w-4 h-4 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            </div>
-            <div>
-              <h4 class="text-stone-100 font-medium mb-1">50+ Attack Patterns</h4>
-              <p class="text-stone-500 text-sm">Injection, jailbreak, extraction, hallucination, PII disclosure. Five categories, one command.</p>
-            </div>
-          </li>
-          <li class="flex items-start gap-4">
-            <div class="w-8 h-8 rounded-full bg-primary-500/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <svg class="w-4 h-4 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            </div>
-            <div>
-              <h4 class="text-stone-100 font-medium mb-1">Ship with Confidence</h4>
-              <p class="text-stone-500 text-sm">Fail builds on regressions. Catch issues in CI, not production.</p>
-            </div>
-          </li>
-        </ul>
+        <!-- CTA -->
+        <div class="mt-10 pt-8 border-t border-zinc-800/50">
+          <a
+            href="/docs/cli/getting-started/"
+            class="inline-flex items-center gap-2 text-sm font-medium text-orange-400 hover:text-orange-300 transition-colors"
+          >
+            <span>See how it works</span>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   </div>
