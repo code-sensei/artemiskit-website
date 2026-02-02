@@ -108,7 +108,7 @@ export default function ThemeSwitcher({
   if (!mounted) {
     return (
       <div
-        className={`w-9 h-9 rounded-lg bg-zinc-800/50 animate-pulse ${className}`}
+        className={`w-9 h-9 rounded-lg bg-[var(--theme-bg-tertiary)] animate-pulse ${className}`}
       />
     );
   }
@@ -127,8 +127,8 @@ export default function ThemeSwitcher({
         onClick={cycleTheme}
         className={`
           flex items-center justify-center w-9 h-9 rounded-lg
-          text-zinc-500 hover:text-zinc-300
-          hover:bg-zinc-800/60
+          text-[var(--theme-text-muted)] hover:text-[var(--theme-text-secondary)]
+          hover:bg-[var(--theme-bg-tertiary)]
           transition-colors duration-200
           ${className}
         `}
@@ -146,10 +146,10 @@ export default function ThemeSwitcher({
         onClick={() => setIsOpen(!isOpen)}
         className={`
           flex items-center gap-2 px-3 py-2 rounded-lg
-          text-zinc-500 hover:text-zinc-300
-          hover:bg-zinc-800/60
+          text-[var(--theme-text-muted)] hover:text-[var(--theme-text-secondary)]
+          hover:bg-[var(--theme-bg-tertiary)]
           transition-colors duration-200
-          ${isOpen ? "bg-zinc-800/60 text-zinc-300" : ""}
+          ${isOpen ? "bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-secondary)]" : ""}
         `}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
@@ -169,7 +169,7 @@ export default function ThemeSwitcher({
 
       {isOpen && (
         <div
-          className="absolute right-0 top-full mt-2 py-1.5 w-44 bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl shadow-black/20 z-50"
+          className="absolute right-0 top-full mt-2 py-1.5 w-44 bg-[var(--theme-bg-elevated)] border border-[var(--theme-border)] rounded-xl shadow-xl shadow-black/20 z-50"
           role="listbox"
           aria-label="Select theme"
         >
@@ -186,22 +186,26 @@ export default function ThemeSwitcher({
                   w-full flex items-center gap-3 px-3 py-2.5 text-sm transition-colors
                   ${
                     isSelected
-                      ? "text-orange-400 bg-orange-500/10"
-                      : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50"
+                      ? "text-[var(--theme-primary)] bg-[var(--theme-primary-muted)]"
+                      : "text-[var(--theme-text-tertiary)] hover:text-[var(--theme-text-secondary)] hover:bg-[var(--theme-bg-tertiary)]"
                   }
                 `}
                 role="option"
                 aria-selected={isSelected}
               >
                 <span
-                  className={isSelected ? "text-orange-400" : "text-zinc-500"}
+                  className={
+                    isSelected
+                      ? "text-[var(--theme-primary)]"
+                      : "text-[var(--theme-text-muted)]"
+                  }
                 >
                   {themeOption.icon}
                 </span>
                 <span className="flex-1 text-left">{themeOption.label}</span>
                 {isSelected && (
                   <svg
-                    className="w-4 h-4 text-orange-400"
+                    className="w-4 h-4 text-[var(--theme-primary)]"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"

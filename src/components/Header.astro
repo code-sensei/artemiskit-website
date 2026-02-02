@@ -1,10 +1,19 @@
 ---
-import Button from './ui/Button.astro';
+/**
+ * Header Component - Global Navigation
+ *
+ * Design:
+ * - Glass morphism on scroll
+ * - Supports all theme modes
+ * - Mobile-responsive with hamburger menu
+ */
+
 import ThemeSwitcher from './ui/ThemeSwitcher';
 
 const navLinks = [
   { label: 'Features', href: '#features' },
   { label: 'How It Works', href: '#how-it-works' },
+  { label: 'Use Cases', href: '#use-cases' },
   { label: 'Docs', href: '/docs/' },
   { label: 'GitHub', href: 'https://github.com/code-sensei/artemiskit', external: true },
 ];
@@ -14,9 +23,10 @@ const navLinks = [
   id="header"
   class="fixed top-0 left-0 right-0 z-50"
 >
-  <div class="header-inner">
+  <div class="header-inner transition-all duration-300">
     <div class="container">
-      <nav class="flex items-center justify-between h-16">
+      <nav class="flex items-center justify-between h-16 md:h-18">
+
         <!-- Logo -->
         <a href="/" class="flex items-center gap-2.5 group">
           <img
@@ -29,13 +39,14 @@ const navLinks = [
 
         <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center gap-1">
+
           <!-- Nav Links -->
           <ul class="flex items-center">
             {navLinks.map((link) => (
               <li>
                 <a
                   href={link.href}
-                  class="nav-link"
+                  class="nav-link flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium text-[var(--theme-text-tertiary)] hover:text-[var(--theme-text-primary)] rounded-lg hover:bg-[var(--theme-bg-tertiary)] transition-colors"
                   {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 >
                   <span>{link.label}</span>
@@ -49,22 +60,26 @@ const navLinks = [
             ))}
           </ul>
 
-          {/* Divider */}
-          <div class="w-px h-5 bg-zinc-800 mx-3" />
+          <!-- Divider -->
+          <div class="w-px h-5 bg-[var(--theme-border)] mx-3"></div>
 
-          {/* Actions */}
+          <!-- Actions -->
           <div class="flex items-center gap-2">
             <ThemeSwitcher client:load variant="compact" />
-            <Button href="/docs/cli/getting-started/" variant="primary" size="sm">
-              Get Started
-            </Button>
+
+            <a
+              href="/docs/cli/getting-started/"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-b from-orange-500 to-orange-600 text-white text-sm font-semibold shadow-sm shadow-orange-500/20 hover:from-orange-400 hover:to-orange-500 hover:shadow-orange-500/30 transition-all duration-200"
+            >
+              <span>Get Started</span>
+            </a>
           </div>
         </div>
 
         <!-- Mobile Menu Button -->
         <button
           id="mobile-menu-button"
-          class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50 transition-colors"
+          class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-[var(--theme-text-tertiary)] hover:text-[var(--theme-text-primary)] hover:bg-[var(--theme-bg-tertiary)] transition-colors"
           aria-label="Toggle menu"
           aria-expanded="false"
         >
@@ -85,7 +100,7 @@ const navLinks = [
   <!-- Mobile Menu -->
   <div
     id="mobile-menu"
-    class="mobile-menu md:hidden hidden"
+    class="mobile-menu md:hidden hidden absolute top-full left-0 right-0 bg-[var(--theme-bg-overlay)] backdrop-blur-xl border-b border-[var(--theme-border)]"
   >
     <div class="container py-4">
       <ul class="space-y-1">
@@ -93,7 +108,7 @@ const navLinks = [
           <li>
             <a
               href={link.href}
-              class="mobile-nav-link"
+              class="flex items-center justify-between px-4 py-3 text-base text-[var(--theme-text-secondary)] hover:text-[var(--theme-text-primary)] hover:bg-[var(--theme-bg-tertiary)] rounded-xl transition-colors"
               {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             >
               <span>{link.label}</span>
@@ -107,15 +122,21 @@ const navLinks = [
         ))}
       </ul>
 
-      <div class="mt-4 pt-4 border-t border-zinc-800/50">
-        <div class="flex items-center justify-between mb-4">
-          <span class="text-sm text-zinc-500">Appearance</span>
+      <div class="mt-4 pt-4 border-t border-[var(--theme-border)]">
+        <div class="flex items-center justify-between mb-4 px-4">
+          <span class="text-sm text-[var(--theme-text-muted)]">Appearance</span>
           <ThemeSwitcher client:load />
         </div>
 
-        <Button href="/docs/cli/getting-started/" variant="primary" class="w-full justify-center">
-          Get Started
-        </Button>
+        <a
+          href="/docs/cli/getting-started/"
+          class="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-gradient-to-b from-orange-500 to-orange-600 text-white font-semibold"
+        >
+          <span>Get Started</span>
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
       </div>
     </div>
   </div>
@@ -124,58 +145,19 @@ const navLinks = [
 <style>
   .header-inner {
     background: transparent;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   #header.scrolled .header-inner {
-    background: rgba(9, 9, 11, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(39, 39, 42, 0.5);
+    background: var(--theme-header-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--theme-border-subtle);
   }
 
-  .nav-link {
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-    padding: 0.5rem 0.875rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: rgb(161, 161, 170);
-    border-radius: 0.5rem;
-    transition: color 0.2s, background-color 0.2s;
-  }
-
-  .nav-link:hover {
-    color: rgb(244, 244, 245);
-    background-color: rgba(39, 39, 42, 0.5);
-  }
-
-  .mobile-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: rgba(9, 9, 11, 0.98);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(39, 39, 42, 0.5);
-  }
-
-  .mobile-nav-link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.875rem 1rem;
-    font-size: 0.9375rem;
-    color: rgb(212, 212, 216);
-    border-radius: 0.75rem;
-    transition: all 0.2s;
-  }
-
-  .mobile-nav-link:hover {
-    color: rgb(244, 244, 245);
-    background-color: rgba(39, 39, 42, 0.4);
+  @media (prefers-reduced-motion: reduce) {
+    .header-inner {
+      transition: none;
+    }
   }
 </style>
 

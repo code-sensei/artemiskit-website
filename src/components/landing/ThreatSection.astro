@@ -1,0 +1,205 @@
+---
+/**
+ * ThreatSection - Fear-driven problem awareness
+ *
+ * From Content Strategy - Pillar 1: Problem Awareness (40% of content)
+ * "Establish the problem, create urgency, build relatability"
+ *
+ * From USP Analysis - Primary Message (Security Wedge):
+ * Hook: "Your LLM is one prompt away from disaster"
+ * Problem: Prompt injection is OWASP #1, but most teams don't test for it
+ *
+ * Tone: "Slightly ominous, empathetic, thought-provoking"
+ */
+
+const threatScenarios = [
+  {
+    title: 'Your AI passed every test.',
+    subtitle: 'Then it leaked customer data.',
+    description: 'A cleverly crafted prompt bypassed your safety filters. Sensitive information was in the response before anyone noticed.',
+    severity: 'CRITICAL',
+    category: 'Prompt Injection',
+    stat: '#1',
+    statLabel: 'OWASP LLM Risk',
+    color: 'red',
+  },
+  {
+    title: 'Same prompt. Different answer.',
+    subtitle: 'Users noticed before you did.',
+    description: 'Non-deterministic outputs eroded trust. Your chatbot contradicted itself, and support tickets flooded in.',
+    severity: 'HIGH',
+    category: 'Output Inconsistency',
+    stat: '73%',
+    statLabel: 'AI projects fail pre-production',
+    color: 'amber',
+  },
+  {
+    title: 'Staging worked perfectly.',
+    subtitle: 'Production crashed under load.',
+    description: 'Your first real stress test happened when users flooded your app. Latency spiked. The API hit rate limits. Revenue was lost.',
+    severity: 'HIGH',
+    category: 'Performance Unknown',
+    stat: '10x',
+    statLabel: 'production load vs staging',
+    color: 'orange',
+  },
+];
+
+const antiPatterns = [
+  {
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>`,
+    title: 'Manual Testing',
+    description: 'Copy-pasting prompts into a chat window is not a test suite.',
+  },
+  {
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <path d="M12 8v4M12 16h.01" />
+    </svg>`,
+    title: 'Security Afterthought',
+    description: 'Traditional SAST/DAST tools don\'t cover LLM attack surfaces.',
+  },
+  {
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="17 8 12 3 7 8" />
+      <line x1="12" y1="3" x2="12" y2="15" />
+    </svg>`,
+    title: 'Ship and Pray',
+    description: 'Deploying without quality gates and hoping nothing breaks.',
+  },
+  {
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="14" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+    </svg>`,
+    title: 'Tool Fragmentation',
+    description: 'Using 3+ tools for testing, security, and performance.',
+  },
+];
+---
+
+<section class="relative py-24 md:py-32 overflow-hidden">
+  <!-- Background -->
+  <div class="absolute inset-0 bg-[var(--theme-bg-primary)]">
+    <!-- Threat gradient -->
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(239,68,68,0.06),transparent_50%)]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_80%_80%,rgba(249,115,22,0.04),transparent_40%)]"></div>
+  </div>
+
+  <div class="container relative">
+
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20 mb-6">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+        </span>
+        <span class="text-sm font-semibold text-red-400">The Reality Check</span>
+      </div>
+
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--theme-text-primary)] tracking-tight leading-tight">
+        Your LLM Is
+        <span class="text-gradient-danger">One Prompt Away</span>
+        <br />From Disaster
+      </h2>
+
+      <p class="mt-6 text-lg text-[var(--theme-text-secondary)] max-w-2xl mx-auto">
+        Prompt injection is OWASP's #1 LLM security risk. Most teams don't test for it.
+        These scenarios aren't hypothetical—they're happening.
+      </p>
+    </div>
+
+    <!-- Threat Scenarios -->
+    <div class="grid lg:grid-cols-3 gap-6 mb-20">
+      {threatScenarios.map((scenario, index) => (
+        <div
+          class="group relative p-6 rounded-2xl bg-[var(--theme-bg-card)] border border-[var(--theme-border)] hover:border-red-500/30 transition-all duration-300"
+          style={`animation-delay: ${index * 100}ms`}
+        >
+          <!-- Severity Badge -->
+          <div class={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-4
+            ${scenario.color === 'red' ? 'bg-red-500/15 text-red-400 border border-red-500/30' : ''}
+            ${scenario.color === 'amber' ? 'bg-amber-500/15 text-amber-400 border border-amber-500/30' : ''}
+            ${scenario.color === 'orange' ? 'bg-orange-500/15 text-orange-400 border border-orange-500/30' : ''}
+          `}>
+            <span class={`w-1.5 h-1.5 rounded-full
+              ${scenario.color === 'red' ? 'bg-red-500' : ''}
+              ${scenario.color === 'amber' ? 'bg-amber-500' : ''}
+              ${scenario.color === 'orange' ? 'bg-orange-500' : ''}
+            `}></span>
+            {scenario.severity} • {scenario.category}
+          </div>
+
+          <!-- Content -->
+          <h3 class="text-xl font-bold text-[var(--theme-text-primary)] mb-1">{scenario.title}</h3>
+          <p class={`text-base font-medium mb-4
+            ${scenario.color === 'red' ? 'text-red-400/90' : ''}
+            ${scenario.color === 'amber' ? 'text-amber-400/90' : ''}
+            ${scenario.color === 'orange' ? 'text-orange-400/90' : ''}
+          `}>{scenario.subtitle}</p>
+          <p class="text-sm text-[var(--theme-text-tertiary)] leading-relaxed">{scenario.description}</p>
+
+          <!-- Stat -->
+          <div class="mt-6 pt-4 border-t border-[var(--theme-border-subtle)]">
+            <div class="flex items-baseline gap-2">
+              <span class={`text-3xl font-bold font-mono
+                ${scenario.color === 'red' ? 'text-red-400' : ''}
+                ${scenario.color === 'amber' ? 'text-amber-400' : ''}
+                ${scenario.color === 'orange' ? 'text-orange-400' : ''}
+              `}>{scenario.stat}</span>
+              <span class="text-xs text-[var(--theme-text-muted)] uppercase tracking-wider">{scenario.statLabel}</span>
+            </div>
+          </div>
+
+          <!-- Hover glow -->
+          <div class={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-xl
+            ${scenario.color === 'red' ? 'bg-red-500/5' : ''}
+            ${scenario.color === 'amber' ? 'bg-amber-500/5' : ''}
+            ${scenario.color === 'orange' ? 'bg-orange-500/5' : ''}
+          `}></div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Anti-patterns Grid -->
+    <div class="max-w-4xl mx-auto">
+      <h3 class="text-center text-sm font-semibold text-[var(--theme-text-muted)] uppercase tracking-wider mb-8">
+        Sound familiar?
+      </h3>
+
+      <div class="grid sm:grid-cols-2 gap-4">
+        {antiPatterns.map((pattern, index) => (
+          <div
+            class="flex items-start gap-4 p-5 rounded-xl bg-[var(--theme-bg-secondary)] border border-[var(--theme-border)] hover:border-[var(--theme-border-hover)] transition-colors"
+            style={`animation-delay: ${(index + 3) * 100}ms`}
+          >
+            <div class="w-10 h-10 rounded-lg bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border)] flex items-center justify-center flex-shrink-0 text-[var(--theme-text-muted)]">
+              <Fragment set:html={pattern.icon} />
+            </div>
+            <div>
+              <h4 class="text-base font-semibold text-[var(--theme-text-primary)] mb-1">{pattern.title}</h4>
+              <p class="text-sm text-[var(--theme-text-tertiary)]">{pattern.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Transition to solution -->
+    <div class="text-center mt-16">
+      <div class="inline-flex items-center gap-3 px-5 py-3 rounded-full bg-[var(--theme-bg-secondary)] border border-[var(--theme-border)]">
+        <span class="text-sm text-[var(--theme-text-tertiary)]">There's a better way</span>
+        <svg class="w-4 h-4 text-orange-400 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5v14M19 12l-7 7-7-7"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>

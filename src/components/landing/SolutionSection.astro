@@ -1,0 +1,254 @@
+---
+/**
+ * SolutionSection - ArtemisKit's answer to the threats
+ *
+ * From USP Analysis - Recommended Positioning:
+ * "Most teams use 3+ tools to test, secure, and benchmark their LLMs.
+ *  ArtemisKit is the open-source standard that does all three."
+ *
+ * From Content Strategy - Brand Personality:
+ * Confident, Direct, Technical, Honest, Urgent
+ *
+ * Capability order (Security-first per USP):
+ * 1. Security Red-Teaming (Lead Wedge)
+ * 2. Quality Evaluation
+ * 3. Performance Stress Testing
+ */
+
+const capabilities = [
+  {
+    id: 'security',
+    badge: 'Lead Capability',
+    title: 'Security Red-Teaming',
+    tagline: 'Break it before attackers do.',
+    description: 'Systematically test for prompt injection, jailbreaks, data extraction, and more. Get CVSS-like severity scores and audit-ready reports.',
+    color: 'red',
+    command: 'artemiskit redteam',
+    features: [
+      '6 mutation types',
+      'Prompt injection detection',
+      'Jailbreak resistance testing',
+      'Data extraction prevention',
+      'Custom attack definitions',
+      'CVSS-like severity scoring',
+    ],
+    proof: {
+      stat: '6',
+      label: 'Mutation types',
+    },
+  },
+  {
+    id: 'quality',
+    badge: 'Core Capability',
+    title: 'Quality Evaluation',
+    tagline: 'Catch regressions before they ship.',
+    description: 'Evaluate LLM outputs with semantic similarity, LLM-as-judge, JSON schema validation, regex matching, and more. Reproducible tests, every time.',
+    color: 'blue',
+    command: 'artemiskit run',
+    features: [
+      '12 evaluator types',
+      'Semantic similarity scoring',
+      'LLM-as-judge evaluation',
+      'JSON schema validation',
+      'Multi-turn conversation testing',
+      'CI/CD integration ready',
+    ],
+    proof: {
+      stat: '12',
+      label: 'Evaluator types',
+    },
+  },
+  {
+    id: 'performance',
+    badge: 'Core Capability',
+    title: 'Stress Testing',
+    tagline: 'Know your limits before users find them.',
+    description: 'Measure p50/p95/p99 latency, throughput, and token costs under load. Discover rate limits and performance cliffs in staging, not production.',
+    color: 'amber',
+    command: 'artemiskit stress',
+    features: [
+      'Configurable concurrency',
+      'p50/p95/p99 latency metrics',
+      'Throughput analysis',
+      'Token cost calculation',
+      'Rate limit detection',
+      'Capacity planning data',
+    ],
+    proof: {
+      stat: 'p99',
+      label: 'Latency percentiles',
+    },
+  },
+];
+---
+
+<section id="features" class="relative py-24 md:py-32 overflow-hidden">
+  <!-- Background -->
+  <div class="absolute inset-0 bg-[var(--theme-bg-secondary)]">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_100%,rgba(249,115,22,0.06),transparent_50%)]"></div>
+    <!-- Grid pattern -->
+    <div class="absolute inset-0 bg-[linear-gradient(var(--theme-border-subtle)_1px,transparent_1px),linear-gradient(90deg,var(--theme-border-subtle)_1px,transparent_1px)] bg-[size:64px_64px] opacity-50"></div>
+  </div>
+
+  <div class="container relative">
+
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/20 mb-6">
+        <svg class="w-4 h-4 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <span class="text-sm font-semibold text-orange-400">The Solution</span>
+      </div>
+
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--theme-text-primary)] tracking-tight leading-tight">
+        One CLI.
+        <span class="text-gradient-orange">Three Superpowers.</span>
+      </h2>
+
+      <p class="mt-6 text-lg text-[var(--theme-text-secondary)] max-w-2xl mx-auto">
+        ArtemisKit is the open-source standard for LLM reliability. Security red-teaming, quality evaluation, and stress testing—unified in a single CLI.
+      </p>
+    </div>
+
+    <!-- Capabilities -->
+    <div class="space-y-8">
+      {capabilities.map((cap, index) => (
+        <div
+          class={`relative rounded-3xl border overflow-hidden transition-all duration-300
+            ${cap.color === 'red' ? 'border-red-500/20 hover:border-red-500/40' : ''}
+            ${cap.color === 'blue' ? 'border-blue-500/20 hover:border-blue-500/40' : ''}
+            ${cap.color === 'amber' ? 'border-amber-500/20 hover:border-amber-500/40' : ''}
+            bg-[var(--theme-bg-card)]
+          `}
+        >
+          <!-- Gradient accent -->
+          <div class={`absolute top-0 left-0 right-0 h-px
+            ${cap.color === 'red' ? 'bg-gradient-to-r from-transparent via-red-500/50 to-transparent' : ''}
+            ${cap.color === 'blue' ? 'bg-gradient-to-r from-transparent via-blue-500/50 to-transparent' : ''}
+            ${cap.color === 'amber' ? 'bg-gradient-to-r from-transparent via-amber-500/50 to-transparent' : ''}
+          `}></div>
+
+          <div class="grid lg:grid-cols-2 gap-8 p-8 md:p-10">
+            <!-- Left: Content -->
+            <div>
+              <!-- Badge -->
+              <div class={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-5
+                ${cap.color === 'red' ? 'bg-red-500/15 text-red-400 border border-red-500/25' : ''}
+                ${cap.color === 'blue' ? 'bg-blue-500/15 text-blue-400 border border-blue-500/25' : ''}
+                ${cap.color === 'amber' ? 'bg-amber-500/15 text-amber-400 border border-amber-500/25' : ''}
+              `}>
+                {cap.id === 'security' && (
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                )}
+                {cap.id === 'quality' && (
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                  </svg>
+                )}
+                {cap.id === 'performance' && (
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                  </svg>
+                )}
+                {cap.badge}
+              </div>
+
+              <h3 class="text-2xl md:text-3xl font-bold text-[var(--theme-text-primary)] mb-2">
+                {cap.title}
+              </h3>
+              <p class={`text-lg font-medium mb-4
+                ${cap.color === 'red' ? 'text-red-400' : ''}
+                ${cap.color === 'blue' ? 'text-blue-400' : ''}
+                ${cap.color === 'amber' ? 'text-amber-400' : ''}
+              `}>{cap.tagline}</p>
+              <p class="text-[var(--theme-text-secondary)] leading-relaxed mb-6">
+                {cap.description}
+              </p>
+
+              <!-- Features list -->
+              <div class="grid grid-cols-2 gap-3">
+                {cap.features.map((feature) => (
+                  <div class="flex items-center gap-2 text-sm text-[var(--theme-text-tertiary)]">
+                    <svg class={`w-4 h-4 flex-shrink-0
+                      ${cap.color === 'red' ? 'text-red-400/70' : ''}
+                      ${cap.color === 'blue' ? 'text-blue-400/70' : ''}
+                      ${cap.color === 'amber' ? 'text-amber-400/70' : ''}
+                    `} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    <span>{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <!-- Right: Command + Proof -->
+            <div class="flex flex-col justify-center">
+              <!-- Command block -->
+              <div class="rounded-xl overflow-hidden border border-[var(--theme-border)] bg-[var(--theme-bg-primary)]">
+                <div class="flex items-center gap-2 px-4 py-3 bg-[var(--theme-bg-tertiary)] border-b border-[var(--theme-border)]">
+                  <div class="flex items-center gap-1.5">
+                    <div class="w-2.5 h-2.5 rounded-full bg-[var(--theme-text-muted)]/30"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-[var(--theme-text-muted)]/30"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-[var(--theme-text-muted)]/30"></div>
+                  </div>
+                  <span class="flex-1 text-center text-xs font-mono text-[var(--theme-text-muted)]">terminal</span>
+                </div>
+                <div class="p-5 font-mono text-sm">
+                  <span class="text-orange-400">$ </span>
+                  <span class="text-[var(--theme-text-primary)]">{cap.command}</span>
+                  <span class="inline-block w-2 h-4 bg-orange-400 ml-1 animate-blink"></span>
+                </div>
+              </div>
+
+              <!-- Proof stat -->
+              <div class="mt-6 flex items-center gap-4 p-4 rounded-xl bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border)]">
+                <div class={`text-4xl font-bold font-mono
+                  ${cap.color === 'red' ? 'text-red-400' : ''}
+                  ${cap.color === 'blue' ? 'text-blue-400' : ''}
+                  ${cap.color === 'amber' ? 'text-amber-400' : ''}
+                `}>{cap.proof.stat}</div>
+                <div class="text-sm text-[var(--theme-text-tertiary)]">{cap.proof.label}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Unified Value Prop -->
+    <div class="mt-16 text-center">
+      <div class="inline-flex flex-col sm:flex-row items-center gap-4 sm:gap-6 p-6 rounded-2xl bg-[var(--theme-bg-card)] border border-[var(--theme-border)]">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-orange-500/15 border border-orange-500/30 flex items-center justify-center">
+            <svg class="w-5 h-5 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <span class="text-sm font-medium text-[var(--theme-text-secondary)]">+</span>
+          <div class="w-10 h-10 rounded-full bg-blue-500/15 border border-blue-500/30 flex items-center justify-center">
+            <svg class="w-5 h-5 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+          </div>
+          <span class="text-sm font-medium text-[var(--theme-text-secondary)]">+</span>
+          <div class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/30 flex items-center justify-center">
+            <svg class="w-5 h-5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="w-px h-8 bg-[var(--theme-border)] hidden sm:block"></div>
+
+        <div class="text-center sm:text-left">
+          <p class="text-lg font-semibold text-[var(--theme-text-primary)]">Stop using 3 tools. Use one.</p>
+          <p class="text-sm text-[var(--theme-text-tertiary)]">Open source • Apache 2.0 • Self-hosted</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -31,7 +31,7 @@ const useCases: UseCase[] = [
     title: "Red Team Your LLM",
     hook: "Break it before attackers do",
     pain: "Traditional security tools don't cover LLM attack surfaces. Prompt injection is OWASP #1, but most teams don't test for it.",
-    command: "artemiskit redteam config.yaml",
+    command: "akit redteam scenario.yaml",
     features: [
       "Prompt injection detection (direct & indirect)",
       "Jailbreak resistance testing",
@@ -47,9 +47,9 @@ const useCases: UseCase[] = [
     title: "Quality Gates That Scale",
     hook: "Stop spot-checking. Start proving.",
     pain: "Manual testing doesn't scale beyond a few dozen examples. LLM outputs are non-deterministic—traditional testing doesn't work.",
-    command: "artemiskit run scenarios/",
+    command: "akit run scenarios/",
     features: [
-      "10+ evaluator types (semantic, LLM-judge, schema)",
+      "12 evaluator types (semantic, LLM-judge, schema)",
       "Automated regression detection",
       "CI/CD integration with pass/fail gates",
       "Reproducible test scenarios",
@@ -63,7 +63,7 @@ const useCases: UseCase[] = [
     title: "Reproducible Evaluation",
     hook: "Rigorous methodology for rigorous research",
     pain: "Evaluation methodology varies wildly across papers. Peer reviewers question evaluation rigor, and reproducibility is a constant challenge.",
-    command: "artemiskit run --seed 42 benchmark.yaml",
+    command: "akit run benchmark.yaml --seed 42",
     features: [
       "Standardized benchmarking framework",
       "Reproducible evaluation pipelines",
@@ -79,7 +79,7 @@ const useCases: UseCase[] = [
     title: "Know Your Limits",
     hook: "Discover latency limits in staging, not production",
     pain: "LLM performance is unpredictable under load. Staging doesn't reflect production patterns, and latency spikes are discovered by users.",
-    command: "artemiskit stress --rps 100 --duration 60s",
+    command: "akit stress scenario.yaml -c 50 -d 60",
     features: [
       "p50/p95/p99 latency metrics",
       "Throughput and capacity analysis",
@@ -95,7 +95,7 @@ const useCases: UseCase[] = [
     title: "Audit-Ready AI Validation",
     hook: "Documentation that satisfies regulators",
     pain: 'EU AI Act (Aug 2026) requires documented testing. Auditors ask "how do you validate AI outputs?" and there\'s no good answer.',
-    command: "artemiskit report --format compliance",
+    command: "akit report <run-id> -f html -o ./reports",
     features: [
       "EU AI Act compliance documentation",
       "Automated audit trails",

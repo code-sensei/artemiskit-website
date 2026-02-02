@@ -55,7 +55,7 @@ export default function HeroGitHubStats() {
         href="https://github.com/code-sensei/artemiskit"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-2 text-zinc-500 hover:text-orange-400 transition-colors group"
+        className="flex items-center gap-2 text-[var(--theme-text-muted)] hover:text-[var(--theme-primary)] transition-colors group"
       >
         <svg
           className="w-4 h-4"
@@ -67,9 +67,9 @@ export default function HeroGitHubStats() {
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
         </svg>
         {loading ? (
-          <span className="inline-block h-5 w-8 rounded bg-zinc-800 animate-pulse" />
+          <span className="inline-block h-5 w-8 rounded bg-[var(--theme-bg-tertiary)] animate-pulse" />
         ) : (
-          <span className="font-semibold text-zinc-300 group-hover:text-orange-400 transition-colors">
+          <span className="font-semibold text-[var(--theme-text-secondary)] group-hover:text-[var(--theme-primary)] transition-colors">
             {formatNumber(displayStats.stars)}
           </span>
         )}
@@ -80,7 +80,7 @@ export default function HeroGitHubStats() {
         href="https://github.com/code-sensei/artemiskit/fork"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-2 text-zinc-500 hover:text-orange-400 transition-colors group"
+        className="flex items-center gap-2 text-[var(--theme-text-muted)] hover:text-[var(--theme-primary)] transition-colors group"
       >
         <svg
           className="w-4 h-4"
@@ -96,16 +96,16 @@ export default function HeroGitHubStats() {
           <path d="M12 12v3" />
         </svg>
         {loading ? (
-          <span className="inline-block h-5 w-8 rounded bg-zinc-800 animate-pulse" />
+          <span className="inline-block h-5 w-8 rounded bg-[var(--theme-bg-tertiary)] animate-pulse" />
         ) : (
-          <span className="font-semibold text-zinc-300 group-hover:text-orange-400 transition-colors">
+          <span className="font-semibold text-[var(--theme-text-secondary)] group-hover:text-[var(--theme-primary)] transition-colors">
             {formatNumber(displayStats.forks)}
           </span>
         )}
         <span className="text-sm">forks</span>
       </a>
 
-      <div className="flex items-center gap-2 text-zinc-600">
+      <div className="flex items-center gap-2 text-[var(--theme-text-muted)]">
         <svg
           className="w-4 h-4"
           viewBox="0 0 24 24"

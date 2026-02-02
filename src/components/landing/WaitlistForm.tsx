@@ -89,31 +89,33 @@ export default function WaitlistForm({
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
-        <h3 className="text-lg font-semibold text-zinc-100 mb-1">
+        <h3 className="text-lg font-semibold text-[var(--theme-text-primary)] mb-1">
           {successTitle}
         </h3>
-        <p className="text-sm text-zinc-500">{successMessage}</p>
+        <p className="text-sm text-[var(--theme-text-tertiary)]">
+          {successMessage}
+        </p>
       </div>
     );
   }
 
   const inputClasses = `
-    w-full px-4 py-3 rounded-lg
-    bg-zinc-900 border border-zinc-800
-    text-zinc-100 text-sm
-    placeholder:text-zinc-600
-    focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/20
+    w-full px-4 py-3 rounded-xl
+    bg-[var(--theme-bg-secondary)] border border-[var(--theme-border)]
+    text-[var(--theme-text-primary)] text-sm
+    placeholder:text-[var(--theme-text-muted)]
+    focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[var(--theme-primary-muted)]
     disabled:opacity-50 disabled:cursor-not-allowed
-    transition-colors duration-200
+    transition-all duration-200
   `;
 
   const selectClasses = `
-    w-full px-4 py-3 rounded-lg
-    bg-zinc-900 border border-zinc-800
-    text-zinc-400 text-sm
-    focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/20
+    w-full px-4 py-3 rounded-xl
+    bg-[var(--theme-bg-secondary)] border border-[var(--theme-border)]
+    text-[var(--theme-text-tertiary)] text-sm
+    focus:outline-none focus:border-[var(--theme-primary)] focus:ring-2 focus:ring-[var(--theme-primary-muted)]
     disabled:opacity-50 disabled:cursor-not-allowed
-    transition-colors duration-200
+    transition-all duration-200
     appearance-none cursor-pointer
   `;
 
@@ -146,7 +148,7 @@ export default function WaitlistForm({
             ))}
           </select>
           <svg
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 pointer-events-none"
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--theme-text-muted)] pointer-events-none"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -170,7 +172,7 @@ export default function WaitlistForm({
             ))}
           </select>
           <svg
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 pointer-events-none"
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--theme-text-muted)] pointer-events-none"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -203,12 +205,12 @@ export default function WaitlistForm({
         disabled={formState === "loading" || !email}
         className="
           w-full flex items-center justify-center gap-2
-          px-5 py-3 rounded-lg
+          px-5 py-3.5 rounded-xl
           bg-gradient-to-b from-orange-500 to-orange-600
-          text-white text-sm font-medium
-          shadow-sm shadow-orange-500/20
+          text-white text-sm font-semibold
+          shadow-lg shadow-orange-500/25
           hover:from-orange-400 hover:to-orange-500
-          hover:shadow-md hover:shadow-orange-500/25
+          hover:shadow-orange-500/35
           disabled:opacity-50 disabled:cursor-not-allowed
           transition-all duration-200
         "
@@ -241,7 +243,7 @@ export default function WaitlistForm({
         )}
       </button>
 
-      <p className="text-xs text-zinc-600 text-center">
+      <p className="text-xs text-[var(--theme-text-muted)] text-center">
         {type === "cloud"
           ? "We'll only email you about ArtemisKit Cloud launch."
           : "We'll notify you when the programmatic API is available."}

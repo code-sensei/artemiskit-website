@@ -1,20 +1,33 @@
 ---
-import SectionHeading from '../ui/SectionHeading.astro';
+/**
+ * HowItWorks Section - Quick Start Guide
+ *
+ * From Content Strategy:
+ * - CLI-first design, YAML configuration
+ * - Zero-config defaults, extensive customization
+ *
+ * Aligned with docs:
+ * - npm install -g @artemiskit/cli
+ * - YAML scenario format
+ * - Report generation
+ */
 
 const steps = [
   {
     number: '01',
     title: 'Install',
-    description: 'Install globally with npm, yarn, pnpm, or bun',
-    code: `npm install -g @artemiskit/cli
+    description: 'Install globally with npm, yarn, pnpm, or bun. Zero configuration required.',
+    code: `# Install globally
+npm install -g @artemiskit/cli
 
-# or run directly
+# Or run directly with npx
 npx @artemiskit/cli --help`,
+    language: 'bash',
   },
   {
     number: '02',
     title: 'Define',
-    description: 'Define your test scenarios in simple YAML',
+    description: 'Define test scenarios in simple YAML. Multi-turn conversations, custom evaluators, and more.',
     code: `# scenarios/my-test.yaml
 name: chatbot-test
 config:
@@ -29,108 +42,130 @@ scenarios:
       - role: assistant
         expect:
           contains: ["4"]`,
+    language: 'yaml',
   },
   {
     number: '03',
     title: 'Run',
-    description: 'Run tests and get detailed reports',
+    description: 'Execute tests and get detailed reports. HTML dashboards, JSON exports, CI/CD ready.',
     code: `$ artemiskit run scenarios/my-test.yaml
 
 Running chatbot-test...
+
 ✓ Scenario: basic-qa ........... PASS
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Results: 1/1 passed (100%)
-→ artemis-output/report.html`,
+Report: ./artemis-output/report.html`,
+    language: 'bash',
   },
 ];
 ---
 
-<section id="how-it-works" class="relative py-24 md:py-32 bg-zinc-950/50">
+<section id="how-it-works" class="relative py-24 md:py-32 overflow-hidden">
   <!-- Background -->
-  <div class="absolute inset-0" aria-hidden="true">
-    <div class="absolute inset-0 bg-[linear-gradient(to_right,#18181b_1px,transparent_1px),linear-gradient(to_bottom,#18181b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-30"></div>
+  <div class="absolute inset-0 bg-[var(--theme-bg-primary)]">
+    <!-- Subtle grid -->
+    <div class="absolute inset-0 bg-[linear-gradient(var(--theme-border-subtle)_1px,transparent_1px),linear-gradient(90deg,var(--theme-border-subtle)_1px,transparent_1px)] bg-[size:64px_64px] opacity-30"></div>
   </div>
 
   <div class="container relative">
-    <SectionHeading
-      badge="Quick Start"
-      title="Get Started in 3 Steps"
-      subtitle="From installation to your first test results in under 5 minutes."
-    />
 
-    <div class="relative max-w-5xl mx-auto">
-      <!-- Connection Line (Desktop) -->
-      <div class="hidden lg:block absolute top-[3.25rem] left-[7rem] right-[7rem] h-px" aria-hidden="true">
-        <div class="w-full h-full bg-gradient-to-r from-orange-500/40 via-orange-500/20 to-orange-500/40"></div>
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border)] mb-6">
+        <svg class="w-4 h-4 text-[var(--theme-primary)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="4 17 10 11 4 5"/>
+          <line x1="12" y1="19" x2="20" y2="19"/>
+        </svg>
+        <span class="text-sm font-semibold text-[var(--theme-text-secondary)]">Quick Start</span>
       </div>
 
-      <div class="grid lg:grid-cols-3 gap-10 lg:gap-8">
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--theme-text-primary)] tracking-tight">
+        Get Started in
+        <span class="text-gradient-orange">3 Steps</span>
+      </h2>
+
+      <p class="mt-6 text-lg text-[var(--theme-text-secondary)] max-w-2xl mx-auto">
+        From installation to your first test results in under 5 minutes.
+        No complex setup. No configuration hell.
+      </p>
+    </div>
+
+    <!-- Steps -->
+    <div class="relative max-w-5xl mx-auto">
+
+      <!-- Connection Line (Desktop) -->
+      <div class="hidden lg:block absolute top-[4.5rem] left-[8rem] right-[8rem] h-px z-0" aria-hidden="true">
+        <div class="w-full h-full bg-gradient-to-r from-orange-500/40 via-orange-500/20 to-orange-500/40"></div>
+        <!-- Animated dots -->
+        <div class="absolute top-1/2 left-0 w-2 h-2 -translate-y-1/2 rounded-full bg-orange-500 animate-pulse"></div>
+        <div class="absolute top-1/2 left-1/2 w-2 h-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-500/60"></div>
+        <div class="absolute top-1/2 right-0 w-2 h-2 -translate-y-1/2 rounded-full bg-orange-500 animate-pulse"></div>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-8 lg:gap-6">
         {steps.map((step, index) => (
-          <div
-            class="relative opacity-0 animate-fade-in"
-            style={`animation-delay: ${index * 150}ms; animation-fill-mode: forwards;`}
-          >
-            {/* Step Header */}
+          <div class="relative">
+            <!-- Step Header -->
             <div class="flex items-center gap-4 mb-6">
-              <div class="relative">
-                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500/10 to-amber-500/10 border border-orange-500/30 flex items-center justify-center">
-                  <span class="text-xl font-bold text-orange-400">{step.number}</span>
+              <div class="relative z-10">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500/15 to-amber-500/10 border border-orange-500/30 flex items-center justify-center shadow-lg shadow-orange-500/10">
+                  <span class="text-2xl font-bold text-orange-400 font-mono">{step.number}</span>
                 </div>
-                {/* Glow effect */}
-                <div class="absolute -inset-1 bg-orange-500/10 rounded-xl blur-md -z-10"></div>
               </div>
               <div>
-                <h3 class="text-lg font-semibold text-zinc-100">{step.title}</h3>
-                <p class="text-sm text-zinc-500">{step.description}</p>
+                <h3 class="text-xl font-bold text-[var(--theme-text-primary)]">{step.title}</h3>
+                <p class="text-sm text-[var(--theme-text-tertiary)]">{step.description}</p>
               </div>
             </div>
 
-            {/* Code Block */}
-            <div class="relative rounded-xl overflow-hidden border border-zinc-800/60 bg-[#0c0c0e]">
-              {/* Header */}
-              <div class="flex items-center gap-1.5 px-4 py-3 bg-zinc-900/60 border-b border-zinc-800/50">
-                <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
-                <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
-                <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+            <!-- Code Block -->
+            <div class="rounded-2xl overflow-hidden border border-[var(--theme-border)] bg-[var(--theme-bg-secondary)] shadow-lg shadow-black/10">
+              <!-- Header -->
+              <div class="flex items-center justify-between px-4 py-3 bg-[var(--theme-bg-tertiary)] border-b border-[var(--theme-border)]">
+                <div class="flex items-center gap-1.5">
+                  <div class="w-2.5 h-2.5 rounded-full bg-red-500/60"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-amber-500/60"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-emerald-500/60"></div>
+                </div>
+                <span class="text-xs font-mono text-[var(--theme-text-muted)]">{step.language}</span>
               </div>
-              {/* Content */}
-              <div class="p-4 overflow-x-auto">
-                <pre class="text-[13px] leading-relaxed"><code class="text-zinc-400 font-mono">{step.code}</code></pre>
+
+              <!-- Code Content -->
+              <div class="p-5 overflow-x-auto">
+                <pre class="text-[13px] leading-relaxed"><code class="text-[var(--theme-text-tertiary)] font-mono whitespace-pre">{step.code}</code></pre>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* CTA */}
-      <div class="text-center mt-12">
-        <a
-          href="/docs/cli/getting-started/"
-          class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-b from-orange-500 to-orange-600 text-white font-medium shadow-sm shadow-orange-500/20 hover:from-orange-400 hover:to-orange-500 hover:shadow-md hover:shadow-orange-500/25 transition-all duration-200"
-        >
-          <span>Read the Documentation</span>
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
-        </a>
+      <!-- CTA -->
+      <div class="text-center mt-14">
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a
+            href="/docs/cli/getting-started/"
+            class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-b from-orange-500 to-orange-600 text-white font-semibold shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:from-orange-400 hover:to-orange-500 transition-all duration-200"
+          >
+            <span>Read the Documentation</span>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+
+          <a
+            href="/docs/cli/scenarios/format/"
+            class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border)] text-[var(--theme-text-secondary)] font-semibold hover:bg-[var(--theme-bg-elevated)] hover:border-[var(--theme-border-hover)] hover:text-[var(--theme-text-primary)] transition-all"
+          >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            <span>Scenario Format Guide</span>
+          </a>
+        </div>
       </div>
     </div>
   </div>
 </section>
-
-<style>
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(16px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .animate-fade-in {
-    animation: fade-in 0.6s ease-out;
-  }
-</style>

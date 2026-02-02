@@ -107,23 +107,25 @@ export default function GitHubStats() {
       {statItems.map((item) => (
         <div
           key={item.label}
-          className="flex items-center gap-3 px-5 py-3 rounded-xl bg-zinc-900/60 border border-zinc-800/60"
+          className="flex items-center gap-3 px-5 py-3 rounded-xl bg-[var(--theme-bg-card)] border border-[var(--theme-border)]"
         >
-          <span className={`text-orange-400 ${loading ? "opacity-50" : ""}`}>
+          <span
+            className={`text-[var(--theme-primary)] ${loading ? "opacity-50" : ""}`}
+          >
             {item.icon}
           </span>
           <div>
             {loading ? (
               <div className="space-y-1">
-                <div className="h-6 w-10 rounded bg-zinc-800 animate-pulse" />
-                <div className="h-3 w-14 rounded bg-zinc-800/50" />
+                <div className="h-6 w-10 rounded bg-[var(--theme-bg-tertiary)] animate-pulse" />
+                <div className="h-3 w-14 rounded bg-[var(--theme-bg-secondary)]" />
               </div>
             ) : (
               <>
-                <div className="text-xl font-bold text-zinc-100">
+                <div className="text-xl font-bold text-[var(--theme-text-primary)]">
                   {formatNumber(item.value)}
                 </div>
-                <div className="text-xs text-zinc-600 uppercase tracking-wider">
+                <div className="text-xs text-[var(--theme-text-muted)] uppercase tracking-wider">
                   {item.label}
                 </div>
               </>

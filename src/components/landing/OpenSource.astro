@@ -1,57 +1,156 @@
 ---
-import Button from '../ui/Button.astro';
+/**
+ * OpenSource Section - Community & Contribution
+ *
+ * From Content Strategy - Pillar 4: Community (10% of content):
+ * "Build belonging, encourage participation, show momentum"
+ *
+ * From USP Analysis - Proprietary Advantage:
+ * "Become the de facto standard through best-in-class documentation,
+ * opinionated workflow, community-driven metrics/mutations"
+ *
+ * Economic Value from Content Strategy:
+ * - Free and open source
+ * - Self-hosted (no data leaving your infra)
+ * - Prevents costly production incidents
+ */
+
 import GitHubStats from './GitHubStats';
+
+const values = [
+  {
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      <path d="M9 12l2 2 4-4"/>
+    </svg>`,
+    title: 'Self-Hosted',
+    description: 'Your data stays on your infrastructure. No external calls, no data sharing.',
+  },
+  {
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+    </svg>`,
+    title: 'Forever Free',
+    description: 'Apache 2.0 licensed. No paywalls, no feature gates, no surprises.',
+  },
+  {
+    icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>`,
+    title: 'Community Driven',
+    description: 'Built in the open. Contributions welcome. Your input shapes the roadmap.',
+  },
+];
+
+const links = [
+  {
+    label: 'Star on GitHub',
+    href: 'https://github.com/code-sensei/artemiskit',
+    icon: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+    </svg>`,
+    primary: true,
+  },
+  {
+    label: 'Contribute',
+    href: 'https://github.com/code-sensei/artemiskit/blob/main/CONTRIBUTING.md',
+    icon: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 3v18M3 12h18"/>
+    </svg>`,
+  },
+  {
+    label: 'View Roadmap',
+    href: 'https://github.com/code-sensei/artemiskit/blob/main/ROADMAP.md',
+    icon: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/>
+      <path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+      <path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/>
+      <path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/>
+      <path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/>
+      <path d="M14 19.5c0-.83.67-1.5 1.5-1.5H17c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-1.5c-.83 0-1.5-.67-1.5-1.5z"/>
+      <path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/>
+      <path d="M10 4.5C10 3.67 9.33 3 8.5 3H7c-.83 0-1.5.67-1.5 1.5S6.17 6 7 6h1.5c.83 0 1.5-.67 1.5-1.5z"/>
+    </svg>`,
+  },
+];
 ---
 
-<section class="relative py-24 md:py-32 bg-zinc-950/50">
+<section class="relative py-24 md:py-32 overflow-hidden">
   <!-- Background -->
-  <div class="absolute inset-0" aria-hidden="true">
-    <div class="absolute inset-0 bg-[linear-gradient(to_right,#18181b_1px,transparent_1px),linear-gradient(to_bottom,#18181b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20"></div>
+  <div class="absolute inset-0 bg-[var(--theme-bg-primary)]">
+    <!-- Grid pattern -->
+    <div class="absolute inset-0 bg-[linear-gradient(var(--theme-border-subtle)_1px,transparent_1px),linear-gradient(90deg,var(--theme-border-subtle)_1px,transparent_1px)] bg-[size:64px_64px] opacity-30"></div>
   </div>
 
   <div class="container relative">
-    <div class="max-w-3xl mx-auto text-center">
+    <div class="max-w-4xl mx-auto">
+
       <!-- Header -->
-      <div class="mb-10">
-        <span class="inline-block px-3 py-1 text-xs font-medium tracking-wider uppercase text-orange-400 bg-orange-500/10 border border-orange-500/20 rounded-full mb-4">
-          Open Source
-        </span>
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-zinc-100 mb-4 tracking-tight">
-          Open Source at Heart
+      <div class="text-center mb-12">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border)] mb-6">
+          <svg class="w-4 h-4 text-[var(--theme-primary)]" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          <span class="text-sm font-semibold text-[var(--theme-text-secondary)]">Open Source</span>
+        </div>
+
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--theme-text-primary)] mb-4 tracking-tight">
+          Built in the Open
         </h2>
-        <p class="text-lg text-zinc-500 max-w-2xl mx-auto">
+        <p class="text-lg text-[var(--theme-text-secondary)] max-w-2xl mx-auto">
           ArtemisKit is Apache-2.0 licensed and open source. Contribute, customize, and build on a foundation you control.
         </p>
       </div>
 
       <!-- GitHub Stats -->
-      <div class="mb-10">
+      <div class="mb-12">
         <GitHubStats client:idle />
+      </div>
+
+      <!-- Values Grid -->
+      <div class="grid md:grid-cols-3 gap-6 mb-12">
+        {values.map((value) => (
+          <div class="p-6 rounded-2xl bg-[var(--theme-bg-card)] border border-[var(--theme-border)] hover:border-[var(--theme-border-hover)] transition-all">
+            <div class="w-11 h-11 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 mb-4">
+              <Fragment set:html={value.icon} />
+            </div>
+            <h3 class="text-lg font-semibold text-[var(--theme-text-primary)] mb-2">{value.title}</h3>
+            <p class="text-sm text-[var(--theme-text-tertiary)] leading-relaxed">{value.description}</p>
+          </div>
+        ))}
       </div>
 
       <!-- CTAs -->
       <div class="flex flex-wrap justify-center gap-3 mb-10">
-        <Button href="https://github.com/code-sensei/artemiskit" variant="primary" size="md" external>
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-          </svg>
-          Star on GitHub
-        </Button>
-        <Button href="https://github.com/code-sensei/artemiskit/blob/main/CONTRIBUTING.md" variant="secondary" size="md" external>
-          Contribute
-        </Button>
-        <Button href="https://github.com/code-sensei/artemiskit/blob/main/ROADMAP.md" variant="outline" size="md" external>
-          View Roadmap
-        </Button>
+        {links.map((link) => (
+          <a
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class={`inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold transition-all duration-200
+              ${link.primary
+                ? 'bg-gradient-to-b from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:from-orange-400 hover:to-orange-500'
+                : 'bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border)] text-[var(--theme-text-secondary)] hover:border-[var(--theme-border-hover)] hover:text-[var(--theme-text-primary)]'
+              }
+            `}
+          >
+            <Fragment set:html={link.icon} />
+            <span>{link.label}</span>
+          </a>
+        ))}
       </div>
 
       <!-- License Badge -->
-      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900/60 border border-zinc-800 text-sm text-zinc-500">
-        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M12 2L3 7v7c0 5.25 3.82 10.14 9 11 5.18-.86 9-5.75 9-11V7l-9-5z" />
-          <path d="M9 12l2 2 4-4" />
-        </svg>
-        <span>Licensed under Apache-2.0</span>
+      <div class="text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[var(--theme-bg-secondary)] border border-[var(--theme-border)] text-sm text-[var(--theme-text-tertiary)]">
+          <svg class="w-4 h-4 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+          <span>Licensed under Apache-2.0</span>
+        </div>
       </div>
     </div>
   </div>

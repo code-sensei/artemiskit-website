@@ -1,21 +1,41 @@
 ---
+/**
+ * ArtemisKit Landing Page
+ *
+ * Aligned with:
+ * - USP Analysis: Fear-first security wedge + unified reliability positioning
+ * - Content Strategy: Problem awareness (40%), Education (30%), Product (20%), Community (10%)
+ *
+ * Section Order (per USP recommendation):
+ * 1. Hero - Fear hook + value prop
+ * 2. ThreatSection - Problem awareness
+ * 3. SolutionSection - Three capabilities (Security first)
+ * 4. HowItWorks - Quick start guide
+ * 5. UseCases - Audience-specific messaging
+ * 6. Waitlist - Cloud CTA
+ * 7. OpenSource - Community + contribution
+ */
+
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/landing/Hero.astro';
-import ProblemSolution from '../components/landing/ProblemSolution.astro';
-import Features from '../components/landing/Features.astro';
+import ThreatSection from '../components/landing/ThreatSection.astro';
+import SolutionSection from '../components/landing/SolutionSection.astro';
 import HowItWorks from '../components/landing/HowItWorks.astro';
 import UseCases from '../components/landing/UseCases.astro';
 import Waitlist from '../components/landing/Waitlist.astro';
 import OpenSource from '../components/landing/OpenSource.astro';
+
+// Meta description from USP Analysis - Long Positioning Statement
+const description = "Stop hoping your AI is secure. Start proving it. ArtemisKit is the open-source LLM reliability toolkit. Security red-teaming, quality evaluation, and stress testing in one CLI. Most teams use 3+ tools. You need one. Apache-2.0 licensed.";
 ---
 
 <Layout
   title="ArtemisKit — The Open Source LLM Reliability Toolkit"
-  description="Stop hoping your AI is secure. Start proving it. Security red-teaming, quality evaluation, and stress testing in one CLI. Most teams use 3+ tools. You need one. Open source, Apache-2.0 licensed."
+  description={description}
 >
   <Hero />
-  <ProblemSolution />
-  <Features />
+  <ThreatSection />
+  <SolutionSection />
   <HowItWorks />
   <UseCases />
   <Waitlist />
