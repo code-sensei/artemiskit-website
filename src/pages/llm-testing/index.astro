@@ -1,0 +1,704 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// FAQ for this page
+const pageFAQ = [
+  {
+    question: "What is LLM testing?",
+    answer: "LLM testing is the process of systematically evaluating Large Language Model outputs for quality, accuracy, security vulnerabilities, and performance under load. It ensures your AI application behaves correctly before deployment."
+  },
+  {
+    question: "Why is LLM testing different from traditional software testing?",
+    answer: "LLM outputs are non-deterministic - the same input can produce different outputs. Traditional assertion-based testing doesn't work. LLM testing requires semantic evaluation, fuzzy matching, and statistical analysis to measure quality."
+  },
+  {
+    question: "What does ArtemisKit test for?",
+    answer: "ArtemisKit tests three dimensions: Quality (semantic similarity, LLM-as-judge, schema validation), Security (prompt injection, jailbreaks, data extraction), and Performance (latency percentiles, throughput, token costs under load)."
+  },
+  {
+    question: "Can I integrate LLM testing into CI/CD?",
+    answer: "Yes. ArtemisKit is designed for CI/CD integration with proper exit codes, JSON reports, and GitHub Actions support. You can block deployments that fail quality, security, or performance thresholds."
+  },
+  {
+    question: "How long does it take to set up LLM testing?",
+    answer: "With ArtemisKit, you can run your first test in under 5 minutes. Install with npm, create a scenario YAML file, and run 'akit run scenario.yaml'. No account required."
+  }
+];
+
+// Breadcrumbs
+const breadcrumbs = [
+  { name: 'Home', url: 'https://artemiskit.vercel.app/' },
+  { name: 'LLM Testing', url: 'https://artemiskit.vercel.app/llm-testing/' },
+];
+
+// Features with metrics
+const capabilities = [
+  {
+    title: "Quality Evaluation",
+    description: "12 evaluator types including semantic similarity, LLM-as-judge, JSON schema validation, and fuzzy matching.",
+    command: "akit run scenario.yaml",
+    icon: "quality",
+    color: "green",
+    stats: "12 Evaluators"
+  },
+  {
+    title: "Security Red-Teaming",
+    description: "6 mutation types: prompt injection, jailbreaks, role spoofing, instruction flipping, encoding attacks, multi-turn.",
+    command: "akit redteam scenario.yaml",
+    icon: "security",
+    color: "red",
+    stats: "6 Attack Types"
+  },
+  {
+    title: "Performance Stress Testing",
+    description: "Measure p50/p95/p99 latency, throughput limits, token costs, and error rates under realistic load conditions.",
+    command: "akit stress scenario.yaml -c 50 -d 60",
+    icon: "performance",
+    color: "amber",
+    stats: "p50/p95/p99"
+  }
+];
+---
+
+<Layout
+  title="LLM Testing Tools - Automate AI Quality & Security | ArtemisKit"
+  description="Test LLM applications with confidence. Quality evaluation, security red-teaming, and stress testing in one open-source CLI. Free and self-hosted."
+>
+  <!-- Hero Section -->
+  <section class="relative min-h-[85vh] flex items-center py-24 md:py-32 overflow-hidden">
+    <!-- Background Effects -->
+    <div class="absolute inset-0 bg-[var(--theme-bg-primary)]">
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(249,115,22,0.1),transparent_50%)]"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_80%_20%,rgba(34,197,94,0.06),transparent_40%)]"></div>
+      <div class="absolute inset-0 bg-[linear-gradient(var(--theme-border-subtle)_1px,transparent_1px),linear-gradient(90deg,var(--theme-border-subtle)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_70%_50%_at_50%_0%,black_30%,transparent_80%)]"></div>
+      <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[var(--theme-bg-primary)] to-transparent"></div>
+    </div>
+
+    <div class="container relative z-10 max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <!-- Left Column -->
+        <div class="text-center lg:text-left">
+          <!-- Breadcrumb -->
+          <nav class="hero-animate flex items-center justify-center lg:justify-start gap-2 text-sm text-[var(--theme-text-muted)] mb-8" style="--delay: 0">
+            <a href="/" class="hover:text-[var(--theme-text-secondary)] transition-colors">Home</a>
+            <span class="text-[var(--theme-border)]">/</span>
+            <span class="text-[var(--theme-text-secondary)]">LLM Testing</span>
+          </nav>
+
+          <!-- Badge -->
+          <div class="hero-animate inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[var(--theme-primary-muted)] border border-orange-500/25 mb-8" style="--delay: 1">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-500 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+            </span>
+            <span class="text-sm font-medium text-orange-400">Complete Testing Suite</span>
+          </div>
+
+          <!-- Headline -->
+          <h1 class="hero-animate" style="--delay: 2">
+            <span class="block text-4xl md:text-5xl lg:text-6xl font-bold text-[var(--theme-text-primary)] tracking-[-0.02em] leading-[1.1]">
+              LLM Testing That
+            </span>
+            <span class="block text-4xl md:text-5xl lg:text-6xl font-bold text-gradient-orange tracking-[-0.02em] leading-[1.1] mt-2">
+              Actually Works
+            </span>
+          </h1>
+
+          <!-- Subheadline -->
+          <p class="hero-animate text-lg lg:text-xl text-[var(--theme-text-secondary)] mt-8 max-w-xl mx-auto lg:mx-0 leading-relaxed" style="--delay: 3">
+            Stop hoping your AI works. <span class="text-[var(--theme-text-primary)] font-medium">Start proving it.</span> ArtemisKit is the open-source CLI for testing LLM applications with quality checks, security scans, and stress tests.
+          </p>
+
+          <!-- CTAs -->
+          <div class="hero-animate flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mt-10" style="--delay: 4">
+            <a
+              href="/docs/cli/getting-started/"
+              class="group inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-2xl bg-gradient-to-b from-orange-500 to-orange-600 text-white font-semibold shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:from-orange-400 hover:to-orange-500 transition-all duration-200"
+            >
+              <span>Start Testing in 5 Minutes</span>
+              <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <a
+              href="https://github.com/code-sensei/artemiskit"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-2xl bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border)] text-[var(--theme-text-secondary)] font-semibold hover:bg-[var(--theme-bg-elevated)] hover:border-[var(--theme-border-hover)] hover:text-[var(--theme-text-primary)] transition-all duration-200"
+            >
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+              <span>View on GitHub</span>
+            </a>
+          </div>
+
+          <!-- Install Command -->
+          <div class="hero-animate mt-8" style="--delay: 5">
+            <div class="inline-flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-[var(--theme-bg-secondary)] border border-[var(--theme-border)]">
+              <span class="text-[var(--theme-primary)] font-mono text-sm font-medium">$</span>
+              <code class="text-sm text-[var(--theme-text-secondary)] font-mono">npm install -g @artemiskit/cli</code>
+              <button
+                id="copy-install"
+                class="p-2 rounded-lg hover:bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text-secondary)] transition-colors"
+                title="Copy to clipboard"
+              >
+                <svg class="w-4 h-4 copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2"/>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+                <svg class="w-4 h-4 check-icon hidden text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column - Terminal Demo -->
+        <div class="hero-animate" style="--delay: 3">
+          <div class="relative">
+            <!-- Glow effect -->
+            <div class="absolute -inset-4 bg-gradient-to-br from-orange-500/15 via-green-500/10 to-transparent rounded-3xl blur-2xl opacity-60"></div>
+
+            <!-- Terminal -->
+            <div class="relative terminal">
+              <div class="terminal-header">
+                <div class="terminal-dot terminal-dot-red"></div>
+                <div class="terminal-dot terminal-dot-yellow"></div>
+                <div class="terminal-dot terminal-dot-green"></div>
+                <span class="terminal-title">LLM Testing Suite</span>
+              </div>
+              <div class="terminal-body text-sm">
+                <div class="space-y-3">
+                  <div>
+                    <span class="terminal-prompt">$</span>
+                    <span class="terminal-command"> akit run</span>
+                    <span class="text-zinc-500"> customer-support.yaml</span>
+                  </div>
+                  <div class="text-zinc-500 text-xs">Running 5 test cases...</div>
+                  <div class="space-y-1 mt-4">
+                    <div class="flex items-center gap-2">
+                      <span class="terminal-success">✓</span>
+                      <span class="text-zinc-400">Password reset response</span>
+                      <span class="text-zinc-600 text-xs ml-auto">similarity: 0.94</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="terminal-success">✓</span>
+                      <span class="text-zinc-400">Billing inquiry handling</span>
+                      <span class="text-zinc-600 text-xs ml-auto">contains: pass</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="terminal-success">✓</span>
+                      <span class="text-zinc-400">Refund policy explanation</span>
+                      <span class="text-zinc-600 text-xs ml-auto">llm_grader: 0.91</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="terminal-success">✓</span>
+                      <span class="text-zinc-400">Product recommendation</span>
+                      <span class="text-zinc-600 text-xs ml-auto">schema: valid</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="terminal-success">✓</span>
+                      <span class="text-zinc-400">Escalation trigger</span>
+                      <span class="text-zinc-600 text-xs ml-auto">not_contains: pass</span>
+                    </div>
+                  </div>
+                  <div class="pt-4 border-t border-zinc-800">
+                    <div class="flex items-center justify-between">
+                      <span class="text-zinc-400">Results:</span>
+                      <span class="terminal-success font-semibold">5/5 passed</span>
+                    </div>
+                    <div class="text-zinc-600 text-xs mt-1">Run ID: llm_abc123 • Duration: 2.3s</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem Section -->
+  <section class="section bg-[var(--theme-bg-secondary)]">
+    <div class="container max-w-7xl mx-auto px-6">
+      <div class="max-w-3xl mb-16">
+        <span class="inline-block text-sm font-semibold text-red-400 uppercase tracking-wider mb-4">The Challenge</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--theme-text-primary)] mb-6">
+          The Problem with LLM Testing
+        </h2>
+        <p class="text-lg text-[var(--theme-text-secondary)]">
+          Traditional testing doesn't work for LLMs. Same input, different outputs.
+          Assertions fail on valid responses. Manual testing doesn't scale.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="group card card-threat">
+          <div class="w-14 h-14 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-7 h-7 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-3">Non-Deterministic Outputs</h3>
+          <p class="text-[var(--theme-text-secondary)]">
+            LLMs don't return the same output twice. Traditional assertion-based testing fails on perfectly valid responses.
+          </p>
+        </div>
+
+        <div class="group card card-threat">
+          <div class="w-14 h-14 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-7 h-7 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-3">Security Blind Spots</h3>
+          <p class="text-[var(--theme-text-secondary)]">
+            Prompt injection is OWASP #1 for LLMs. Most teams don't test for it. Your model is one clever prompt away from disaster.
+          </p>
+        </div>
+
+        <div class="group card card-threat">
+          <div class="w-14 h-14 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-7 h-7 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-3">Unknown Performance</h3>
+          <p class="text-[var(--theme-text-secondary)]">
+            You'll discover your latency limits in production. Or you could know them before your users do.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solution Section - Bento Grid -->
+  <section class="section">
+    <div class="container max-w-7xl mx-auto px-6">
+      <div class="max-w-3xl mb-16">
+        <span class="inline-block text-sm font-semibold text-[var(--theme-primary)] uppercase tracking-wider mb-4">The Solution</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--theme-text-primary)] mb-6">
+          Complete LLM Testing in One CLI
+        </h2>
+        <p class="text-lg text-[var(--theme-text-secondary)]">
+          ArtemisKit combines quality evaluation, security red-teaming, and performance stress testing.
+          Most teams use 3+ tools. You need one.
+        </p>
+      </div>
+
+      <!-- Bento Grid -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {capabilities.map((cap, index) => (
+          <div class={`group relative overflow-hidden rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+            cap.color === 'green' ? 'bg-emerald-500/[0.03] border-emerald-500/20 hover:border-emerald-500/40 hover:shadow-[0_0_40px_rgba(34,197,94,0.1)]' :
+            cap.color === 'red' ? 'bg-red-500/[0.03] border-red-500/20 hover:border-red-500/40 hover:shadow-[0_0_40px_rgba(239,68,68,0.1)]' :
+            'bg-amber-500/[0.03] border-amber-500/20 hover:border-amber-500/40 hover:shadow-[0_0_40px_rgba(245,158,11,0.1)]'
+          }`}>
+            <div class="p-8">
+              <div class="flex items-center justify-between mb-6">
+                <div class={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                  cap.color === 'green' ? 'bg-emerald-500/10 border border-emerald-500/20' :
+                  cap.color === 'red' ? 'bg-red-500/10 border border-red-500/20' :
+                  'bg-amber-500/10 border border-amber-500/20'
+                }`}>
+                  {cap.icon === 'quality' && (
+                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  )}
+                  {cap.icon === 'security' && (
+                    <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  )}
+                  {cap.icon === 'performance' && (
+                    <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  )}
+                </div>
+                <span class={`text-xs font-bold px-2.5 py-1 rounded-full ${
+                  cap.color === 'green' ? 'bg-emerald-500/20 text-emerald-400' :
+                  cap.color === 'red' ? 'bg-red-500/20 text-red-400' :
+                  'bg-amber-500/20 text-amber-400'
+                }`}>
+                  {cap.stats}
+                </span>
+              </div>
+
+              <h3 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-3">{cap.title}</h3>
+              <p class="text-[var(--theme-text-secondary)] mb-6 leading-relaxed">{cap.description}</p>
+
+              <div class="bg-[var(--theme-bg-secondary)] border border-[var(--theme-border)] rounded-xl p-3">
+                <code class={`text-sm font-mono ${
+                  cap.color === 'green' ? 'text-emerald-400' :
+                  cap.color === 'red' ? 'text-red-400' :
+                  'text-amber-400'
+                }`}>{cap.command}</code>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works - Timeline -->
+  <section class="section bg-[var(--theme-bg-secondary)]">
+    <div class="container max-w-7xl mx-auto px-6">
+      <div class="max-w-3xl mb-16">
+        <span class="inline-block text-sm font-semibold text-[var(--theme-primary)] uppercase tracking-wider mb-4">Quick Start</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--theme-text-primary)] mb-6">
+          How LLM Testing Works
+        </h2>
+        <p class="text-lg text-[var(--theme-text-secondary)]">
+          Get from zero to tested in three steps. No account required. No vendor lock-in.
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-8">
+        <!-- Step 1 -->
+        <div class="relative">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-orange-500/25">1</div>
+            <div class="hidden lg:block flex-1 h-px bg-gradient-to-r from-orange-500/50 to-transparent"></div>
+          </div>
+          <h3 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-3">Define Your Scenario</h3>
+          <p class="text-[var(--theme-text-secondary)] mb-6">
+            Write a YAML file describing your test cases, expected behaviors, and evaluation criteria.
+          </p>
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="text-xs text-zinc-500">scenario.yaml</span>
+            </div>
+            <div class="code-block-content">
+              <pre class="text-zinc-300 text-sm"><code>name: customer-support-bot
+provider:
+  type: openai
+  model: gpt-4o
+cases:
+  - prompt: "How do I reset my password?"
+    expected:
+      contains: "account settings"</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="relative">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-orange-500/25">2</div>
+            <div class="hidden lg:block flex-1 h-px bg-gradient-to-r from-orange-500/50 to-transparent"></div>
+          </div>
+          <h3 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-3">Run Your Tests</h3>
+          <p class="text-[var(--theme-text-secondary)] mb-6">
+            Execute quality checks, security scans, or stress tests with a single command.
+          </p>
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="text-xs text-zinc-500">Terminal</span>
+            </div>
+            <div class="code-block-content space-y-2">
+              <div><span class="text-orange-400">$</span> <span class="text-zinc-300">akit run</span> <span class="text-zinc-500">scenario.yaml</span></div>
+              <div><span class="text-orange-400">$</span> <span class="text-zinc-300">akit redteam</span> <span class="text-zinc-500">scenario.yaml</span></div>
+              <div><span class="text-orange-400">$</span> <span class="text-zinc-300">akit stress</span> <span class="text-zinc-500">scenario.yaml -c 50</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="relative">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-orange-500/25">3</div>
+          </div>
+          <h3 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-3">Review Results</h3>
+          <p class="text-[var(--theme-text-secondary)] mb-6">
+            Get detailed reports with pass/fail status, metrics, and actionable insights.
+          </p>
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="text-xs text-zinc-500">Output</span>
+            </div>
+            <div class="code-block-content">
+              <div class="space-y-2 text-sm">
+                <div class="text-emerald-400">✓ 45/50 tests passed</div>
+                <div class="text-emerald-400">✓ 0 security vulnerabilities</div>
+                <div class="text-emerald-400">✓ p99 latency: 1.2s</div>
+                <div class="text-zinc-500 mt-3">Run ID: llm_abc123</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases -->
+  <section class="section">
+    <div class="container max-w-7xl mx-auto px-6">
+      <div class="max-w-3xl mb-16">
+        <span class="inline-block text-sm font-semibold text-[var(--theme-primary)] uppercase tracking-wider mb-4">Use Cases</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--theme-text-primary)] mb-6">
+          LLM Testing Use Cases
+        </h2>
+        <p class="text-lg text-[var(--theme-text-secondary)]">
+          ArtemisKit is built for teams shipping AI to production.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <a href="/docs/cli/ci-cd/" class="group card hover:border-[var(--theme-border-active)]">
+          <div class="flex items-start gap-5">
+            <div class="w-12 h-12 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-[var(--theme-text-primary)] mb-2 group-hover:text-[var(--theme-primary)] transition-colors">CI/CD Quality Gates</h3>
+              <p class="text-[var(--theme-text-secondary)] text-sm">
+                Block deployments that fail quality, security, or performance thresholds. Integrate with GitHub Actions, GitLab CI, or any CI system.
+              </p>
+              <span class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-[var(--theme-primary)]">
+                Learn more
+                <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/docs/cli/commands/redteam/" class="group card hover:border-[var(--theme-border-active)]">
+          <div class="flex items-start gap-5">
+            <div class="w-12 h-12 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-[var(--theme-text-primary)] mb-2 group-hover:text-[var(--theme-primary)] transition-colors">Pre-Deployment Security</h3>
+              <p class="text-[var(--theme-text-secondary)] text-sm">
+                Red-team your LLM before attackers do. Test for prompt injection, jailbreaks, and data extraction vulnerabilities.
+              </p>
+              <span class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-[var(--theme-primary)]">
+                Learn more
+                <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/docs/cli/commands/compare/" class="group card hover:border-[var(--theme-border-active)]">
+          <div class="flex items-start gap-5">
+            <div class="w-12 h-12 bg-purple-500/10 border border-purple-500/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-[var(--theme-text-primary)] mb-2 group-hover:text-[var(--theme-primary)] transition-colors">Regression Detection</h3>
+              <p class="text-[var(--theme-text-secondary)] text-sm">
+                Catch quality regressions after prompt changes, fine-tuning, or model updates. Compare runs to track improvements.
+              </p>
+              <span class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-[var(--theme-primary)]">
+                Learn more
+                <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/docs/cli/commands/stress/" class="group card hover:border-[var(--theme-border-active)]">
+          <div class="flex items-start gap-5">
+            <div class="w-12 h-12 bg-amber-500/10 border border-amber-500/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-[var(--theme-text-primary)] mb-2 group-hover:text-[var(--theme-primary)] transition-colors">Capacity Planning</h3>
+              <p class="text-[var(--theme-text-secondary)] text-sm">
+                Know your latency limits before users find them. Stress test to find throughput limits and estimate costs at scale.
+              </p>
+              <span class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-[var(--theme-primary)]">
+                Learn more
+                <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section bg-[var(--theme-bg-secondary)]">
+    <div class="container max-w-4xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <span class="inline-block text-sm font-semibold text-[var(--theme-primary)] uppercase tracking-wider mb-4">FAQ</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--theme-text-primary)]">
+          Frequently Asked Questions
+        </h2>
+      </div>
+      <div class="space-y-4">
+        {pageFAQ.map((item, index) => (
+          <details class="group card">
+            <summary class="flex items-center justify-between cursor-pointer list-none">
+              <h3 class="text-lg font-semibold text-[var(--theme-text-primary)] pr-8">{item.question}</h3>
+              <span class="flex-shrink-0 w-8 h-8 rounded-full bg-[var(--theme-bg-tertiary)] flex items-center justify-center group-open:rotate-180 transition-transform">
+                <svg class="w-4 h-4 text-[var(--theme-text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-[var(--theme-text-secondary)] leading-relaxed">{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Articles -->
+  <section class="section">
+    <div class="container max-w-7xl mx-auto px-6">
+      <h2 class="text-2xl font-bold text-[var(--theme-text-primary)] mb-8">Related Articles</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <a href="/blog/getting-started-llm-testing/" class="group card">
+          <span class="badge badge-success mb-4">Tutorial</span>
+          <h3 class="text-lg font-semibold text-[var(--theme-text-primary)] group-hover:text-[var(--theme-primary)] transition-colors mb-2">Getting Started with LLM Testing</h3>
+          <p class="text-[var(--theme-text-secondary)] text-sm">A practical guide to testing your first LLM application with ArtemisKit.</p>
+        </a>
+        <a href="/blog/semantic-similarity-evaluation/" class="group card">
+          <span class="badge badge-primary mb-4">Engineering</span>
+          <h3 class="text-lg font-semibold text-[var(--theme-text-primary)] group-hover:text-[var(--theme-primary)] transition-colors mb-2">Understanding Semantic Similarity</h3>
+          <p class="text-[var(--theme-text-secondary)] text-sm">How semantic similarity evaluation works and when to use it for LLM testing.</p>
+        </a>
+        <a href="/blog/klarna-ai-customer-service-failure/" class="group card">
+          <span class="badge badge-danger mb-4">Security News</span>
+          <h3 class="text-lg font-semibold text-[var(--theme-text-primary)] group-hover:text-[var(--theme-primary)] transition-colors mb-2">Klarna AI Customer Service Failure</h3>
+          <p class="text-[var(--theme-text-secondary)] text-sm">What went wrong and why AI testing matters for production systems.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section bg-gradient-to-b from-[var(--theme-bg-secondary)] to-[var(--theme-bg-primary)]">
+    <div class="container max-w-4xl mx-auto px-6 text-center">
+      <div class="relative">
+        <div class="absolute -inset-x-20 -top-20 h-40 bg-gradient-to-b from-orange-500/10 to-transparent rounded-full blur-3xl"></div>
+        <div class="relative">
+          <h2 class="text-3xl md:text-4xl font-bold text-[var(--theme-text-primary)] mb-6">
+            Stop Hoping. Start Proving.
+          </h2>
+          <p class="text-xl text-[var(--theme-text-secondary)] mb-10 max-w-2xl mx-auto">
+            ArtemisKit is free, open-source, and ready to help you ship AI with confidence. Your first test is 5 minutes away.
+          </p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a
+              href="/docs/cli/getting-started/"
+              class="group inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl bg-gradient-to-b from-orange-500 to-orange-600 text-white font-semibold text-lg shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:from-orange-400 hover:to-orange-500 transition-all duration-200"
+            >
+              <span>Get Started Free</span>
+              <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <a
+              href="/docs/"
+              class="px-8 py-4 rounded-2xl bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border)] text-[var(--theme-text-secondary)] font-semibold text-lg hover:bg-[var(--theme-bg-elevated)] hover:border-[var(--theme-border-hover)] hover:text-[var(--theme-text-primary)] transition-all duration-200"
+            >
+              Read the Docs
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JSON-LD FAQ Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": pageFAQ.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
+  })} />
+
+  <!-- JSON-LD Breadcrumb Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": breadcrumbs.map((item, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": item.name,
+      "item": item.url
+    }))
+  })} />
+</Layout>
+
+<style>
+  @keyframes hero-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hero-animate {
+    opacity: 0;
+    animation: hero-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: calc(var(--delay, 0) * 120ms + 150ms);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-animate {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  details summary::-webkit-details-marker {
+    display: none;
+  }
+</style>
+
+<script>
+  const copyButton = document.getElementById('copy-install');
+  const copyIcon = copyButton?.querySelector('.copy-icon');
+  const checkIcon = copyButton?.querySelector('.check-icon');
+
+  copyButton?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText('npm install -g @artemiskit/cli');
+      copyIcon?.classList.add('hidden');
+      checkIcon?.classList.remove('hidden');
+      setTimeout(() => {
+        copyIcon?.classList.remove('hidden');
+        checkIcon?.classList.add('hidden');
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  });
+</script>
