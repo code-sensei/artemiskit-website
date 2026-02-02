@@ -1,0 +1,312 @@
+---
+title: "Understanding Semantic Similarity Evaluation for LLMs"
+description: "Learn how semantic similarity works for LLM testing, when to use it over exact matching, and how to configure thresholds effectively in ArtemisKit."
+pubDate: 2026-01-29
+author:
+  name: ArtemisKit Team
+  avatar: /artemiskit-icon.png
+  role: Technical Writer
+category: engineering
+tags:
+  - evaluation
+  - semantic-similarity
+  - embeddings
+  - testing
+readingTime: 7
+---
+
+Traditional software testing relies on exact matching: if the output equals the expected value, the test passes. LLMs don't work that way. Ask the same question twice and you'll get different—but equally valid—responses.
+
+This is where semantic similarity evaluation comes in.
+
+## The Problem with Exact Matching
+
+Consider testing a customer support bot. You expect it to explain the return policy.
+
+Expected response:
+> "You can return items within 30 days of purchase for a full refund."
+
+Actual responses might be:
+> "Our return policy allows returns up to 30 days after your purchase date. You'll receive a complete refund."
+
+> "Items may be returned within thirty days of purchase for a full refund."
+
+> "You have 30 days from purchase to return items and get your money back."
+
+All three convey the same information. All would fail an exact match test. All should pass a semantic similarity test.
+
+## How Semantic Similarity Works
+
+Semantic similarity compares the *meaning* of two texts, not their exact wording. Here's how:
+
+### 1. Text Embedding
+
+Both texts are converted to dense vector representations (embeddings) using a model trained to capture semantic meaning.
+
+```
+"30-day return policy" → [0.2, -0.1, 0.5, ...]  (768+ dimensions)
+"Items returnable within a month" → [0.19, -0.12, 0.48, ...]
+```
+
+### 2. Cosine Similarity
+
+The vectors are compared using cosine similarity, which measures the angle between them:
+
+```
+similarity = (A · B) / (||A|| × ||B||)
+```
+
+- **1.0** = Identical meaning
+- **0.0** = Unrelated
+- **-1.0** = Opposite meaning (rare in practice)
+
+### 3. Threshold Comparison
+
+If similarity exceeds your threshold, the test passes:
+
+```
+0.85 similarity > 0.75 threshold → PASS
+```
+
+## Using Similarity in ArtemisKit
+
+Configure similarity evaluation in your scenario file:
+
+```yaml
+cases:
+  - id: return-policy-test
+    prompt: "What is your return policy?"
+    expected:
+      type: similarity
+      value: "Items can be returned within 30 days for a full refund"
+      threshold: 0.75
+```
+
+### Configuration Options
+
+```yaml
+expected:
+  type: similarity
+  # Required: the reference text to compare against
+  value: "Your expected response content"
+  
+  # Optional: similarity threshold (default: 0.75)
+  threshold: 0.75
+  
+  # Optional: evaluation mode - 'embedding', 'llm', or omit for auto
+  mode: embedding
+  
+  # Optional: embedding model (for embedding mode)
+  embeddingModel: text-embedding-3-large
+  
+  # Optional: LLM model (for llm mode)
+  model: gpt-4o
+```
+
+### Mode Behavior
+
+- **Auto (default)**: Tries embedding first, falls back to LLM if embeddings unavailable
+- **Embedding**: Uses only embeddings; fails if embedding function unavailable
+- **LLM**: Uses only LLM-based comparison; skips embedding entirely
+
+## Choosing the Right Threshold
+
+Threshold selection depends on your use case:
+
+### High Threshold (0.85-0.95)
+
+Use when responses should closely match expected content:
+- Factual information that must be accurate
+- Regulatory disclosures
+- Safety-critical information
+
+```yaml
+# Legal disclaimer must be accurate
+cases:
+  - id: investment-risk-disclosure
+    prompt: "What are the risks of this investment?"
+    expected:
+      type: similarity
+      value: "Past performance does not guarantee future results. You may lose some or all of your investment."
+      threshold: 0.90
+```
+
+### Medium Threshold (0.70-0.85)
+
+Use for general content where variations are acceptable:
+- Customer support responses
+- Product descriptions
+- General explanations
+
+```yaml
+# General explanation, variations okay
+cases:
+  - id: shipping-info
+    prompt: "How does shipping work?"
+    expected:
+      type: similarity
+      value: "Orders ship within 2-3 business days via standard shipping"
+      threshold: 0.75
+```
+
+### Low Threshold (0.55-0.70)
+
+Use when you care about topic relevance more than exact content:
+- Open-ended questions
+- Creative responses
+- General topic matching
+
+```yaml
+# Just needs to be about returns, not specific content
+cases:
+  - id: returns-topic
+    prompt: "Tell me about returns"
+    expected:
+      type: similarity
+      value: "Information about returning products and getting refunds"
+      threshold: 0.60
+```
+
+## Combining with Other Evaluators
+
+Similarity works well combined with other evaluators using the `combined` type:
+
+```yaml
+cases:
+  - id: return-policy-comprehensive
+    prompt: "What is your return policy?"
+    expected:
+      type: combined
+      operator: and
+      expectations:
+        # Must mention key facts
+        - type: contains
+          values: ["30 days", "refund"]
+          mode: any
+          
+        # Must NOT include disclaimers
+        - type: not_contains
+          values: ["no returns", "final sale"]
+          mode: any
+          
+        # Overall meaning should match
+        - type: similarity
+          value: "Return items within 30 days for a full refund"
+          threshold: 0.70
+```
+
+## When NOT to Use Similarity
+
+Similarity isn't always the right tool:
+
+### 1. Structured Outputs
+
+For JSON or structured data, use schema validation:
+
+```yaml
+expected:
+  type: json_schema
+  schema:
+    type: object
+    required: ["status", "message"]
+```
+
+### 2. Specific Values
+
+When exact values matter, use contains:
+
+```yaml
+expected:
+  type: contains
+  values: ["Order #12345"]
+  mode: any
+```
+
+### 3. Format Requirements
+
+When format matters more than content, use regex:
+
+```yaml
+expected:
+  type: regex
+  pattern: "^\\d{3}-\\d{3}-\\d{4}$"  # Phone number format
+```
+
+### 4. Nuanced Quality
+
+When subtle quality matters, use LLM grader:
+
+```yaml
+expected:
+  type: llm_grader
+  rubric: "Response should be empathetic and acknowledge the customer's frustration"
+  threshold: 0.7
+```
+
+## Performance Considerations
+
+Similarity evaluation requires embedding API calls:
+
+- Each comparison = 2 embedding calls (response + reference)
+- Consider caching for repeated reference texts
+- Batch tests when possible
+
+ArtemisKit caches embeddings automatically within a test run.
+
+## Debugging Failed Tests
+
+When similarity tests fail unexpectedly:
+
+### 1. Check the Actual Similarity Score
+
+```bash
+akit run scenario.yaml --verbose
+```
+
+Output includes the actual score:
+```
+✗ Scenario: return-policy-test
+  Similarity: 0.68 (threshold: 0.75)
+  Reference: "Return items within 30 days..."
+  Actual: "We don't accept returns after 30 days..."
+```
+
+### 2. Adjust Threshold
+
+If the response is acceptable but slightly below threshold, consider lowering it:
+
+```yaml
+threshold: 0.65  # Was 0.75
+```
+
+### 3. Refine Reference Text
+
+Sometimes the reference text needs adjustment:
+
+```yaml
+# Too specific
+value: "Return items within 30 days of purchase for a full refund to your original payment method"
+
+# Better - captures core meaning
+value: "30-day return policy with full refunds"
+```
+
+## Best Practices
+
+1. **Start with medium thresholds** (0.70-0.75) and adjust based on results
+2. **Use concise reference texts** — focus on key meaning, not exact wording
+3. **Combine with other evaluators** for comprehensive coverage
+4. **Test your thresholds** — run against known-good and known-bad responses
+5. **Document threshold choices** — explain why each threshold was chosen
+
+## Conclusion
+
+Semantic similarity bridges the gap between rigid exact matching and completely subjective evaluation. It lets you test that LLM outputs convey the right meaning without requiring exact wording.
+
+Start with the default threshold (0.75), observe actual similarity scores, and adjust based on your quality requirements.
+
+---
+
+**Learn more**:
+- [Evaluator Types Reference](/docs/cli/scenarios/expectations/)
+- [Scenario Format Guide](/docs/cli/scenarios/format/)

@@ -1,0 +1,298 @@
+---
+title: "Getting Started with LLM Testing: A Practical Guide"
+description: "Learn how to set up automated testing for your LLM applications in under 10 minutes. From installation to CI/CD integration, this guide covers everything you need to ship AI with confidence."
+pubDate: 2026-01-30
+author:
+  name: ArtemisKit Team
+  avatar: /artemiskit-icon.png
+  role: Technical Writer
+category: tutorials
+tags:
+  - tutorial
+  - getting-started
+  - llm-testing
+  - ci-cd
+featured: true
+readingTime: 8
+---
+
+Testing LLM applications is different from traditional software testing. Outputs are non-deterministic, edge cases are infinite, and traditional assertion-based testing doesn't work. This guide will show you how to set up effective LLM testing with ArtemisKit.
+
+## Prerequisites
+
+Before starting, you'll need:
+
+- Node.js 18+ installed
+- An OpenAI API key (or another supported provider)
+- A terminal/command line
+
+## Step 1: Install ArtemisKit
+
+Install the CLI globally:
+
+```bash
+npm install -g @artemiskit/cli
+```
+
+Verify the installation:
+
+```bash
+akit --version
+```
+
+## Step 2: Configure Your Provider
+
+Set your API key as an environment variable:
+
+```bash
+export OPENAI_API_KEY=sk-your-key-here
+```
+
+For persistent configuration, add it to your shell profile (`.bashrc`, `.zshrc`, etc.) or use a `.env` file.
+
+## Step 3: Create Your First Scenario
+
+Create a file called `scenario.yaml`:
+
+```yaml
+name: customer-support-bot
+description: Tests for our customer support chatbot
+provider: openai
+model: gpt-4o
+
+cases:
+  # Basic functionality test
+  - id: business-hours
+    prompt: "What are your business hours?"
+    expected:
+      type: contains
+      values:
+        - "Monday"
+        - "Friday"
+      mode: any
+      
+  # Policy question
+  - id: return-policy
+    prompt: "How do I return a product?"
+    expected:
+      type: combined
+      operator: and
+      expectations:
+        - type: contains
+          values: ["30 days"]
+          mode: any
+        - type: not_contains
+          values: ["I don't know", "I'm not sure"]
+          mode: any
+      
+  # Edge case handling
+  - id: gibberish-input
+    prompt: "asdfghjkl random gibberish"
+    expected:
+      type: llm_grader
+      rubric: "Response should politely ask for clarification"
+      threshold: 0.7
+```
+
+## Step 4: Run Your First Test
+
+Execute the test:
+
+```bash
+akit run scenario.yaml
+```
+
+You'll see output like:
+
+```
+Running scenario: customer-support-bot
+Provider: openai (gpt-4o)
+
+  ✓ business-hours (234ms)
+  ✓ return-policy (189ms)
+  ✓ gibberish-input (312ms)
+
+Results: 3/3 passed (100%)
+Run ID: ar-20260130-abc123
+```
+
+## Step 5: Understanding Evaluators
+
+ArtemisKit provides 11 evaluator types. Here are the most common:
+
+### Contains/Not Contains
+
+Simple keyword matching:
+
+```yaml
+expected:
+  type: contains
+  values:
+    - "return policy"
+    - "refund"
+  mode: any  # 'any' = at least one, 'all' = all required
+```
+
+```yaml
+expected:
+  type: not_contains
+  values:
+    - "I don't know"
+    - "I'm not sure"
+  mode: any
+```
+
+### Similarity
+
+Check if the meaning matches (not exact words) using embeddings or LLM:
+
+```yaml
+expected:
+  type: similarity
+  value: "Our return policy allows returns within 30 days of purchase"
+  threshold: 0.75
+  mode: embedding  # or 'llm' for LLM-based comparison
+```
+
+### LLM Grader
+
+Use another model to evaluate quality:
+
+```yaml
+expected:
+  type: llm_grader
+  rubric: |
+    Evaluate the response based on:
+    - Is it helpful and accurate?
+    - Is it professionally written?
+  threshold: 0.7
+```
+
+### JSON Schema
+
+Validate structured outputs:
+
+```yaml
+expected:
+  type: json_schema
+  schema:
+    type: object
+    required:
+      - answer
+      - confidence
+    properties:
+      answer:
+        type: string
+      confidence:
+        type: number
+        minimum: 0
+        maximum: 1
+```
+
+## Step 6: Adding Security Tests
+
+Once your functional tests pass, add security red-teaming:
+
+```bash
+akit redteam scenario.yaml --count 50
+```
+
+This generates 50 adversarial prompts testing for:
+
+- Prompt injection
+- Jailbreak attempts
+- Role spoofing
+- Encoding bypasses
+
+Review the report to see if any attacks succeeded.
+
+## Step 7: CI/CD Integration
+
+Add ArtemisKit to your CI pipeline. Here's a GitHub Actions example:
+
+```yaml
+# .github/workflows/llm-tests.yml
+name: LLM Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install ArtemisKit
+        run: npm install -g @artemiskit/cli
+      
+      - name: Run Quality Tests
+        run: akit run scenario.yaml
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      
+      - name: Run Security Tests
+        run: akit redteam scenario.yaml --count 20
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+```
+
+## Step 8: Comparing Runs
+
+Compare two test runs to detect regressions:
+
+```bash
+akit compare ar-baseline-id ar-current-id
+```
+
+This shows metrics comparison and flags any regressions in success rate.
+
+## Best Practices
+
+### 1. Test at Multiple Levels
+
+- **Unit tests**: Individual prompt/response pairs
+- **Integration tests**: Full conversation flows
+- **Security tests**: Adversarial inputs
+- **Performance tests**: Behavior under load
+
+### 2. Use Realistic Scenarios
+
+Don't just test happy paths. Include:
+
+- Ambiguous inputs
+- Edge cases
+- Malformed requests
+- Multi-language inputs (if applicable)
+
+### 3. Set Thresholds Appropriately
+
+- Start with loose thresholds
+- Tighten as your model improves
+- Document acceptable failure rates
+
+### 4. Run Tests Continuously
+
+- Every PR should pass LLM tests
+- Security tests on every deployment
+- Performance tests before major releases
+
+## Next Steps
+
+Now that you have basic testing working:
+
+1. **Add more scenarios** — Cover more of your application's functionality
+2. **Customize evaluators** — Create domain-specific checks
+3. **Integrate stress testing** — Know your performance limits
+4. **Set up monitoring** — Track quality over time
+
+---
+
+**Resources**:
+- [Scenario Format Documentation](/docs/cli/scenarios/format/)
+- [Evaluator Types Reference](/docs/cli/scenarios/expectations/)
+- [CI/CD Integration Guide](/docs/cli/ci-cd/)
