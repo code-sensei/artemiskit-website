@@ -2,7 +2,6 @@ import { useState, useRef } from "react";
 import {
   motion,
   useScroll,
-  useTransform,
   useMotionValueEvent,
   AnimatePresence,
 } from "framer-motion";
@@ -20,7 +19,11 @@ interface UseCase {
   accentLight: string;
 }
 
-// Use cases aligned with Content Strategy ICP prioritization
+/**
+ * Use cases aligned with Content Strategy ICP prioritization:
+ * Tier 1: Security Engineers, ML Engineers, AI Researchers
+ * Tier 2: Compliance/GRC, DevOps/SRE
+ */
 const useCases: UseCase[] = [
   {
     id: "security",
@@ -124,7 +127,6 @@ function Card({
   const isFuture = index > activeIndex;
   const distance = index - activeIndex;
 
-  // Calculate visual properties based on position
   const getTransform = () => {
     if (prefersReducedMotion) return {};
 
@@ -174,8 +176,10 @@ function Card({
       }}
     >
       <div
-        className="relative w-full rounded-2xl overflow-hidden border border-zinc-800/60 bg-zinc-900/80 backdrop-blur-sm"
+        className="relative w-full rounded-2xl overflow-hidden border"
         style={{
+          backgroundColor: "var(--theme-bg-elevated)",
+          borderColor: isActive ? `${useCase.accent}30` : "var(--theme-border)",
           boxShadow: isActive
             ? `0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px ${useCase.accent}20`
             : "0 10px 30px -10px rgba(0, 0, 0, 0.3)",
@@ -217,31 +221,33 @@ function Card({
                 </div>
 
                 {/* Card number */}
-                <span className="text-sm font-mono text-zinc-600">
+                <span className="text-sm font-mono text-[var(--theme-text-muted)]">
                   {String(index + 1).padStart(2, "0")}/
                   {String(totalCards).padStart(2, "0")}
                 </span>
               </div>
 
               {/* Title */}
-              <h3 className="text-2xl md:text-3xl font-bold text-zinc-100 mb-3 tracking-tight">
+              <h3 className="text-2xl md:text-3xl font-bold text-[var(--theme-text-primary)] mb-3 tracking-tight">
                 {useCase.title}
               </h3>
 
               {/* Hook */}
-              <p className="text-lg md:text-xl text-zinc-400 mb-4 font-medium">
+              <p className="text-lg md:text-xl text-[var(--theme-text-secondary)] mb-4 font-medium">
                 {useCase.hook}
               </p>
 
               {/* Pain point */}
-              <p className="text-zinc-500 mb-6 leading-relaxed text-sm md:text-base">
+              <p className="text-[var(--theme-text-tertiary)] mb-6 leading-relaxed text-sm md:text-base">
                 {useCase.pain}
               </p>
 
               {/* Command */}
-              <div className="inline-flex items-center gap-3 px-4 py-2.5 rounded-lg bg-[#0c0c0e] border border-zinc-800">
-                <span className="text-orange-500 font-mono text-sm">$</span>
-                <code className="text-sm text-zinc-300 font-mono">
+              <div className="inline-flex items-center gap-3 px-4 py-2.5 rounded-lg bg-[var(--theme-bg-primary)] border border-[var(--theme-border)]">
+                <span className="text-[var(--theme-primary)] font-mono text-sm">
+                  $
+                </span>
+                <code className="text-sm text-[var(--theme-text-secondary)] font-mono">
                   {useCase.command}
                 </code>
               </div>
@@ -283,7 +289,7 @@ function Card({
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                     </div>
-                    <span className="text-zinc-400 text-sm leading-relaxed">
+                    <span className="text-[var(--theme-text-tertiary)] text-sm leading-relaxed">
                       {feature}
                     </span>
                   </motion.div>
@@ -332,13 +338,11 @@ export default function UseCasesScrollCarousel() {
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
-  // Scroll-linked animation
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Map scroll progress to active index
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     if (prefersReducedMotion) return;
 
@@ -352,7 +356,6 @@ export default function UseCasesScrollCarousel() {
     }
   });
 
-  // Calculate scroll height - each card gets viewport height worth of scroll
   const scrollHeight = useCases.length * 100;
 
   const handleIndicatorClick = (index: number) => {
@@ -368,22 +371,35 @@ export default function UseCasesScrollCarousel() {
   };
 
   return (
-    <section className="relative bg-[#09090b]">
-      {/* Section header - outside scroll container */}
+    <section className="relative bg-[var(--theme-bg-primary)]">
+      {/* Section header */}
       <div className="max-w-6xl mx-auto px-4 pt-24 pb-12">
         <div className="text-center max-w-3xl mx-auto">
-          <motion.span
-            className="inline-block px-3 py-1 text-xs font-medium tracking-wider uppercase text-orange-400 bg-orange-500/10 border border-orange-500/20 rounded-full mb-4"
+          <motion.div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/20 mb-6"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            Use Cases
-          </motion.span>
+            <svg
+              className="w-4 h-4 text-orange-400"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            <span className="text-sm font-semibold text-orange-400">
+              Use Cases
+            </span>
+          </motion.div>
 
           <motion.h2
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-zinc-100 mb-4 tracking-tight"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--theme-text-primary)] mb-4 tracking-tight"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -393,7 +409,7 @@ export default function UseCasesScrollCarousel() {
           </motion.h2>
 
           <motion.p
-            className="text-lg text-zinc-500 max-w-2xl mx-auto"
+            className="text-lg text-[var(--theme-text-secondary)] max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -424,8 +440,8 @@ export default function UseCasesScrollCarousel() {
                     relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300
                     ${
                       activeIndex === index
-                        ? "text-zinc-100"
-                        : "text-zinc-600 hover:text-zinc-400"
+                        ? "text-[var(--theme-text-primary)]"
+                        : "text-[var(--theme-text-muted)] hover:text-[var(--theme-text-tertiary)]"
                     }
                   `}
                 >
@@ -474,15 +490,15 @@ export default function UseCasesScrollCarousel() {
               transition={{ duration: 0.3 }}
             >
               <div className="flex flex-col items-center gap-2">
-                <span className="text-xs text-zinc-600 tracking-wide">
+                <span className="text-xs text-[var(--theme-text-muted)] tracking-wide">
                   Scroll to explore
                 </span>
                 <motion.div
-                  className="w-5 h-8 rounded-full border border-zinc-800 flex justify-center pt-1.5"
+                  className="w-5 h-8 rounded-full border border-[var(--theme-border)] flex justify-center pt-1.5"
                   initial={false}
                 >
                   <motion.div
-                    className="w-1 h-1.5 rounded-full bg-zinc-600"
+                    className="w-1 h-1.5 rounded-full bg-[var(--theme-text-muted)]"
                     animate={{ y: [0, 8, 0] }}
                     transition={{
                       duration: 1.5,
