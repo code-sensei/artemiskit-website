@@ -47,7 +47,6 @@ export default function GitHubStats() {
     fetchStats();
   }, []);
 
-  // Show placeholder stats if loading or fetch failed
   const displayStats = stats || { stars: 0, forks: 0, watchers: 0 };
 
   const statItems = [
@@ -56,11 +55,11 @@ export default function GitHubStats() {
       value: displayStats.stars,
       icon: (
         <svg
-          className="w-5 h-5"
+          className="w-4 h-4"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="1.5"
         >
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
         </svg>
@@ -71,11 +70,11 @@ export default function GitHubStats() {
       value: displayStats.forks,
       icon: (
         <svg
-          className="w-5 h-5"
+          className="w-4 h-4"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="1.5"
         >
           <circle cx="12" cy="18" r="3" />
           <circle cx="6" cy="6" r="3" />
@@ -90,11 +89,11 @@ export default function GitHubStats() {
       value: displayStats.watchers,
       icon: (
         <svg
-          className="w-5 h-5"
+          className="w-4 h-4"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="1.5"
         >
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
           <circle cx="12" cy="12" r="3" />
@@ -104,27 +103,27 @@ export default function GitHubStats() {
   ];
 
   return (
-    <div className="flex flex-wrap justify-center gap-6">
+    <div className="flex flex-wrap justify-center gap-4">
       {statItems.map((item) => (
         <div
           key={item.label}
-          className="flex items-center gap-3 px-5 py-3 rounded-xl bg-stone-900/50 border border-stone-800"
+          className="flex items-center gap-3 px-5 py-3 rounded-xl bg-zinc-900/60 border border-zinc-800/60"
         >
-          <span className={`text-primary-500 ${loading ? "opacity-50" : ""}`}>
+          <span className={`text-orange-400 ${loading ? "opacity-50" : ""}`}>
             {item.icon}
           </span>
           <div>
             {loading ? (
-              <div className="space-y-1.5">
-                <div className="h-7 w-12 rounded-md bg-gradient-to-r from-stone-800 via-stone-700 to-stone-800 bg-[length:200%_100%] animate-[shimmer_1.5s_ease-in-out_infinite]" />
-                <div className="h-3 w-16 rounded bg-stone-800" />
+              <div className="space-y-1">
+                <div className="h-6 w-10 rounded bg-zinc-800 animate-pulse" />
+                <div className="h-3 w-14 rounded bg-zinc-800/50" />
               </div>
             ) : (
               <>
-                <div className="text-2xl font-bold text-stone-50">
+                <div className="text-xl font-bold text-zinc-100">
                   {formatNumber(item.value)}
                 </div>
-                <div className="text-xs text-stone-500 uppercase tracking-wider">
+                <div className="text-xs text-zinc-600 uppercase tracking-wider">
                   {item.label}
                 </div>
               </>
