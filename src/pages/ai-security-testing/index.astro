@@ -1,0 +1,626 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// FAQ for this page
+const pageFAQ = [
+  {
+    question: "What is AI security testing?",
+    answer: "AI security testing is the practice of evaluating AI systems for vulnerabilities, risks, and failure modes that could be exploited. It includes testing for prompt injection, data leakage, adversarial attacks, and alignment failures."
+  },
+  {
+    question: "What security risks are unique to LLMs?",
+    answer: "LLMs face unique risks including prompt injection (OWASP #1), insecure output handling, training data poisoning, sensitive information disclosure, supply chain vulnerabilities, and over-reliance on model outputs without validation."
+  },
+  {
+    question: "How does ArtemisKit help with AI security?",
+    answer: "ArtemisKit provides automated security testing with 6 mutation types (prompt injection, jailbreaks, role spoofing, etc.), severity scoring, CI/CD integration for continuous security validation, and audit-ready reporting."
+  },
+  {
+    question: "Is AI security testing required for compliance?",
+    answer: "Yes, increasingly. EU AI Act (effective Aug 2026) requires documented security testing for high-risk AI. NIST AI RMF recommends continuous security evaluation. Many industry frameworks (HIPAA, SOX) now have AI-specific requirements."
+  },
+  {
+    question: "How often should I security test my AI?",
+    answer: "Continuously. Run security tests on every code change, prompt update, or model swap. Integrate ArtemisKit into CI/CD to catch regressions automatically. Monthly comprehensive assessments are also recommended."
+  },
+  {
+    question: "Can ArtemisKit test production systems?",
+    answer: "ArtemisKit can test any LLM endpoint. For production testing, use low request rates and monitor for impact. We recommend testing in staging environments that mirror production for comprehensive assessments."
+  }
+];
+
+// Breadcrumbs
+const breadcrumbs = [
+  { name: 'Home', url: 'https://artemiskit.vercel.app/' },
+  { name: 'AI Security Testing', url: 'https://artemiskit.vercel.app/ai-security-testing/' },
+];
+
+// OWASP LLM Top 10 (2025)
+const owaspTop10 = [
+  { rank: "LLM01", name: "Prompt Injection", covered: true, severity: "Critical" },
+  { rank: "LLM02", name: "Insecure Output Handling", covered: true, severity: "High" },
+  { rank: "LLM03", name: "Training Data Poisoning", covered: false, severity: "High" },
+  { rank: "LLM04", name: "Model Denial of Service", covered: false, severity: "Medium" },
+  { rank: "LLM05", name: "Supply Chain Vulnerabilities", covered: false, severity: "Medium" },
+  { rank: "LLM06", name: "Sensitive Information Disclosure", covered: true, severity: "Critical" },
+  { rank: "LLM07", name: "Insecure Plugin Design", covered: true, severity: "High" },
+  { rank: "LLM08", name: "Excessive Agency", covered: false, severity: "High" },
+  { rank: "LLM09", name: "Overreliance", covered: true, severity: "Medium" },
+  { rank: "LLM10", name: "Model Theft", covered: false, severity: "Medium" },
+];
+
+// Compliance frameworks
+const complianceFrameworks = [
+  { name: "EU AI Act", description: "High-risk AI systems require security testing documentation", color: "orange" },
+  { name: "NIST AI RMF", description: "Recommends continuous security evaluation", color: "blue" },
+  { name: "SOC 2", description: "AI components must meet security criteria", color: "green" },
+  { name: "HIPAA", description: "Healthcare AI requires security safeguards", color: "purple" }
+];
+
+// Workflow stages
+const workflowStages = [
+  { stage: "Development", count: 10, description: "Quick security scans during development" },
+  { stage: "Pull Request", count: 50, description: "Block PRs that introduce regressions" },
+  { stage: "Pre-Deploy", count: 200, description: "Comprehensive pre-production assessment" },
+  { stage: "Scheduled", count: 500, description: "Monthly comprehensive assessments" }
+];
+---
+
+<Layout
+  title="AI Security Testing - OWASP LLM Top 10 Coverage | ArtemisKit"
+  description="Secure LLM applications with comprehensive AI security testing. OWASP LLM Top 10 coverage, prompt injection, and data leakage detection. Free toolkit."
+>
+  <!-- Hero Section -->
+  <section class="relative min-h-[85vh] flex items-center py-24 md:py-32 overflow-hidden">
+    <!-- Background Effects -->
+    <div class="absolute inset-0 bg-[var(--theme-bg-primary)]">
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(239,68,68,0.1),transparent_50%)]"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_80%_20%,rgba(59,130,246,0.08),transparent_40%)]"></div>
+      <div class="absolute inset-0 bg-[linear-gradient(var(--theme-border-subtle)_1px,transparent_1px),linear-gradient(90deg,var(--theme-border-subtle)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_70%_50%_at_50%_0%,black_30%,transparent_80%)]"></div>
+      <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[var(--theme-bg-primary)] to-transparent"></div>
+    </div>
+
+    <div class="container relative z-10 max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <!-- Left Column -->
+        <div class="text-center lg:text-left">
+          <!-- Breadcrumb -->
+          <nav class="hero-animate flex items-center justify-center lg:justify-start gap-2 text-sm text-[var(--theme-text-muted)] mb-8" style="--delay: 0">
+            <a href="/" class="hover:text-[var(--theme-text-secondary)] transition-colors">Home</a>
+            <span class="text-[var(--theme-border)]">/</span>
+            <span class="text-[var(--theme-text-secondary)]">AI Security Testing</span>
+          </nav>
+
+          <!-- Badge -->
+          <div class="hero-animate inline-flex items-center gap-3 px-4 py-2.5 rounded-full bg-[var(--theme-danger-muted)] border border-[var(--theme-danger-border)] mb-8" style="--delay: 1">
+            <span class="flex items-center gap-2">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+              </span>
+              <span class="text-sm font-semibold text-red-400">OWASP LLM Top 10</span>
+            </span>
+            <span class="w-px h-4 bg-red-500/30"></span>
+            <span class="text-sm text-[var(--theme-text-tertiary)]">5/10 Covered</span>
+          </div>
+
+          <!-- Headline -->
+          <h1 class="hero-animate" style="--delay: 2">
+            <span class="block text-4xl md:text-5xl lg:text-6xl font-bold text-[var(--theme-text-primary)] tracking-[-0.02em] leading-[1.1]">
+              AI Security Testing
+            </span>
+            <span class="block text-4xl md:text-5xl lg:text-6xl font-bold text-gradient-danger tracking-[-0.02em] leading-[1.1] mt-2">
+              Before Attackers Test You
+            </span>
+          </h1>
+
+          <!-- Subheadline -->
+          <p class="hero-animate text-lg lg:text-xl text-[var(--theme-text-secondary)] mt-8 max-w-xl mx-auto lg:mx-0 leading-relaxed" style="--delay: 3">
+            Your AI passed functional tests. But did it pass <span class="text-[var(--theme-text-primary)] font-medium">security tests?</span> ArtemisKit provides comprehensive security testing for LLM applications, aligned with OWASP LLM Top 10.
+          </p>
+
+          <!-- Stats Row -->
+          <div class="hero-animate grid grid-cols-3 gap-6 mt-10 pt-8 border-t border-[var(--theme-border-subtle)]" style="--delay: 4">
+            <div class="text-center lg:text-left">
+              <div class="text-3xl font-bold text-[var(--theme-text-primary)]">6</div>
+              <div class="text-sm text-[var(--theme-text-muted)]">Mutation Types</div>
+            </div>
+            <div class="text-center lg:text-left">
+              <div class="text-3xl font-bold text-[var(--theme-text-primary)]">5/10</div>
+              <div class="text-sm text-[var(--theme-text-muted)]">OWASP Covered</div>
+            </div>
+            <div class="text-center lg:text-left">
+              <div class="text-3xl font-bold text-[var(--theme-text-primary)]">100%</div>
+              <div class="text-sm text-[var(--theme-text-muted)]">Open Source</div>
+            </div>
+          </div>
+
+          <!-- CTAs -->
+          <div class="hero-animate flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mt-10" style="--delay: 5">
+            <a
+              href="/docs/cli/commands/redteam/"
+              class="group inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-2xl bg-gradient-to-b from-red-500 to-red-600 text-white font-semibold shadow-lg shadow-red-500/25 hover:shadow-red-500/40 hover:from-red-400 hover:to-red-500 transition-all duration-200"
+            >
+              <span>Start Security Testing</span>
+              <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <a
+              href="#owasp"
+              class="group inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-2xl bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border)] text-[var(--theme-text-secondary)] font-semibold hover:bg-[var(--theme-bg-elevated)] hover:border-[var(--theme-border-hover)] hover:text-[var(--theme-text-primary)] transition-all duration-200"
+            >
+              <span>See OWASP Coverage</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column - Security Dashboard -->
+        <div class="hero-animate" style="--delay: 3">
+          <div class="relative">
+            <!-- Glow -->
+            <div class="absolute -inset-4 bg-gradient-to-br from-red-500/15 via-blue-500/10 to-transparent rounded-3xl blur-2xl opacity-60"></div>
+
+            <!-- Security Dashboard Card -->
+            <div class="relative bg-[var(--theme-bg-secondary)] border border-[var(--theme-border)] rounded-2xl overflow-hidden">
+              <!-- Header -->
+              <div class="flex items-center justify-between px-6 py-4 border-b border-[var(--theme-border)]">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-semibold text-[var(--theme-text-primary)]">Security Assessment</h3>
+                    <p class="text-xs text-[var(--theme-text-muted)]">Run ID: sec_abc123</p>
+                  </div>
+                </div>
+                <span class="px-3 py-1 text-xs font-bold bg-yellow-500/15 text-yellow-400 rounded-full border border-yellow-500/20">4 Issues</span>
+              </div>
+
+              <!-- OWASP Coverage Mini -->
+              <div class="p-6">
+                <h4 class="text-xs font-medium text-[var(--theme-text-muted)] uppercase tracking-wider mb-4">OWASP LLM Top 10 Coverage</h4>
+                <div class="grid grid-cols-5 gap-2">
+                  {owaspTop10.slice(0, 5).map(item => (
+                    <div class={`text-center p-3 rounded-lg ${item.covered ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-zinc-500/10 border border-zinc-500/20'}`}>
+                      <span class={`text-xs font-mono ${item.covered ? 'text-emerald-400' : 'text-zinc-500'}`}>{item.rank.replace('LLM0', '')}</span>
+                    </div>
+                  ))}
+                </div>
+                <div class="grid grid-cols-5 gap-2 mt-2">
+                  {owaspTop10.slice(5).map(item => (
+                    <div class={`text-center p-3 rounded-lg ${item.covered ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-zinc-500/10 border border-zinc-500/20'}`}>
+                      <span class={`text-xs font-mono ${item.covered ? 'text-emerald-400' : 'text-zinc-500'}`}>{item.rank.replace('LLM', '')}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <!-- Vulnerability Summary -->
+                <div class="mt-6 pt-6 border-t border-[var(--theme-border)]">
+                  <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm text-[var(--theme-text-secondary)]">Vulnerabilities Found</span>
+                    <span class="text-lg font-bold text-red-400">4</span>
+                  </div>
+                  <div class="flex gap-2">
+                    <span class="flex-1 text-center py-2 rounded-lg bg-red-500/10 border border-red-500/20">
+                      <span class="text-xs font-bold text-red-400">2 Critical</span>
+                    </span>
+                    <span class="flex-1 text-center py-2 rounded-lg bg-orange-500/10 border border-orange-500/20">
+                      <span class="text-xs font-bold text-orange-400">1 High</span>
+                    </span>
+                    <span class="flex-1 text-center py-2 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
+                      <span class="text-xs font-bold text-yellow-400">1 Medium</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem Section -->
+  <section class="section bg-[var(--theme-bg-secondary)]">
+    <div class="container max-w-7xl mx-auto px-6">
+      <div class="max-w-3xl mb-16">
+        <span class="inline-block text-sm font-semibold text-red-400 uppercase tracking-wider mb-4">The Problem</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--theme-text-primary)] mb-6">
+          The AI Security Problem
+        </h2>
+        <p class="text-lg text-[var(--theme-text-secondary)]">
+          Traditional security tools weren't built for AI. LLMs have unique attack surfaces that require specialized testing approaches.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="card card-threat">
+          <h3 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-6 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+              <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </div>
+            What Traditional Tools Miss
+          </h3>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <span class="text-red-400 mt-0.5">✗</span>
+              <span class="text-[var(--theme-text-secondary)]">Prompt injection attacks via natural language</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-red-400 mt-0.5">✗</span>
+              <span class="text-[var(--theme-text-secondary)]">Jailbreak attempts that bypass safety guardrails</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-red-400 mt-0.5">✗</span>
+              <span class="text-[var(--theme-text-secondary)]">Sensitive data leakage in model responses</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-red-400 mt-0.5">✗</span>
+              <span class="text-[var(--theme-text-secondary)]">Multi-turn conversation exploitation</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-red-400 mt-0.5">✗</span>
+              <span class="text-[var(--theme-text-secondary)]">Encoding-based filter bypasses</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 class="text-xl font-semibold text-[var(--theme-text-primary)] mb-6 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+              <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            What ArtemisKit Provides
+          </h3>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span class="text-[var(--theme-text-secondary)]">Automated prompt injection testing</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span class="text-[var(--theme-text-secondary)]">Jailbreak and role spoofing attacks</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span class="text-[var(--theme-text-secondary)]">Data leakage detection in outputs</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span class="text-[var(--theme-text-secondary)]">Multi-turn conversation security</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-400 mt-0.5">✓</span>
+              <span class="text-[var(--theme-text-secondary)]">Encoding and obfuscation testing</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OWASP Coverage Section -->
+  <section id="owasp" class="section">
+    <div class="container max-w-7xl mx-auto px-6">
+      <div class="max-w-3xl mb-16">
+        <span class="inline-block text-sm font-semibold text-[var(--theme-primary)] uppercase tracking-wider mb-4">OWASP Coverage</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--theme-text-primary)] mb-6">
+          OWASP LLM Top 10 Coverage
+        </h2>
+        <p class="text-lg text-[var(--theme-text-secondary)]">
+          ArtemisKit tests for the most critical AI security risks identified by OWASP. Here's our coverage.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        {owaspTop10.map(item => (
+          <div class={`flex items-center justify-between p-5 rounded-xl border transition-all ${
+            item.covered
+              ? 'bg-emerald-500/5 border-emerald-500/20 hover:border-emerald-500/40'
+              : 'bg-[var(--theme-bg-card)] border-[var(--theme-border)] hover:border-[var(--theme-border-hover)]'
+          }`}>
+            <div class="flex items-center gap-4">
+              <span class={`px-2.5 py-1.5 text-xs font-mono font-bold rounded-lg ${
+                item.covered ? 'bg-emerald-500/20 text-emerald-400' : 'bg-zinc-500/20 text-zinc-500'
+              }`}>
+                {item.rank}
+              </span>
+              <span class={item.covered ? 'text-[var(--theme-text-primary)]' : 'text-[var(--theme-text-muted)]'}>{item.name}</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class={`px-2.5 py-1 text-xs font-semibold rounded-full ${
+                item.severity === 'Critical' ? 'bg-red-500/15 text-red-400' :
+                item.severity === 'High' ? 'bg-orange-500/15 text-orange-400' :
+                'bg-yellow-500/15 text-yellow-400'
+              }`}>
+                {item.severity}
+              </span>
+              {item.covered ? (
+                <span class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                  <span class="text-emerald-400 text-sm">✓</span>
+                </span>
+              ) : (
+                <span class="w-6 h-6 rounded-full bg-zinc-500/20 flex items-center justify-center">
+                  <span class="text-zinc-500 text-sm">—</span>
+                </span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p class="text-sm text-[var(--theme-text-muted)] mt-6">
+        ArtemisKit focuses on application-layer vulnerabilities testable via API. Infrastructure-level risks (LLM03, LLM04, LLM05, LLM08, LLM10) require additional security measures.
+      </p>
+    </div>
+  </section>
+
+  <!-- Workflow Section -->
+  <section class="section bg-[var(--theme-bg-secondary)]">
+    <div class="container max-w-7xl mx-auto px-6">
+      <div class="max-w-3xl mb-16">
+        <span class="inline-block text-sm font-semibold text-[var(--theme-primary)] uppercase tracking-wider mb-4">Workflow</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--theme-text-primary)] mb-6">
+          AI Security Testing Workflow
+        </h2>
+        <p class="text-lg text-[var(--theme-text-secondary)]">
+          Integrate security testing into your development lifecycle for continuous protection.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {workflowStages.map((item, index) => (
+          <div class="group card text-center relative overflow-hidden">
+            <!-- Step number background -->
+            <div class="absolute -right-2 -top-2 text-[80px] font-bold text-[var(--theme-border-subtle)] opacity-30 select-none">{index + 1}</div>
+
+            <div class="relative">
+              <div class={`w-14 h-14 mx-auto rounded-2xl flex items-center justify-center mb-4 ${
+                index === 0 ? 'bg-blue-500/10 border border-blue-500/20' :
+                index === 1 ? 'bg-green-500/10 border border-green-500/20' :
+                index === 2 ? 'bg-yellow-500/10 border border-yellow-500/20' :
+                'bg-red-500/10 border border-red-500/20'
+              }`}>
+                <span class={`text-xl font-bold ${
+                  index === 0 ? 'text-blue-400' :
+                  index === 1 ? 'text-green-400' :
+                  index === 2 ? 'text-yellow-400' :
+                  'text-red-400'
+                }`}>{index + 1}</span>
+              </div>
+              <h3 class="font-semibold text-[var(--theme-text-primary)] mb-2">{item.stage}</h3>
+              <p class="text-[var(--theme-text-secondary)] text-sm mb-4">{item.description}</p>
+              <code class={`text-xs font-mono px-3 py-1.5 rounded-lg ${
+                index === 0 ? 'bg-blue-500/10 text-blue-400' :
+                index === 1 ? 'bg-green-500/10 text-green-400' :
+                index === 2 ? 'bg-yellow-500/10 text-yellow-400' :
+                'bg-red-500/10 text-red-400'
+              }`}>--count {item.count}</code>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Compliance Section -->
+  <section class="section">
+    <div class="container max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <span class="inline-block text-sm font-semibold text-[var(--theme-primary)] uppercase tracking-wider mb-4">Compliance</span>
+          <h2 class="text-3xl md:text-4xl font-bold text-[var(--theme-text-primary)] mb-6">
+            Security Testing for Compliance
+          </h2>
+          <p class="text-lg text-[var(--theme-text-secondary)] mb-8">
+            Regulatory frameworks increasingly require documented AI security testing. ArtemisKit generates audit-ready reports.
+          </p>
+
+          <div class="space-y-4">
+            {complianceFrameworks.map(framework => (
+              <div class={`flex items-center gap-4 p-4 rounded-xl border ${
+                framework.color === 'orange' ? 'bg-orange-500/5 border-orange-500/20' :
+                framework.color === 'blue' ? 'bg-blue-500/5 border-blue-500/20' :
+                framework.color === 'green' ? 'bg-green-500/5 border-green-500/20' :
+                'bg-purple-500/5 border-purple-500/20'
+              }`}>
+                <span class={`font-bold ${
+                  framework.color === 'orange' ? 'text-orange-400' :
+                  framework.color === 'blue' ? 'text-blue-400' :
+                  framework.color === 'green' ? 'text-green-400' :
+                  'text-purple-400'
+                }`}>{framework.name}</span>
+                <span class="text-[var(--theme-text-secondary)] text-sm">{framework.description}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-red-500"></div>
+              <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+              <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            </div>
+            <span class="text-xs text-zinc-500">Generate Compliance Reports</span>
+          </div>
+          <div class="code-block-content">
+            <div class="space-y-4 text-sm font-mono">
+              <div>
+                <span class="text-zinc-500">$</span>
+                <span class="text-orange-400"> akit redteam</span>
+                <span class="text-zinc-400"> scenario.yaml --count 100</span>
+              </div>
+              <div class="text-zinc-500 text-xs">
+                Red-teaming complete. Run ID: sec_abc123
+              </div>
+              <div>
+                <span class="text-zinc-500">$</span>
+                <span class="text-orange-400"> akit report</span>
+                <span class="text-zinc-400"> sec_abc123 -f html -o ./compliance</span>
+              </div>
+              <div class="text-zinc-500 text-xs">
+                Report generated: ./compliance/security-report.html
+              </div>
+            </div>
+            <div class="mt-6 p-4 bg-[var(--theme-bg-tertiary)] rounded-xl border border-[var(--theme-border)]">
+              <p class="text-sm text-[var(--theme-text-secondary)]">
+                Reports include: test methodology, vulnerability findings, severity scores, reproduction steps, and remediation guidance.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section bg-[var(--theme-bg-secondary)]">
+    <div class="container max-w-4xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <span class="inline-block text-sm font-semibold text-[var(--theme-primary)] uppercase tracking-wider mb-4">FAQ</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--theme-text-primary)]">
+          Frequently Asked Questions
+        </h2>
+      </div>
+      <div class="space-y-4">
+        {pageFAQ.map((item, index) => (
+          <details class="group card">
+            <summary class="flex items-center justify-between cursor-pointer list-none">
+              <h3 class="text-lg font-semibold text-[var(--theme-text-primary)] pr-8">{item.question}</h3>
+              <span class="flex-shrink-0 w-8 h-8 rounded-full bg-[var(--theme-bg-tertiary)] flex items-center justify-center group-open:rotate-180 transition-transform">
+                <svg class="w-4 h-4 text-[var(--theme-text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-[var(--theme-text-secondary)] leading-relaxed">{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Articles -->
+  <section class="section">
+    <div class="container max-w-7xl mx-auto px-6">
+      <h2 class="text-2xl font-bold text-[var(--theme-text-primary)] mb-8">Related Articles</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <a href="/blog/microsoft-copilot-echoleak-vulnerability/" class="group card">
+          <span class="badge badge-danger mb-4">Security News</span>
+          <h3 class="text-lg font-semibold text-[var(--theme-text-primary)] group-hover:text-[var(--theme-primary)] transition-colors mb-2">Microsoft Copilot EchoLeak</h3>
+          <p class="text-[var(--theme-text-secondary)] text-sm">Why AI security testing matters: a real-world case study.</p>
+        </a>
+        <a href="/prompt-injection-testing/" class="group card">
+          <span class="badge badge-primary mb-4">Guide</span>
+          <h3 class="text-lg font-semibold text-[var(--theme-text-primary)] group-hover:text-[var(--theme-primary)] transition-colors mb-2">Prompt Injection Testing</h3>
+          <p class="text-[var(--theme-text-secondary)] text-sm">Deep dive into OWASP LLM #1 risk and how to defend against it.</p>
+        </a>
+        <a href="/ai-red-team/" class="group card">
+          <span class="badge badge-success mb-4">Guide</span>
+          <h3 class="text-lg font-semibold text-[var(--theme-text-primary)] group-hover:text-[var(--theme-primary)] transition-colors mb-2">AI Red Team Testing</h3>
+          <p class="text-[var(--theme-text-secondary)] text-sm">Comprehensive adversarial testing methodology for LLM applications.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section bg-gradient-to-b from-[var(--theme-bg-secondary)] to-[var(--theme-bg-primary)]">
+    <div class="container max-w-4xl mx-auto px-6 text-center">
+      <div class="relative">
+        <div class="absolute -inset-x-20 -top-20 h-40 bg-gradient-to-b from-red-500/10 to-transparent rounded-full blur-3xl"></div>
+        <div class="relative">
+          <h2 class="text-3xl md:text-4xl font-bold text-[var(--theme-text-primary)] mb-6">
+            Secure Your AI Today
+          </h2>
+          <p class="text-xl text-[var(--theme-text-secondary)] mb-10 max-w-2xl mx-auto">
+            ArtemisKit is free, open-source, and ready to help you find and fix AI security vulnerabilities before they're exploited.
+          </p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a
+              href="/docs/cli/getting-started/"
+              class="group inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl bg-gradient-to-b from-red-500 to-red-600 text-white font-semibold text-lg shadow-lg shadow-red-500/25 hover:shadow-red-500/40 hover:from-red-400 hover:to-red-500 transition-all duration-200"
+            >
+              <span>Get Started Free</span>
+              <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <a
+              href="/ai-red-team/"
+              class="px-8 py-4 rounded-2xl bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border)] text-[var(--theme-text-secondary)] font-semibold text-lg hover:bg-[var(--theme-bg-elevated)] hover:border-[var(--theme-border-hover)] hover:text-[var(--theme-text-primary)] transition-all duration-200"
+            >
+              Learn About Red-Teaming
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JSON-LD FAQ Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": pageFAQ.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
+  })} />
+
+  <!-- JSON-LD Breadcrumb Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": breadcrumbs.map((item, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": item.name,
+      "item": item.url
+    }))
+  })} />
+</Layout>
+
+<style>
+  @keyframes hero-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hero-animate {
+    opacity: 0;
+    animation: hero-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: calc(var(--delay, 0) * 120ms + 150ms);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-animate {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  details summary::-webkit-details-marker {
+    display: none;
+  }
+</style>
