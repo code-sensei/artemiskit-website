@@ -1,0 +1,259 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const categories = ['changelog', 'tutorials', 'security-news', 'engineering', 'case-studies'];
+  return categories.map(category => ({
+    params: { category },
+  }));
+}
+
+const { category } = Astro.params;
+
+// Category info
+const categoryInfo: Record<string, { label: string; description: string; color: string; bgColor: string; icon: string }> = {
+  'changelog': {
+    label: 'Changelog',
+    description: 'Latest updates, releases, and improvements to ArtemisKit.',
+    color: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+    bgColor: 'bg-blue-500/10',
+    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />'
+  },
+  'tutorials': {
+    label: 'Tutorials',
+    description: 'Step-by-step guides to help you get the most out of ArtemisKit.',
+    color: 'bg-green-500/20 text-green-400 border-green-500/30',
+    bgColor: 'bg-green-500/10',
+    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />'
+  },
+  'security-news': {
+    label: 'Security News',
+    description: 'Analysis of AI security incidents, vulnerabilities, and industry news.',
+    color: 'bg-red-500/20 text-red-400 border-red-500/30',
+    bgColor: 'bg-red-500/10',
+    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />'
+  },
+  'engineering': {
+    label: 'Engineering',
+    description: 'Technical deep-dives into LLM testing, evaluation, and best practices.',
+    color: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+    bgColor: 'bg-purple-500/10',
+    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />'
+  },
+  'case-studies': {
+    label: 'Case Studies',
+    description: 'Real-world examples of teams using ArtemisKit in production.',
+    color: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+    bgColor: 'bg-amber-500/10',
+    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />'
+  },
+};
+
+const info = categoryInfo[category] || {
+  label: category,
+  description: '',
+  color: 'bg-zinc-500/20 text-zinc-400 border-zinc-500/30',
+  bgColor: 'bg-zinc-500/10',
+  icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />'
+};
+
+// Get posts for this category
+const allPosts = await getCollection('blog', ({ data }) => !data.draft && data.category === category);
+const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// All categories for navigation
+const categories = [
+  { slug: 'changelog', label: 'Changelog', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30', hoverColor: 'hover:bg-blue-500/30' },
+  { slug: 'tutorials', label: 'Tutorials', color: 'bg-green-500/20 text-green-400 border-green-500/30', hoverColor: 'hover:bg-green-500/30' },
+  { slug: 'security-news', label: 'Security News', color: 'bg-red-500/20 text-red-400 border-red-500/30', hoverColor: 'hover:bg-red-500/30' },
+  { slug: 'engineering', label: 'Engineering', color: 'bg-purple-500/20 text-purple-400 border-purple-500/30', hoverColor: 'hover:bg-purple-500/30' },
+  { slug: 'case-studies', label: 'Case Studies', color: 'bg-amber-500/20 text-amber-400 border-amber-500/30', hoverColor: 'hover:bg-amber-500/30' },
+];
+
+// Format date helper
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  }).format(date);
+};
+
+// Breadcrumbs for schema
+const breadcrumbs = [
+  { name: 'Home', url: 'https://artemiskit.vercel.app/' },
+  { name: 'Blog', url: 'https://artemiskit.vercel.app/blog/' },
+  { name: info.label, url: `https://artemiskit.vercel.app/blog/category/${category}/` },
+];
+
+// CollectionPage schema for category pages
+const collectionSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": `${info.label} - ArtemisKit Blog`,
+  "description": info.description,
+  "url": `https://artemiskit.vercel.app/blog/category/${category}/`,
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "ArtemisKit Blog",
+    "url": "https://artemiskit.vercel.app/blog/"
+  },
+  "numberOfItems": sortedPosts.length,
+  "hasPart": sortedPosts.slice(0, 10).map(post => ({
+    "@type": "BlogPosting",
+    "headline": post.data.title,
+    "description": post.data.description,
+    "url": `https://artemiskit.vercel.app/blog/${post.id.replace(/\.mdx$/, '')}/`,
+    "datePublished": post.data.pubDate.toISOString()
+  }))
+};
+---
+
+<Layout
+  title={`${info.label} - ArtemisKit Blog`}
+  description={info.description}
+  breadcrumbs={breadcrumbs}
+>
+  <div class="py-20 md:py-32">
+    <!-- Header -->
+    <header class="max-w-7xl mx-auto px-6 lg:px-8 mb-16">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-zinc-500 mb-10">
+        <a href="/" class="hover:text-zinc-300 transition-colors duration-200">Home</a>
+        <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+        </svg>
+        <a href="/blog/" class="hover:text-zinc-300 transition-colors duration-200">Blog</a>
+        <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="text-zinc-300">{info.label}</span>
+      </nav>
+
+      <div class="flex items-start gap-6">
+        <div class={`p-4 rounded-2xl ${info.bgColor} hidden sm:flex`}>
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" set:html={info.icon} />
+        </div>
+        <div class="flex-1">
+          <span class={`inline-block px-4 py-1.5 text-sm font-medium rounded-full border mb-5 ${info.color}`}>
+            {info.label}
+          </span>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-5 tracking-tight">
+            {info.label}
+          </h1>
+          <p class="text-lg md:text-xl text-zinc-400 max-w-2xl leading-relaxed">
+            {info.description}
+          </p>
+          <p class="text-sm text-zinc-500 mt-4">
+            {sortedPosts.length} {sortedPosts.length === 1 ? 'article' : 'articles'}
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Category Navigation -->
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 mb-16">
+      <div class="flex flex-wrap gap-3">
+        <a
+          href="/blog/"
+          class="px-5 py-2.5 bg-zinc-800/60 text-zinc-400 border border-zinc-700/50 rounded-full text-sm font-medium hover:bg-zinc-800 hover:text-zinc-300 transition-all duration-200"
+        >
+          All Posts
+        </a>
+        {categories.map(cat => (
+          <a
+            href={`/blog/category/${cat.slug}/`}
+            class={`px-5 py-2.5 border rounded-full text-sm font-medium transition-all duration-200 ${
+              cat.slug === category
+                ? cat.color
+                : `bg-zinc-800/60 text-zinc-400 border-zinc-700/50 hover:bg-zinc-800 hover:text-zinc-300`
+            }`}
+          >
+            {cat.label}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <!-- Posts Grid -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-8">
+      {sortedPosts.length > 0 ? (
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {sortedPosts.map(post => (
+            <a
+              href={`/blog/${post.id.replace(/\.mdx$/, '')}/`}
+              class="group block bg-zinc-900/50 border border-zinc-800/70 rounded-2xl overflow-hidden hover:border-zinc-700 hover:bg-zinc-900/70 transition-all duration-300 hover:shadow-xl hover:shadow-black/20"
+            >
+              {post.data.image && (
+                <div class="aspect-[16/10] overflow-hidden">
+                  <img
+                    src={post.data.image.src}
+                    alt={post.data.image.alt}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+              <div class="p-7">
+                <h3 class="text-xl font-semibold text-white group-hover:text-orange-400 transition-colors duration-200 mb-3 line-clamp-2 leading-snug">
+                  {post.data.title}
+                </h3>
+                <p class="text-zinc-400 text-sm line-clamp-3 mb-5 leading-relaxed">
+                  {post.data.description}
+                </p>
+                <div class="flex items-center justify-between text-sm text-zinc-500 pt-4 border-t border-zinc-800/50">
+                  <time datetime={post.data.pubDate.toISOString()}>
+                    {formatDate(post.data.pubDate)}
+                  </time>
+                  {post.data.readingTime && (
+                    <span class="flex items-center gap-1.5">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {post.data.readingTime} min
+                    </span>
+                  )}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-24 bg-zinc-900/40 border border-zinc-800/60 rounded-2xl">
+          <div class="w-20 h-20 mx-auto mb-8 rounded-full bg-zinc-800/50 flex items-center justify-center">
+            <svg class="w-10 h-10 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+            </svg>
+          </div>
+          <p class="text-zinc-300 text-xl mb-3 font-medium">No posts in this category yet</p>
+          <p class="text-zinc-500 mb-8 max-w-md mx-auto">Check back soon or explore other categories for more content.</p>
+          <a
+            href="/blog/"
+            class="inline-block px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-xl transition-all duration-200"
+          >
+            View All Posts
+          </a>
+        </div>
+      )}
+    </section>
+
+    <!-- Back to Blog Link -->
+    {sortedPosts.length > 0 && (
+      <div class="max-w-7xl mx-auto px-6 lg:px-8 mt-16">
+        <a
+          href="/blog/"
+          class="inline-flex items-center gap-2 text-zinc-400 hover:text-zinc-200 transition-colors duration-200"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span>Back to all posts</span>
+        </a>
+      </div>
+    )}
+  </div>
+
+  <!-- JSON-LD CollectionPage Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify(collectionSchema)} />
+</Layout>

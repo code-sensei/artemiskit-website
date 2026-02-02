@@ -1,0 +1,35 @@
+---
+import { getCollection, render } from 'astro:content';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map(post => ({
+    // In Astro 5 with glob loader, use 'id' for the slug (filename without extension)
+    params: { slug: post.id.replace(/\.mdx$/, '') },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+// Calculate reading time if not set - use body if available, otherwise estimate
+const wordCount = post.body ? post.body.split(/\s+/).length : 500;
+const readingTime = post.data.readingTime || Math.ceil(wordCount / 200);
+---
+
+<BlogLayout
+  title={post.data.title}
+  description={post.data.description}
+  pubDate={post.data.pubDate}
+  updatedDate={post.data.updatedDate}
+  incidentDate={post.data.incidentDate}
+  author={post.data.author}
+  category={post.data.category}
+  tags={post.data.tags}
+  image={post.data.image}
+  readingTime={readingTime}
+>
+  <Content />
+</BlogLayout>
