@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'astro/types';
 
 interface Props extends HTMLAttributes<'a'> {
-  variant?: 'primary' | 'secondary' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'outline';
   size?: 'sm' | 'md' | 'lg';
   href?: string;
   external?: boolean;
@@ -17,16 +17,48 @@ const {
   ...rest
 } = Astro.props;
 
-const baseClasses = 'btn';
+const baseClasses = `
+  inline-flex items-center justify-center gap-2
+  font-medium rounded-lg
+  transition-all duration-200
+  focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900
+  disabled:opacity-50 disabled:cursor-not-allowed
+`;
+
 const variantClasses = {
-  primary: 'btn-primary',
-  secondary: 'btn-secondary',
-  ghost: 'btn-ghost',
+  primary: `
+    bg-gradient-to-b from-orange-500 to-orange-600
+    text-white
+    shadow-sm shadow-orange-500/20
+    hover:from-orange-400 hover:to-orange-500
+    hover:shadow-md hover:shadow-orange-500/25
+    active:from-orange-600 active:to-orange-700
+  `,
+  secondary: `
+    bg-zinc-800
+    text-zinc-100
+    border border-zinc-700
+    hover:bg-zinc-700 hover:border-zinc-600
+    active:bg-zinc-800
+  `,
+  ghost: `
+    text-zinc-400
+    hover:text-zinc-100 hover:bg-zinc-800/50
+    active:bg-zinc-800
+  `,
+  outline: `
+    bg-transparent
+    text-zinc-300
+    border border-zinc-700
+    hover:bg-zinc-800/50 hover:border-zinc-600 hover:text-zinc-100
+    active:bg-zinc-800
+  `,
 };
+
 const sizeClasses = {
-  sm: 'btn-sm',
-  md: '',
-  lg: 'btn-lg',
+  sm: 'px-3.5 py-2 text-sm',
+  md: 'px-5 py-2.5 text-sm',
+  lg: 'px-6 py-3 text-base',
 };
 
 const classes = [
@@ -34,7 +66,7 @@ const classes = [
   variantClasses[variant],
   sizeClasses[size],
   className,
-].filter(Boolean).join(' ');
+].filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
 
 const externalProps = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
 ---
