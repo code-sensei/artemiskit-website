@@ -1,16 +1,55 @@
 ---
 import SectionHeading from '../ui/SectionHeading.astro';
-import UseCaseTabs from './UseCaseTabs';
+import UseCasesScrollCarousel from './UseCasesScrollCarousel';
 ---
 
-<section class="section relative bg-bg-secondary">
-  <div class="container">
-    <SectionHeading
-      badge="Use Cases"
-      title="Trusted Across the LLM Lifecycle"
-      subtitle="From development to production, ArtemisKit supports every stage of your LLM application journey."
-    />
+<section id="use-cases" class="relative">
+  <!-- Section header - not sticky -->
+  <div class="bg-bg-secondary pt-16 md:pt-24 pb-8">
+    <div class="container">
+      <SectionHeading
+        badge="Use Cases"
+        title="Built for Teams Who Ship"
+        subtitle="From security red-teaming to compliance documentation, ArtemisKit supports every stage of your LLM reliability journey."
+      />
+    </div>
+  </div>
 
-    <UseCaseTabs client:visible />
+  <!-- Scroll-linked carousel -->
+  <div class="bg-bg-secondary">
+    <UseCasesScrollCarousel client:visible />
+  </div>
+
+  <!-- Bottom CTA - appears after scrolling through cards -->
+  <div class="bg-bg-secondary py-16 md:py-24">
+    <div class="container">
+      <div class="text-center max-w-2xl mx-auto">
+        <p class="text-stone-400 mb-6 text-lg">
+          Not sure where to start? The CLI guides you through your first evaluation in under 5 minutes.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a
+            href="/docs/cli/getting-started/"
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary-500 text-white font-medium hover:bg-primary-600 transition-all"
+          >
+            <span>Get Started</span>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a
+            href="https://github.com/code-sensei/artemiskit"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-stone-700 text-stone-300 font-medium hover:border-stone-600 hover:text-stone-200 transition-all"
+          >
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+            </svg>
+            <span>View on GitHub</span>
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
