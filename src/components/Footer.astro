@@ -12,18 +12,27 @@
 const footerLinks = {
   product: [
     { label: 'Features', href: '/#features' },
-    { label: 'How It Works', href: '/#how-it-works' },
     { label: 'Use Cases', href: '/#use-cases' },
+    { label: 'LLM Testing', href: '/llm-testing/' },
+    { label: 'AI Security Testing', href: '/ai-security-testing/' },
     { label: 'Documentation', href: '/docs/' },
     { label: 'Sitemap', href: '/sitemap/' },
   ],
   resources: [
     { label: 'Getting Started', href: '/docs/cli/getting-started/' },
-    { label: 'Installation', href: '/docs/cli/installation/' },
-    { label: 'CLI Commands', href: '/docs/cli/' },
-    { label: 'Scenario Format', href: '/docs/cli/scenarios/format/' },
     { label: 'Red Team Testing', href: '/docs/cli/commands/redteam/' },
+    { label: 'Prompt Injection Testing', href: '/prompt-injection-testing/' },
+    { label: 'AI Red Team', href: '/ai-red-team/' },
     { label: 'Providers', href: '/docs/cli/providers/' },
+    { label: 'CI/CD Integration', href: '/docs/cli/ci-cd/' },
+  ],
+  blog: [
+    { label: 'All Posts', href: '/blog/' },
+    { label: 'Changelog', href: '/blog/category/changelog/' },
+    { label: 'Tutorials', href: '/blog/category/tutorials/' },
+    { label: 'Security News', href: '/blog/category/security-news/' },
+    { label: 'Engineering', href: '/blog/category/engineering/' },
+    { label: 'Case Studies', href: '/blog/category/case-studies/' },
   ],
   community: [
     { label: 'GitHub', href: 'https://github.com/code-sensei/artemiskit', external: true },
@@ -120,6 +129,22 @@ const currentYear = new Date().getFullYear();
                     <path d="M7 17L17 7M17 7H7M17 7V17" />
                   </svg>
                 )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="col-span-1 md:col-span-2">
+        <h3 class="text-xs font-semibold text-[var(--theme-text-muted)] uppercase tracking-wider mb-4">Blog</h3>
+        <ul class="space-y-2.5">
+          {footerLinks.blog.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="text-sm text-[var(--theme-text-tertiary)] hover:text-[var(--theme-text-secondary)] transition-colors inline-flex items-center gap-1"
+              >
+                {link.label}
               </a>
             </li>
           ))}
