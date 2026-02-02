@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   motion,
   useScroll,
@@ -335,6 +335,8 @@ function Card({
 
 export default function UseCasesScrollCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isInView, setIsInView] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
@@ -343,8 +345,63 @@ export default function UseCasesScrollCarousel() {
     offset: ["start start", "end end"],
   });
 
+  // Track when section comes into view for header animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Manual scroll listener as backup for scroll-linked card switching
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+
+      const rect = containerRef.current.getBoundingClientRect();
+      const containerHeight = containerRef.current.offsetHeight;
+      const viewportHeight = window.innerHeight;
+
+      // Calculate scroll progress through the container
+      // Progress is 0 when container top is at viewport top
+      // Progress is 1 when container bottom is at viewport bottom
+      const scrolled = -rect.top;
+      const scrollableDistance = containerHeight - viewportHeight;
+
+      if (scrollableDistance <= 0) return;
+
+      const progress = Math.max(0, Math.min(1, scrolled / scrollableDistance));
+      const newIndex = Math.min(
+        useCases.length - 1,
+        Math.floor(progress * useCases.length),
+      );
+
+      if (newIndex !== activeIndex && newIndex >= 0) {
+        setActiveIndex(newIndex);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    // Trigger once on mount to set initial state
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [activeIndex]);
+
+  // Keep framer-motion scroll tracking as well for smoother animations
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    if (prefersReducedMotion) return;
+    // Only use this if we get valid progress values
+    if (latest <= 0 || latest >= 1) return;
 
     const newIndex = Math.min(
       useCases.length - 1,
@@ -371,15 +428,14 @@ export default function UseCasesScrollCarousel() {
   };
 
   return (
-    <section className="relative bg-[var(--theme-bg-primary)]">
+    <section ref={sectionRef} className="relative bg-[var(--theme-bg-primary)]">
       {/* Section header */}
       <div className="max-w-6xl mx-auto px-4 pt-24 pb-12">
         <div className="text-center max-w-3xl mx-auto">
           <motion.div
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/20 mb-6"
             initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             transition={{ duration: 0.5 }}
           >
             <svg
@@ -401,8 +457,7 @@ export default function UseCasesScrollCarousel() {
           <motion.h2
             className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--theme-text-primary)] mb-4 tracking-tight"
             initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             Built for Every Team
@@ -411,8 +466,7 @@ export default function UseCasesScrollCarousel() {
           <motion.p
             className="text-lg text-[var(--theme-text-secondary)] max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             From security audits to compliance documentation, ArtemisKit adapts
