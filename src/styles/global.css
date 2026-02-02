@@ -97,6 +97,75 @@
     --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
 }
 
+/* ============================================
+   Theme System
+   Supports: light, dark (default), system, high-contrast
+   ============================================ */
+
+/* Dark Theme (Default) */
+:root,
+html.dark {
+    --theme-bg-primary: #0c0a09;
+    --theme-bg-secondary: #1c1917;
+    --theme-bg-tertiary: #292524;
+    --theme-bg-card: rgba(28, 25, 23, 0.8);
+    --theme-bg-card-hover: rgba(41, 37, 36, 0.9);
+    --theme-text-primary: #fafaf9;
+    --theme-text-secondary: #a8a29e;
+    --theme-text-tertiary: #78716c;
+    --theme-border: #292524;
+    --theme-border-hover: #44403c;
+    --theme-primary: #f97316;
+    --theme-primary-hover: #fb923c;
+    --theme-primary-muted: rgba(249, 115, 22, 0.15);
+    --theme-scrollbar-track: #1c1917;
+    --theme-scrollbar-thumb: #44403c;
+    --theme-header-bg: rgba(12, 10, 9, 0.85);
+    color-scheme: dark;
+}
+
+/* Light Theme */
+html.light {
+    --theme-bg-primary: #fafaf9;
+    --theme-bg-secondary: #f5f5f4;
+    --theme-bg-tertiary: #e7e5e4;
+    --theme-bg-card: rgba(255, 255, 255, 0.8);
+    --theme-bg-card-hover: rgba(245, 245, 244, 0.9);
+    --theme-text-primary: #1c1917;
+    --theme-text-secondary: #57534e;
+    --theme-text-tertiary: #78716c;
+    --theme-border: #e7e5e4;
+    --theme-border-hover: #d6d3d1;
+    --theme-primary: #ea580c;
+    --theme-primary-hover: #c2410c;
+    --theme-primary-muted: rgba(234, 88, 12, 0.1);
+    --theme-scrollbar-track: #f5f5f4;
+    --theme-scrollbar-thumb: #d6d3d1;
+    --theme-header-bg: rgba(250, 250, 249, 0.85);
+    color-scheme: light;
+}
+
+/* High Contrast Theme */
+html.high-contrast {
+    --theme-bg-primary: #000000;
+    --theme-bg-secondary: #0a0a0a;
+    --theme-bg-tertiary: #141414;
+    --theme-bg-card: rgba(20, 20, 20, 0.95);
+    --theme-bg-card-hover: rgba(30, 30, 30, 0.95);
+    --theme-text-primary: #ffffff;
+    --theme-text-secondary: #e5e5e5;
+    --theme-text-tertiary: #cccccc;
+    --theme-border: #333333;
+    --theme-border-hover: #555555;
+    --theme-primary: #ff8c00;
+    --theme-primary-hover: #ffa500;
+    --theme-primary-muted: rgba(255, 140, 0, 0.2);
+    --theme-scrollbar-track: #0a0a0a;
+    --theme-scrollbar-thumb: #555555;
+    --theme-header-bg: rgba(0, 0, 0, 0.95);
+    color-scheme: dark;
+}
+
 /* Base Styles */
 html {
     scroll-behavior: smooth;
@@ -106,9 +175,12 @@ html {
 
 body {
     font-family: var(--font-family-body);
-    background-color: var(--color-bg-primary);
-    color: var(--color-stone-100);
+    background-color: var(--theme-bg-primary, var(--color-bg-primary));
+    color: var(--theme-text-primary, var(--color-stone-100));
     line-height: 1.6;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
 /* Typography Defaults */
@@ -1657,4 +1729,144 @@ starlight-toc ul ul {
         animation: none !important;
         opacity: 1 !important;
     }
+}
+
+/* ============================================
+   Light Theme Specific Overrides
+   ============================================ */
+
+html.light {
+    /* Header */
+    & #header.scrolled {
+        background: var(--theme-header-bg);
+        border-bottom-color: var(--theme-border);
+    }
+
+    /* Cards and containers */
+    & .card,
+    & .glass,
+    & .glass-strong {
+        background: var(--theme-bg-card);
+        border-color: var(--theme-border);
+    }
+
+    & .card:hover {
+        background: var(--theme-bg-card-hover);
+        border-color: var(--theme-border-hover);
+    }
+
+    /* Terminal styling */
+    & .terminal,
+    & [class*="bg-stone-950"] {
+        background: #1c1917;
+    }
+
+    & [class*="bg-stone-900"] {
+        background: #292524;
+    }
+
+    /* Text colors */
+    & .text-stone-50,
+    & .text-stone-100 {
+        color: var(--theme-text-primary);
+    }
+
+    & .text-stone-300,
+    & .text-stone-400 {
+        color: var(--theme-text-secondary);
+    }
+
+    & .text-stone-500,
+    & .text-stone-600 {
+        color: var(--theme-text-tertiary);
+    }
+
+    /* Section backgrounds */
+    & .bg-bg-primary {
+        background-color: var(--theme-bg-primary);
+    }
+
+    & .bg-bg-secondary {
+        background-color: var(--theme-bg-secondary);
+    }
+
+    /* Border colors */
+    & .border-stone-700,
+    & .border-stone-800 {
+        border-color: var(--theme-border);
+    }
+
+    /* Scrollbar */
+    & ::-webkit-scrollbar-track {
+        background: var(--theme-scrollbar-track);
+    }
+
+    & ::-webkit-scrollbar-thumb {
+        background: var(--theme-scrollbar-thumb);
+    }
+
+    /* Grid pattern opacity */
+    & .grid-pattern {
+        opacity: 0.5;
+        background-image:
+            linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+    }
+
+    /* Gradient orbs - lighter */
+    & [class*="bg-primary-500/"] {
+        opacity: 0.7;
+    }
+}
+
+/* ============================================
+   High Contrast Theme Specific Overrides
+   ============================================ */
+
+html.high-contrast {
+    /* Enhanced focus indicators */
+    & :focus-visible {
+        outline: 3px solid var(--theme-primary);
+        outline-offset: 3px;
+    }
+
+    /* High contrast borders */
+    & .card,
+    & .glass,
+    & button,
+    & a {
+        border-color: var(--theme-border) !important;
+    }
+
+    & .card:hover,
+    & button:hover,
+    & a:hover {
+        border-color: var(--theme-border-hover) !important;
+    }
+
+    /* Text is always maximum contrast */
+    & .text-stone-300,
+    & .text-stone-400,
+    & .text-stone-500 {
+        color: var(--theme-text-secondary);
+    }
+
+    /* Links are clearly visible */
+    & a:not(.btn):not([class*="bg-"]) {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+}
+
+/* ============================================
+   Scrollbar Hide Utility (for carousels)
+   ============================================ */
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
 }
