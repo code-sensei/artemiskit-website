@@ -39,7 +39,7 @@ interface WaitlistFormProps {
 export default function WaitlistForm({
   type,
   successTitle = "You're on the list!",
-  successMessage = "We'll email you when it's ready. No spam, promise.",
+  successMessage = "We'll email you when it's ready.",
 }: WaitlistFormProps) {
   const [email, setEmail] = useState("");
   const [companySize, setCompanySize] = useState("");
@@ -77,10 +77,10 @@ export default function WaitlistForm({
 
   if (formState === "success") {
     return (
-      <div className="text-center p-8 rounded-2xl bg-green-500/10 border border-green-500/30">
-        <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
+      <div className="text-center py-8 px-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+        <div className="w-14 h-14 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
           <svg
-            className="w-8 h-8 text-green-500"
+            className="w-7 h-7 text-emerald-400"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -89,13 +89,33 @@ export default function WaitlistForm({
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
-        <h3 className="text-xl font-semibold text-stone-50 mb-2">
+        <h3 className="text-lg font-semibold text-zinc-100 mb-1">
           {successTitle}
         </h3>
-        <p className="text-stone-400">{successMessage}</p>
+        <p className="text-sm text-zinc-500">{successMessage}</p>
       </div>
     );
   }
+
+  const inputClasses = `
+    w-full px-4 py-3 rounded-lg
+    bg-zinc-900 border border-zinc-800
+    text-zinc-100 text-sm
+    placeholder:text-zinc-600
+    focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/20
+    disabled:opacity-50 disabled:cursor-not-allowed
+    transition-colors duration-200
+  `;
+
+  const selectClasses = `
+    w-full px-4 py-3 rounded-lg
+    bg-zinc-900 border border-zinc-800
+    text-zinc-400 text-sm
+    focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/20
+    disabled:opacity-50 disabled:cursor-not-allowed
+    transition-colors duration-200
+    appearance-none cursor-pointer
+  `;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -107,42 +127,64 @@ export default function WaitlistForm({
           placeholder="Enter your work email"
           required
           disabled={formState === "loading"}
-          className="input"
+          className={inputClasses}
         />
       </div>
 
-      <div className="grid sm:grid-cols-2 gap-4">
-        <select
-          value={companySize}
-          onChange={(e) => setCompanySize(e.target.value)}
-          disabled={formState === "loading"}
-          className="select"
-        >
-          {companySizes.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+      <div className="grid sm:grid-cols-2 gap-3">
+        <div className="relative">
+          <select
+            value={companySize}
+            onChange={(e) => setCompanySize(e.target.value)}
+            disabled={formState === "loading"}
+            className={selectClasses}
+          >
+            {companySizes.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <svg
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 pointer-events-none"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </div>
 
-        <select
-          value={useCase}
-          onChange={(e) => setUseCase(e.target.value)}
-          disabled={formState === "loading"}
-          className="select"
-        >
-          {useCases.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            value={useCase}
+            onChange={(e) => setUseCase(e.target.value)}
+            disabled={formState === "loading"}
+            className={selectClasses}
+          >
+            {useCases.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <svg
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 pointer-events-none"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </div>
       </div>
 
       {formState === "error" && errorMessage && (
         <p className="text-sm text-red-400 flex items-center gap-2">
           <svg
-            className="w-4 h-4"
+            className="w-4 h-4 flex-shrink-0"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -159,12 +201,22 @@ export default function WaitlistForm({
       <button
         type="submit"
         disabled={formState === "loading" || !email}
-        className="btn btn-primary w-full justify-center"
+        className="
+          w-full flex items-center justify-center gap-2
+          px-5 py-3 rounded-lg
+          bg-gradient-to-b from-orange-500 to-orange-600
+          text-white text-sm font-medium
+          shadow-sm shadow-orange-500/20
+          hover:from-orange-400 hover:to-orange-500
+          hover:shadow-md hover:shadow-orange-500/25
+          disabled:opacity-50 disabled:cursor-not-allowed
+          transition-all duration-200
+        "
       >
         {formState === "loading" ? (
           <>
             <svg
-              className="animate-spin w-5 h-5"
+              className="animate-spin w-4 h-4"
               viewBox="0 0 24 24"
               fill="none"
             >
@@ -182,17 +234,17 @@ export default function WaitlistForm({
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               />
             </svg>
-            Joining...
+            <span>Joining...</span>
           </>
         ) : (
           "Join Waitlist"
         )}
       </button>
 
-      <p className="text-xs text-stone-600 text-center">
+      <p className="text-xs text-zinc-600 text-center">
         {type === "cloud"
-          ? "We'll only email you about ArtemisKit Cloud launch. No spam."
-          : "We'll notify you when the programmatic API is available. No spam."}
+          ? "We'll only email you about ArtemisKit Cloud launch."
+          : "We'll notify you when the programmatic API is available."}
       </p>
     </form>
   );
