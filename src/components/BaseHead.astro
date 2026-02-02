@@ -55,6 +55,22 @@ const websiteSchema = {
 };
 ---
 
+<!-- Theme Initialization (prevents flash of wrong theme) -->
+<script is:inline>
+(function() {
+  const STORAGE_KEY = 'artemiskit-theme';
+  const stored = localStorage.getItem(STORAGE_KEY);
+  let theme = stored || 'system';
+
+  if (theme === 'system') {
+    theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  document.documentElement.classList.remove('light', 'dark', 'high-contrast');
+  document.documentElement.classList.add(theme);
+})();
+</script>
+
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
