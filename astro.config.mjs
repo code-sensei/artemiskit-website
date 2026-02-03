@@ -16,7 +16,8 @@ export default defineConfig({
       title: "ArtemisKit",
       favicon: "/favicon-32.png",
       logo: {
-        src: "./public/artemiskit-logo.png",
+        light: "./public/artemiskit-logo-dark.svg",
+        dark: "./public/artemiskit-logo.svg",
         alt: "ArtemisKit",
         replacesTitle: true,
       },
