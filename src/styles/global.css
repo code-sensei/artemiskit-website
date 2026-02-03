@@ -132,7 +132,7 @@
    Supports: dark (default), light, system, high-contrast
    ============================================ */
 
-/* Dark Theme (Default) */
+/* Dark Theme (Default) - Improved contrast */
 :root,
 html.dark {
   --theme-bg-primary: #09090b;
@@ -143,70 +143,137 @@ html.dark {
   --theme-bg-card-hover: rgba(31, 31, 35, 0.8);
   --theme-bg-overlay: rgba(9, 9, 11, 0.9);
 
+  /* Brighter text colors for better readability */
   --theme-text-primary: #fafafa;
-  --theme-text-secondary: #a1a1aa;
-  --theme-text-tertiary: #71717a;
-  --theme-text-muted: #52525b;
+  --theme-text-secondary: #d4d4d8; /* Brightened from #a1a1aa (zinc-400) to zinc-300 */
+  --theme-text-tertiary: #a1a1aa; /* Brightened from #71717a (zinc-500) to zinc-400 */
+  --theme-text-muted: #71717a; /* Brightened from #52525b (zinc-600) to zinc-500 */
 
-  --theme-border: rgba(39, 39, 42, 0.8);
-  --theme-border-subtle: rgba(39, 39, 42, 0.5);
-  --theme-border-hover: rgba(63, 63, 70, 0.8);
-  --theme-border-active: rgba(249, 115, 22, 0.5);
+  --theme-border: rgba(63, 63, 70, 0.8); /* Brightened border for visibility */
+  --theme-border-subtle: rgba(63, 63, 70, 0.5);
+  --theme-border-hover: rgba(82, 82, 91, 0.8);
+  --theme-border-active: rgba(249, 115, 22, 0.6);
 
-  --theme-primary: #f97316;
-  --theme-primary-hover: #fb923c;
-  --theme-primary-muted: rgba(249, 115, 22, 0.12);
+  --theme-primary: #fb923c; /* Brightened from #f97316 */
+  --theme-primary-hover: #fdba74;
+  --theme-primary-muted: rgba(251, 146, 60, 0.15);
 
-  --theme-danger: #ef4444;
-  --theme-danger-muted: rgba(239, 68, 68, 0.12);
-  --theme-danger-border: rgba(239, 68, 68, 0.25);
+  --theme-danger: #f87171; /* Brightened from #ef4444 */
+  --theme-danger-muted: rgba(248, 113, 113, 0.15);
+  --theme-danger-border: rgba(248, 113, 113, 0.3);
 
-  --theme-success: #22c55e;
-  --theme-success-muted: rgba(34, 197, 94, 0.12);
+  --theme-success: #4ade80; /* Brightened from #22c55e */
+  --theme-success-muted: rgba(74, 222, 128, 0.15);
 
   --theme-scrollbar-track: #18181b;
-  --theme-scrollbar-thumb: #3f3f46;
-  --theme-header-bg: rgba(9, 9, 11, 0.85);
+  --theme-scrollbar-thumb: #52525b; /* Slightly brighter */
+  --theme-header-bg: rgba(9, 9, 11, 0.9);
 
   color-scheme: dark;
 }
 
-/* Light Theme */
-html.light {
+/* Light Theme - Improved contrast and UX */
+html.light,
+:root[data-theme="light"],
+[data-theme="light"] {
   --theme-bg-primary: #ffffff;
   --theme-bg-secondary: #fafafa;
   --theme-bg-tertiary: #f4f4f5;
   --theme-bg-elevated: #ffffff;
-  --theme-bg-card: rgba(255, 255, 255, 0.8);
-  --theme-bg-card-hover: rgba(250, 250, 250, 0.95);
-  --theme-bg-overlay: rgba(255, 255, 255, 0.95);
+  --theme-bg-card: rgba(255, 255, 255, 0.9); /* Higher opacity for visibility */
+  --theme-bg-card-hover: rgba(250, 250, 250, 0.98);
+  --theme-bg-overlay: rgba(255, 255, 255, 0.98);
 
-  --theme-text-primary: #18181b;
-  --theme-text-secondary: #52525b;
-  --theme-text-tertiary: #71717a;
-  --theme-text-muted: #a1a1aa;
+  /* Strong contrast text colors - WCAG AA compliant */
+  --theme-text-primary: #0f172a; /* slate-900 for maximum contrast */
+  --theme-text-secondary: #334155; /* slate-700 - darker than before */
+  --theme-text-tertiary: #475569; /* slate-600 - readable secondary */
+  --theme-text-muted: #64748b; /* slate-500 - still readable */
 
-  --theme-border: rgba(228, 228, 231, 0.9);
-  --theme-border-subtle: rgba(228, 228, 231, 0.6);
-  --theme-border-hover: rgba(212, 212, 216, 0.9);
-  --theme-border-active: rgba(234, 88, 12, 0.5);
+  --theme-border: #e2e8f0; /* slate-200 - visible borders */
+  --theme-border-subtle: #f1f5f9; /* slate-100 */
+  --theme-border-hover: #cbd5e1; /* slate-300 - clear hover state */
+  --theme-border-active: rgba(234, 88, 12, 0.6);
 
-  --theme-primary: #ea580c;
-  --theme-primary-hover: #c2410c;
-  --theme-primary-muted: rgba(234, 88, 12, 0.08);
+  --theme-primary: #ea580c; /* orange-600 - high contrast on white */
+  --theme-primary-hover: #c2410c; /* orange-700 - darker on hover */
+  --theme-primary-muted: rgba(234, 88, 12, 0.1);
 
-  --theme-danger: #dc2626;
-  --theme-danger-muted: rgba(220, 38, 38, 0.08);
-  --theme-danger-border: rgba(220, 38, 38, 0.2);
+  --theme-danger: #dc2626; /* red-600 */
+  --theme-danger-muted: rgba(220, 38, 38, 0.1);
+  --theme-danger-border: rgba(220, 38, 38, 0.25);
 
-  --theme-success: #16a34a;
-  --theme-success-muted: rgba(22, 163, 74, 0.08);
+  --theme-success: #16a34a; /* green-600 */
+  --theme-success-muted: rgba(22, 163, 74, 0.1);
 
-  --theme-scrollbar-track: #f4f4f5;
-  --theme-scrollbar-thumb: #d4d4d8;
-  --theme-header-bg: rgba(255, 255, 255, 0.85);
+  --theme-scrollbar-track: #f1f5f9;
+  --theme-scrollbar-thumb: #cbd5e1;
+  --theme-header-bg: rgba(255, 255, 255, 0.92);
 
   color-scheme: light;
+
+  /* ============================================
+     Starlight Theme Overrides (Light Mode)
+     Starlight uses --sl-color-* variables that
+     need explicit overrides for light theme
+     ============================================ */
+
+  /* Starlight core colors - inverted for light mode */
+  --sl-color-white: hsl(224, 10%, 10%);
+  --sl-color-gray-1: hsl(224, 14%, 16%);
+  --sl-color-gray-2: hsl(224, 10%, 23%);
+  --sl-color-gray-3: hsl(224, 7%, 36%);
+  --sl-color-gray-4: hsl(224, 6%, 56%);
+  --sl-color-gray-5: hsl(224, 6%, 77%);
+  --sl-color-gray-6: hsl(224, 20%, 94%);
+  --sl-color-gray-7: hsl(224, 19%, 97%);
+  --sl-color-black: hsl(0, 0%, 100%);
+
+  /* Starlight semantic colors for light mode */
+  --sl-color-text: var(--sl-color-gray-2);
+  --sl-color-text-accent: var(--sl-color-accent-high);
+  --sl-color-text-invert: var(--sl-color-accent-low);
+  --sl-color-bg: var(--sl-color-black);
+  --sl-color-bg-nav: var(--sl-color-gray-7);
+  --sl-color-bg-sidebar: var(--sl-color-gray-7);
+  --sl-color-bg-inline-code: var(--sl-color-gray-6);
+  --sl-color-bg-accent: var(--sl-color-accent-high);
+  --sl-color-hairline-light: var(--sl-color-gray-5);
+  --sl-color-hairline: var(--sl-color-gray-6);
+  --sl-color-hairline-shade: var(--sl-color-gray-7);
+
+  /* Starlight accent colors for light mode - orange theme for ArtemisKit */
+  --sl-color-accent-high: hsl(24, 80%, 30%);
+  --sl-color-accent: hsl(24, 90%, 50%);
+  --sl-color-accent-low: hsl(24, 88%, 92%);
+
+  /* Starlight semantic colors - orange theme for ArtemisKit */
+  --sl-color-orange-high: hsl(24, 80%, 25%);
+  --sl-color-orange: hsl(24, 90%, 50%);
+  --sl-color-orange-low: hsl(24, 90%, 92%);
+  --sl-color-green-high: hsl(142, 80%, 22%);
+  --sl-color-green: hsl(142, 70%, 40%);
+  --sl-color-green-low: hsl(142, 85%, 92%);
+  --sl-color-blue-high: hsl(217, 80%, 30%);
+  --sl-color-blue: hsl(217, 90%, 55%);
+  --sl-color-blue-low: hsl(217, 88%, 92%);
+  --sl-color-purple-high: hsl(270, 90%, 30%);
+  --sl-color-purple: hsl(270, 80%, 55%);
+  --sl-color-purple-low: hsl(270, 80%, 92%);
+  --sl-color-red-high: hsl(0, 80%, 30%);
+  --sl-color-red: hsl(0, 80%, 55%);
+  --sl-color-red-low: hsl(0, 80%, 92%);
+
+  /* Starlight shadows for light mode */
+  --sl-shadow-sm:
+    0px 1px 1px hsla(0, 0%, 0%, 0.06), 0px 2px 1px hsla(0, 0%, 0%, 0.06);
+  --sl-shadow-md:
+    0px 8px 4px hsla(0, 0%, 0%, 0.03), 0px 5px 2px hsla(0, 0%, 0%, 0.03),
+    0px 3px 2px hsla(0, 0%, 0%, 0.04), 0px 1px 1px hsla(0, 0%, 0%, 0.04);
+  --sl-shadow-lg:
+    0px 25px 7px hsla(0, 0%, 0%, 0.01), 0px 16px 6px hsla(0, 0%, 0%, 0.03),
+    0px 9px 5px hsla(224, 13%, 10%, 0.1), 0px 4px 4px hsla(0, 0%, 0%, 0.1),
+    0px 4px 2px hsla(0, 0%, 0%, 0.06);
 }
 
 /* High Contrast Theme */
@@ -1624,27 +1691,29 @@ samp {
    Light Theme Specific Overrides
    ============================================ */
 
-html.light {
+html.light,
+:root[data-theme="light"],
+[data-theme="light"] {
   & .terminal,
   & .code-block {
-    background: #1c1917;
-    border-color: #292524;
-    color: #fafafa;
+    background: #0f172a;
+    border-color: #334155;
+    color: #e2e8f0;
   }
 
   & .terminal-body,
   & .code-block-content {
-    color: #e7e5e4;
+    color: #e2e8f0;
   }
 
   & .terminal-header,
   & .code-block-header {
-    background: #292524;
-    border-color: #3f3f46;
+    background: #1e293b;
+    border-color: #334155;
   }
 
   & .terminal-output {
-    color: #a8a29e;
+    color: #94a3b8;
   }
 
   & .grid-pattern {
@@ -1654,6 +1723,94 @@ html.light {
   & .noise-overlay::before {
     opacity: 0.015;
   }
+}
+
+/* ============================================
+   Expressive Code Light Mode Override
+   Force dark code blocks in light mode for better readability
+   Uses high-specificity selectors to override Starlight's @layer
+   ============================================ */
+
+:root[data-theme="light"] .expressive-code,
+:root[data-theme="light"] .expressive-code:not([data-theme="dark"]),
+html.light .expressive-code,
+.light .expressive-code {
+  --ec-codeBg: #0f172a !important;
+  --ec-codeFg: #e2e8f0 !important;
+  --ec-codeSelBg: #334155 !important;
+  --ec-gtrFg: #94a3b8 !important;
+  --ec-gtrBrdCol: #33415580 !important;
+  --ec-gtrHlFg: #f1f5f9 !important;
+  --ec-brdCol: #334155 !important;
+  --ec-sbThumbCol: #47556950 !important;
+  --ec-sbThumbHoverCol: #64748b80 !important;
+  --ec-focusBrd: #475569 !important;
+  --ec-uiSelBg: #334155 !important;
+  --ec-uiSelFg: #f1f5f9 !important;
+  --ec-frm-edActTabBg: #1e293b !important;
+  --ec-frm-edActTabFg: #e2e8f0 !important;
+  --ec-frm-edActTabBrdCol: #334155 !important;
+  --ec-frm-edActTabIndTopCol: #fb923c !important;
+  --ec-frm-edTabBarBg: #0f172a !important;
+  --ec-frm-edTabBarBrdCol: #334155 !important;
+  --ec-frm-edTabBarBrdBtmCol: #334155 !important;
+  --ec-frm-edBg: #0f172a !important;
+  --ec-frm-trmTtbBg: #1e293b !important;
+  --ec-frm-trmTtbFg: #e2e8f0 !important;
+  --ec-frm-trmTtbBrdBtmCol: #334155 !important;
+  --ec-frm-trmTtbDotsFg: #64748b !important;
+  --ec-frm-trmBg: #0f172a !important;
+  --ec-frm-inlBtnFg: #e2e8f0 !important;
+  --ec-frm-inlBtnBg: #334155 !important;
+  --ec-frm-inlBtnBrd: #475569 !important;
+  --ec-frm-shdCol: #020617 !important;
+  --ec-tm-markBg: rgba(251, 146, 60, 0.2) !important;
+  --ec-tm-markBrdCol: rgba(251, 146, 60, 0.6) !important;
+  --ec-tm-insBg: rgba(74, 222, 128, 0.2) !important;
+  --ec-tm-insBrdCol: rgba(74, 222, 128, 0.6) !important;
+  --ec-tm-insDiffIndCol: #4ade80 !important;
+  --ec-tm-delBg: rgba(248, 113, 113, 0.2) !important;
+  --ec-tm-delBrdCol: rgba(248, 113, 113, 0.6) !important;
+  --ec-tm-delDiffIndCol: #f87171 !important;
+}
+
+:root[data-theme="light"] .expressive-code pre,
+:root[data-theme="light"] .expressive-code:not([data-theme="dark"]) pre,
+html.light .expressive-code pre,
+.light .expressive-code pre {
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%) !important;
+}
+
+:root[data-theme="light"] .expressive-code pre code,
+:root[data-theme="light"] .expressive-code:not([data-theme="dark"]) pre code,
+html.light .expressive-code pre code,
+.light .expressive-code pre code {
+  color: #e2e8f0 !important;
+}
+
+/* Expressive Code frame styling for light mode */
+:root[data-theme="light"] .expressive-code .frame,
+html.light .expressive-code .frame,
+.light .expressive-code .frame {
+  --code-background: #0f172a !important;
+}
+
+/* CRITICAL: Force dark syntax highlighting colors in light mode
+   Expressive Code uses --0 for dark theme colors and --1 for light theme colors.
+   Since we want dark code blocks in light mode, we need to use --0 colors.
+   This overrides the selector that switches to --1 in light mode. */
+:root[data-theme="light"] .expressive-code .ec-line span[style*="--"],
+:root[data-theme="light"]
+  .expressive-code:not([data-theme="dark"])
+  .ec-line
+  span[style*="--"],
+html.light .expressive-code .ec-line span[style*="--"],
+.light .expressive-code .ec-line span[style*="--"] {
+  color: var(--0, inherit) !important;
+  background-color: var(--0bg, transparent) !important;
+  font-style: var(--0fs, inherit) !important;
+  font-weight: var(--0fw, inherit) !important;
+  text-decoration: var(--0td, inherit) !important;
 }
 
 /* ============================================
@@ -1683,26 +1840,25 @@ html.high-contrast {
    Starlight Documentation Overrides
    "Brutal Precision" Documentation Design
 
-   Aligned with Content Strategy:
-   - Technical-conversational voice
-   - Direct, confident, no fluff
-   - Terminal aesthetics with editorial refinement
+   Supports: dark (default), light, high-contrast
+   All components use CSS variables for theme switching
    ============================================ */
 
-:root {
-  /* Accent colors - Threat Orange */
-  --sl-color-accent-low: #431407;
-  --sl-color-accent: #f97316;
-  --sl-color-accent-high: #fed7aa;
+:root,
+html.dark {
+  /* Accent colors - Threat Orange (Dark) - Brighter for visibility */
+  --sl-color-accent-low: #7c2d12;
+  --sl-color-accent: #fb923c; /* Brightened from #f97316 */
+  --sl-color-accent-high: #ffedd5;
 
-  /* Grayscale - Zinc palette */
+  /* Grayscale - Zinc palette (Dark) - Brighter for readability */
   --sl-color-white: #fafafa;
-  --sl-color-gray-1: #e4e4e7;
-  --sl-color-gray-2: #a1a1aa;
-  --sl-color-gray-3: #52525b;
-  --sl-color-gray-4: #27272a;
-  --sl-color-gray-5: #18181b;
-  --sl-color-gray-6: #09090b;
+  --sl-color-gray-1: #e4e4e7; /* Kept bright */
+  --sl-color-gray-2: #d4d4d8; /* Brightened from #a1a1aa - main body text */
+  --sl-color-gray-3: #a1a1aa; /* Brightened from #52525b - secondary text */
+  --sl-color-gray-4: #52525b; /* Brightened from #27272a - muted text */
+  --sl-color-gray-5: #27272a; /* Borders */
+  --sl-color-gray-6: #18181b; /* Backgrounds */
   --sl-color-black: #09090b;
 
   /* Background colors */
@@ -1732,12 +1888,149 @@ html.high-contrast {
   --sl-text-code: 0.875rem;
   --sl-line-height: 1.7;
   --sl-line-height-headings: 1.25;
+
+  /* Doc-specific colors (Dark) - Improved brightness */
+  --sl-code-bg: #0c0c0e;
+  --sl-code-bg-gradient-start: #0c0c0e;
+  --sl-code-bg-gradient-end: #08080a;
+  --sl-code-border: rgba(63, 63, 70, 0.7); /* Brighter border */
+  --sl-code-text: #f4f4f5; /* Brighter text */
+  --sl-code-inline-bg: rgba(63, 63, 70, 0.5);
+  --sl-code-inline-text: #fcd34d; /* Brighter yellow/orange */
+  --sl-code-inline-border: rgba(82, 82, 91, 0.5);
+  --sl-code-header-bg-start: rgba(39, 39, 42, 0.9);
+  --sl-code-header-bg-end: rgba(24, 24, 27, 0.95);
+  --sl-code-header-border: rgba(63, 63, 70, 0.6);
+  --sl-code-scrollbar-track: rgba(0, 0, 0, 0.25);
+  --sl-code-scrollbar-thumb: rgba(82, 82, 91, 0.7);
+  --sl-table-bg-start: rgba(24, 24, 27, 0.8);
+  --sl-table-bg-end: rgba(15, 15, 18, 0.9);
+  --sl-table-header-bg-start: rgba(39, 39, 42, 0.95);
+  --sl-table-header-bg-end: rgba(27, 27, 30, 0.98);
+  --sl-table-row-alt: rgba(39, 39, 42, 0.2);
+  --sl-table-row-hover: rgba(63, 63, 70, 0.4);
+  --sl-table-border: rgba(63, 63, 70, 0.5);
+  --sl-table-header-border: rgba(82, 82, 91, 0.5);
+  --sl-aside-note-bg: rgba(59, 130, 246, 0.12);
+  --sl-aside-tip-bg: rgba(34, 197, 94, 0.12);
+  --sl-aside-caution-bg: rgba(245, 158, 11, 0.12);
+  --sl-aside-danger-bg: rgba(239, 68, 68, 0.12);
+  --sl-blockquote-bg: rgba(39, 39, 42, 0.5);
+  --sl-card-bg: var(--sl-color-gray-6);
+  --sl-card-border: var(--sl-color-gray-5);
+  --sl-card-hover-bg: var(--sl-color-gray-5);
 }
 
-[data-theme="light"] {
-  --sl-color-accent-low: #ffedd5;
-  --sl-color-accent: #ea580c;
-  --sl-color-accent-high: #7c2d12;
+/* Light Theme - Starlight
+   Using !important to override Starlight's @layer styles
+   WCAG AA compliant contrast ratios */
+html.light,
+:root[data-theme="light"],
+:root.light {
+  --sl-color-accent-low: #fff7ed !important; /* orange-50 for backgrounds */
+  --sl-color-accent: #c2410c !important; /* orange-700 - darker for contrast */
+  --sl-color-accent-high: #7c2d12 !important; /* orange-900 */
+
+  /* Grayscale - Strong contrast for light mode (WCAG AA) */
+  --sl-color-white: #0f172a !important; /* slate-900 - maximum contrast */
+  --sl-color-gray-1: #1e293b !important; /* slate-800 */
+  --sl-color-gray-2: #334155 !important; /* slate-700 - body text */
+  --sl-color-gray-3: #475569 !important; /* slate-600 - secondary */
+  --sl-color-gray-4: #94a3b8 !important; /* slate-400 - muted */
+  --sl-color-gray-5: #e2e8f0 !important; /* slate-200 - borders */
+  --sl-color-gray-6: #f8fafc !important; /* slate-50 - subtle bg */
+  --sl-color-gray-7: #ffffff !important;
+  --sl-color-black: #ffffff !important;
+
+  /* Background colors for Starlight */
+  --sl-color-bg: #ffffff !important;
+  --sl-color-bg-nav: #ffffff !important;
+  --sl-color-bg-sidebar: #f8fafc !important;
+  --sl-color-bg-inline-code: #f1f5f9 !important; /* slate-100 */
+  --sl-color-hairline-light: #e2e8f0 !important;
+  --sl-color-hairline: #cbd5e1 !important; /* slate-300 - more visible */
+  --sl-color-hairline-shade: #94a3b8 !important;
+  --sl-color-text: #334155 !important; /* slate-700 - readable body */
+  --sl-color-text-accent: #c2410c !important;
+
+  /* Doc-specific colors (Light) - Code blocks with vibrant syntax */
+  --sl-code-bg: #0f172a; /* slate-900 - deep dark for contrast */
+  --sl-code-bg-gradient-start: #1e293b;
+  --sl-code-bg-gradient-end: #0f172a;
+  --sl-code-border: #334155;
+  --sl-code-text: #e2e8f0; /* slate-200 - bright base text */
+  --sl-code-inline-bg: #f1f5f9;
+  --sl-code-inline-text: #c2410c; /* orange-700 for inline code */
+  --sl-code-inline-border: #cbd5e1;
+  --sl-code-header-bg-start: #1e293b;
+  --sl-code-header-bg-end: #0f172a;
+  --sl-code-header-border: #334155;
+  --sl-code-scrollbar-track: rgba(15, 23, 42, 0.3);
+  --sl-code-scrollbar-thumb: rgba(100, 116, 139, 0.7);
+  --sl-table-bg-start: #ffffff;
+  --sl-table-bg-end: #f8fafc;
+  --sl-table-header-bg-start: #f1f5f9;
+  --sl-table-header-bg-end: #f8fafc;
+  --sl-table-row-alt: rgba(241, 245, 249, 0.5);
+  --sl-table-row-hover: rgba(226, 232, 240, 0.6);
+  --sl-table-border: #e2e8f0;
+  --sl-table-header-border: #cbd5e1;
+  --sl-aside-note-bg: rgba(59, 130, 246, 0.1);
+  --sl-aside-tip-bg: rgba(34, 197, 94, 0.1);
+  --sl-aside-caution-bg: rgba(245, 158, 11, 0.12);
+  --sl-aside-danger-bg: rgba(239, 68, 68, 0.1);
+  --sl-blockquote-bg: #f1f5f9;
+  --sl-card-bg: #ffffff;
+  --sl-card-border: #e2e8f0;
+  --sl-card-hover-bg: #f8fafc;
+}
+
+/* High Contrast Theme - Starlight */
+html.high-contrast {
+  --sl-color-accent-low: #662200;
+  --sl-color-accent: #ff8c00;
+  --sl-color-accent-high: #ffd699;
+
+  /* Grayscale - Maximum contrast */
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #f0f0f0;
+  --sl-color-gray-2: #cccccc;
+  --sl-color-gray-3: #888888;
+  --sl-color-gray-4: #444444;
+  --sl-color-gray-5: #222222;
+  --sl-color-gray-6: #000000;
+  --sl-color-black: #000000;
+
+  /* Doc-specific colors (High Contrast) */
+  --sl-code-bg: #000000;
+  --sl-code-bg-gradient-start: #000000;
+  --sl-code-bg-gradient-end: #000000;
+  --sl-code-border: #666666;
+  --sl-code-text: #ffffff;
+  --sl-code-inline-bg: rgba(255, 140, 0, 0.15);
+  --sl-code-inline-text: #ffa500;
+  --sl-code-inline-border: #666666;
+  --sl-code-header-bg-start: #111111;
+  --sl-code-header-bg-end: #000000;
+  --sl-code-header-border: #666666;
+  --sl-code-scrollbar-track: #111111;
+  --sl-code-scrollbar-thumb: #666666;
+  --sl-table-bg-start: #000000;
+  --sl-table-bg-end: #000000;
+  --sl-table-header-bg-start: #111111;
+  --sl-table-header-bg-end: #111111;
+  --sl-table-row-alt: rgba(255, 255, 255, 0.03);
+  --sl-table-row-hover: rgba(255, 255, 255, 0.08);
+  --sl-table-border: #666666;
+  --sl-table-header-border: #888888;
+  --sl-aside-note-bg: rgba(59, 130, 246, 0.15);
+  --sl-aside-tip-bg: rgba(34, 197, 94, 0.15);
+  --sl-aside-caution-bg: rgba(245, 158, 11, 0.15);
+  --sl-aside-danger-bg: rgba(239, 68, 68, 0.15);
+  --sl-blockquote-bg: #111111;
+  --sl-card-bg: #000000;
+  --sl-card-border: #666666;
+  --sl-card-hover-bg: #111111;
 }
 
 /* ============================================
@@ -1846,22 +2139,26 @@ starlight-theme-provider h1,
 
 /* Inline code */
 .sl-markdown-content code:not(pre code) {
-  background: rgba(39, 39, 42, 0.6);
-  color: #fdba74;
+  background: var(--sl-code-inline-bg);
+  color: var(--sl-code-inline-text);
   padding: 0.2em 0.45em;
   border-radius: 0.375rem;
   font-size: 0.875em;
   font-family: var(--sl-font-mono);
   font-weight: 450;
-  border: 1px solid rgba(63, 63, 70, 0.4);
+  border: 1px solid var(--sl-code-inline-border);
   word-break: break-word;
 }
 
 /* Code blocks - Enhanced terminal look */
 .sl-markdown-content pre {
   position: relative;
-  background: linear-gradient(180deg, #0c0c0e 0%, #08080a 100%);
-  border: 1px solid rgba(39, 39, 42, 0.7);
+  background: linear-gradient(
+    180deg,
+    var(--sl-code-bg-gradient-start) 0%,
+    var(--sl-code-bg-gradient-end) 100%
+  );
+  border: 1px solid var(--sl-code-border);
   border-radius: 0.75rem;
   padding: 0;
   margin: 1.5em 0;
@@ -1895,7 +2192,7 @@ starlight-theme-provider h1,
   display: block;
   padding: 1.25rem 1.5rem;
   background: transparent;
-  color: #e4e4e7;
+  color: var(--sl-code-text);
   font-size: var(--sl-text-code);
   font-family: var(--sl-font-mono);
   line-height: 1.7;
@@ -1911,17 +2208,18 @@ starlight-theme-provider h1,
 }
 
 .sl-markdown-content pre code::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.25);
+  background: var(--sl-code-scrollbar-track);
   border-radius: 4px;
 }
 
 .sl-markdown-content pre code::-webkit-scrollbar-thumb {
-  background: rgba(63, 63, 70, 0.6);
+  background: var(--sl-code-scrollbar-thumb);
   border-radius: 4px;
 }
 
 .sl-markdown-content pre code::-webkit-scrollbar-thumb:hover {
-  background: rgba(82, 82, 91, 0.7);
+  background: var(--sl-code-scrollbar-thumb);
+  opacity: 0.9;
 }
 
 /* Code block with filename header (Expressive Code) */
@@ -1931,8 +2229,12 @@ starlight-theme-provider h1,
 
 .expressive-code .frame {
   position: relative;
-  background: linear-gradient(180deg, #0c0c0e 0%, #08080a 100%);
-  border: 1px solid rgba(39, 39, 42, 0.7);
+  background: linear-gradient(
+    180deg,
+    var(--sl-code-bg-gradient-start) 0%,
+    var(--sl-code-bg-gradient-end) 100%
+  );
+  border: 1px solid var(--sl-code-border);
   border-radius: 0.75rem;
   overflow: hidden;
   box-shadow:
@@ -1947,10 +2249,10 @@ starlight-theme-provider h1,
   justify-content: space-between;
   background: linear-gradient(
     180deg,
-    rgba(24, 24, 27, 0.9) 0%,
-    rgba(18, 18, 21, 0.95) 100%
+    var(--sl-code-header-bg-start) 0%,
+    var(--sl-code-header-bg-end) 100%
   );
-  border-bottom: 1px solid rgba(39, 39, 42, 0.5);
+  border-bottom: 1px solid var(--sl-code-header-border);
   padding: 0.625rem 1rem;
 }
 
@@ -2118,11 +2420,11 @@ starlight-theme-provider h1,
   margin: 1.75em 0;
   overflow: hidden;
   border-radius: 0.75rem;
-  border: 1px solid var(--sl-color-gray-5);
+  border: 1px solid var(--sl-table-border);
   background: linear-gradient(
     180deg,
-    rgba(15, 15, 18, 0.8) 0%,
-    rgba(9, 9, 11, 0.9) 100%
+    var(--sl-table-bg-start) 0%,
+    var(--sl-table-bg-end) 100%
   );
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.25),
@@ -2171,19 +2473,20 @@ starlight-theme-provider h1,
 
 .sl-markdown-content .table-scroll::-webkit-scrollbar-track,
 .table-scroll::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--sl-code-scrollbar-track);
   border-radius: 4px;
 }
 
 .sl-markdown-content .table-scroll::-webkit-scrollbar-thumb,
 .table-scroll::-webkit-scrollbar-thumb {
-  background: rgba(63, 63, 70, 0.7);
+  background: var(--sl-code-scrollbar-thumb);
   border-radius: 4px;
 }
 
 .sl-markdown-content .table-scroll::-webkit-scrollbar-thumb:hover,
 .table-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(82, 82, 91, 0.8);
+  background: var(--sl-code-scrollbar-thumb);
+  opacity: 0.9;
 }
 
 .sl-markdown-content table {
@@ -2196,7 +2499,7 @@ starlight-theme-provider h1,
 /* Standalone table (when not wrapped) */
 .sl-markdown-content > table {
   margin: 1.75em 0;
-  border: 1px solid var(--sl-color-gray-5);
+  border: 1px solid var(--sl-table-border);
   border-radius: 0.75rem;
   overflow: hidden;
   display: block;
@@ -2204,8 +2507,8 @@ starlight-theme-provider h1,
   -webkit-overflow-scrolling: touch;
   background: linear-gradient(
     180deg,
-    rgba(15, 15, 18, 0.8) 0%,
-    rgba(9, 9, 11, 0.9) 100%
+    var(--sl-table-bg-start) 0%,
+    var(--sl-table-bg-end) 100%
   );
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.25),
@@ -2215,8 +2518,8 @@ starlight-theme-provider h1,
 .sl-markdown-content thead {
   background: linear-gradient(
     180deg,
-    rgba(24, 24, 27, 0.95) 0%,
-    rgba(18, 18, 21, 0.98) 100%
+    var(--sl-table-header-bg-start) 0%,
+    var(--sl-table-header-bg-end) 100%
   );
   position: sticky;
   top: 0;
@@ -2231,7 +2534,7 @@ starlight-theme-provider h1,
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--sl-color-gray-1);
-  border-bottom: 1px solid rgba(63, 63, 70, 0.5);
+  border-bottom: 1px solid var(--sl-table-header-border);
   white-space: nowrap;
   position: relative;
 }
@@ -2249,7 +2552,7 @@ starlight-theme-provider h1,
 
 .sl-markdown-content td {
   padding: 0.875rem 1.125rem;
-  border-bottom: 1px solid rgba(39, 39, 42, 0.5);
+  border-bottom: 1px solid var(--sl-table-border);
   color: var(--sl-color-gray-2);
   vertical-align: top;
   line-height: 1.6;
@@ -2271,26 +2574,27 @@ starlight-theme-provider h1,
 }
 
 .sl-markdown-content tbody tr:hover {
-  background: rgba(39, 39, 42, 0.4);
+  background: var(--sl-table-row-hover);
 }
 
 /* Alternating row colors (subtle) */
 .sl-markdown-content tbody tr:nth-child(even) {
-  background: rgba(0, 0, 0, 0.15);
+  background: var(--sl-table-row-alt);
 }
 
 .sl-markdown-content tbody tr:nth-child(even):hover {
-  background: rgba(39, 39, 42, 0.4);
+  background: var(--sl-table-row-hover);
 }
 
 /* Table code cells */
 .sl-markdown-content td code {
   font-size: 0.85em;
   white-space: nowrap;
-  background: rgba(39, 39, 42, 0.5);
+  background: var(--sl-code-inline-bg);
+  color: var(--sl-code-inline-text);
   padding: 0.15em 0.4em;
   border-radius: 4px;
-  border: 1px solid rgba(63, 63, 70, 0.3);
+  border: 1px solid var(--sl-code-inline-border);
 }
 
 /* Table links */
@@ -2395,7 +2699,7 @@ starlight-theme-provider h1,
 .sl-markdown-content blockquote {
   margin: 1.5em 0;
   padding: 1rem 1.25rem;
-  background: rgba(24, 24, 27, 0.5);
+  background: var(--sl-blockquote-bg);
   border-left: 3px solid var(--sl-color-accent);
   border-radius: 0 0.5rem 0.5rem 0;
   font-style: normal;
@@ -2416,15 +2720,15 @@ starlight-theme-provider h1,
 
 /* Cards */
 .sl-link-card {
-  background: var(--sl-color-gray-6);
-  border: 1px solid var(--sl-color-gray-5);
+  background: var(--sl-card-bg);
+  border: 1px solid var(--sl-card-border);
   border-radius: 0.75rem;
   padding: 1.25rem 1.5rem;
   transition: all 0.2s ease;
 }
 
 .sl-link-card:hover {
-  background: var(--sl-color-gray-5);
+  background: var(--sl-card-hover-bg);
   border-color: var(--sl-color-gray-4);
   transform: translateY(-2px);
   box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.3);
@@ -2464,22 +2768,22 @@ starlight-theme-provider h1,
 }
 
 .starlight-aside--note {
-  background: rgba(59, 130, 246, 0.08);
+  background: var(--sl-aside-note-bg);
   border-color: #3b82f6;
 }
 
 .starlight-aside--tip {
-  background: rgba(34, 197, 94, 0.08);
+  background: var(--sl-aside-tip-bg);
   border-color: #22c55e;
 }
 
 .starlight-aside--caution {
-  background: rgba(245, 158, 11, 0.08);
+  background: var(--sl-aside-caution-bg);
   border-color: #f59e0b;
 }
 
 .starlight-aside--danger {
-  background: rgba(239, 68, 68, 0.1);
+  background: var(--sl-aside-danger-bg);
   border-color: #ef4444;
 }
 
@@ -2569,12 +2873,12 @@ nav.sidebar a {
 
 nav.sidebar a:hover {
   color: var(--sl-color-white);
-  background: rgba(39, 39, 42, 0.5);
+  background: var(--sl-table-row-hover);
 }
 
 nav.sidebar a[aria-current="page"] {
   color: var(--sl-color-accent);
-  background: rgba(249, 115, 22, 0.1);
+  background: var(--sl-color-accent-low);
   font-weight: 500;
 }
 
@@ -2626,8 +2930,8 @@ nav.sidebar a[aria-current="page"] {
    ============================================ */
 
 .pagefind-ui__search-input {
-  background: var(--sl-color-gray-6) !important;
-  border: 1px solid var(--sl-color-gray-5) !important;
+  background: var(--sl-card-bg) !important;
+  border: 1px solid var(--sl-card-border) !important;
   border-radius: 0.5rem !important;
   color: var(--sl-color-white) !important;
   font-family: var(--sl-font) !important;
@@ -2635,17 +2939,17 @@ nav.sidebar a[aria-current="page"] {
 
 .pagefind-ui__search-input:focus {
   border-color: var(--sl-color-accent) !important;
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15) !important;
+  box-shadow: 0 0 0 3px var(--sl-color-accent-low) !important;
 }
 
 .pagefind-ui__result {
-  background: var(--sl-color-gray-6) !important;
-  border: 1px solid var(--sl-color-gray-5) !important;
+  background: var(--sl-card-bg) !important;
+  border: 1px solid var(--sl-card-border) !important;
   border-radius: 0.5rem !important;
 }
 
 .pagefind-ui__result:hover {
-  background: var(--sl-color-gray-5) !important;
+  background: var(--sl-card-hover-bg) !important;
   border-color: var(--sl-color-gray-4) !important;
 }
 
@@ -2667,15 +2971,15 @@ nav.sidebar a[aria-current="page"] {
   flex-direction: column;
   gap: 0.25rem;
   padding: 1rem 1.25rem;
-  background: var(--sl-color-gray-6);
-  border: 1px solid var(--sl-color-gray-5);
+  background: var(--sl-card-bg);
+  border: 1px solid var(--sl-card-border);
   border-radius: 0.625rem;
   text-decoration: none;
   transition: all 0.2s ease;
 }
 
 .pagination-links a:hover {
-  background: var(--sl-color-gray-5);
+  background: var(--sl-card-hover-bg);
   border-color: var(--sl-color-gray-4);
 }
 
@@ -2728,27 +3032,27 @@ nav.sidebar a[aria-current="page"] {
 }
 
 .sl-badge.default {
-  background: var(--sl-color-gray-5);
+  background: var(--sl-card-border);
   color: var(--sl-color-gray-2);
 }
 
 .sl-badge.note {
-  background: rgba(59, 130, 246, 0.15);
+  background: var(--sl-aside-note-bg);
   color: #60a5fa;
 }
 
 .sl-badge.tip {
-  background: rgba(34, 197, 94, 0.15);
+  background: var(--sl-aside-tip-bg);
   color: #4ade80;
 }
 
 .sl-badge.caution {
-  background: rgba(245, 158, 11, 0.15);
+  background: var(--sl-aside-caution-bg);
   color: #fbbf24;
 }
 
 .sl-badge.danger {
-  background: rgba(239, 68, 68, 0.15);
+  background: var(--sl-aside-danger-bg);
   color: #f87171;
 }
 
