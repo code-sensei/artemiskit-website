@@ -27,12 +27,22 @@ const navLinks = [
     <div class="container">
       <nav class="flex items-center justify-between h-16 md:h-18">
 
-        <!-- Logo -->
+        <!-- Logo - Theme Aware -->
         <a href="/" class="flex items-center gap-2.5 group">
+          <!-- Dark theme logo (white text) -->
           <img
-            src="/artemiskit-logo.png"
+            src="/artemiskit-logo.svg"
             alt="ArtemisKit - Open Source LLM Testing Toolkit"
-            class="h-7 w-auto transition-opacity duration-200 group-hover:opacity-80"
+            class="logo-dark h-7 w-auto transition-opacity duration-200 group-hover:opacity-80"
+            width="120"
+            height="28"
+            loading="eager"
+          />
+          <!-- Light theme logo (dark text) -->
+          <img
+            src="/artemiskit-logo-dark.svg"
+            alt="ArtemisKit - Open Source LLM Testing Toolkit"
+            class="logo-light h-7 w-auto transition-opacity duration-200 group-hover:opacity-80 hidden"
             width="120"
             height="28"
             loading="eager"
@@ -154,6 +164,23 @@ const navLinks = [
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--theme-border-subtle);
+  }
+
+  /* Theme-aware logo switching */
+  .logo-dark {
+    display: block;
+  }
+  .logo-light {
+    display: none;
+  }
+
+  :global(html.light) .logo-dark,
+  :global([data-theme="light"]) .logo-dark {
+    display: none;
+  }
+  :global(html.light) .logo-light,
+  :global([data-theme="light"]) .logo-light {
+    display: block;
   }
 
   @media (prefers-reduced-motion: reduce) {
