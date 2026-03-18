@@ -32,7 +32,21 @@ export default defineConfig({
       sidebar: [
         {
           label: "Home",
-          items: [{ label: "Introduction", link: "/docs/" }],
+          items: [
+            { label: "Introduction", link: "/docs/" },
+            { label: "Getting Started", link: "/docs/getting-started/" },
+          ],
+        },
+        {
+          label: "Core Concepts",
+          collapsed: false,
+          items: [
+            { label: "Overview", link: "/docs/concepts/" },
+            { label: "Scenarios", link: "/docs/concepts/scenarios/" },
+            { label: "Expectations", link: "/docs/concepts/expectations/" },
+            { label: "Providers", link: "/docs/concepts/providers/" },
+            { label: "Evaluators", link: "/docs/concepts/evaluators/" },
+          ],
         },
         {
           label: "CLI (@artemiskit/cli)",
@@ -102,8 +116,13 @@ export default defineConfig({
           collapsed: false,
           items: [
             { label: "Overview", link: "/docs/sdk/" },
-            { label: "Guardian Mode", link: "/docs/sdk/guardian/" },
+            {
+              label: "Scenario Builders",
+              link: "/docs/sdk/builders/",
+              badge: { text: "New", variant: "tip" },
+            },
             { label: "Evaluation API", link: "/docs/sdk/evaluation/" },
+            { label: "Guardian Mode", link: "/docs/sdk/guardian/" },
             { label: "Test Matchers", link: "/docs/sdk/matchers/" },
             {
               label: "Adapters",
@@ -115,6 +134,42 @@ export default defineConfig({
               ],
             },
           ],
+        },
+        {
+          label: "Examples & Cookbook",
+          collapsed: false,
+          items: [
+            { label: "Overview", link: "/docs/examples/" },
+            {
+              label: "CI/CD Integration",
+              link: "/docs/examples/ci-cd-integration/",
+            },
+            {
+              label: "Security Testing",
+              link: "/docs/examples/security-testing/",
+            },
+            {
+              label: "Regression Testing",
+              link: "/docs/examples/regression-testing/",
+            },
+            { label: "Stress Testing", link: "/docs/examples/stress-testing/" },
+            {
+              label: "Scenario Builders",
+              link: "/docs/examples/scenario-builders/",
+            },
+            {
+              label: "Guardian Recipes",
+              link: "/docs/examples/guardian-recipes/",
+            },
+            {
+              label: "Custom Evaluators",
+              link: "/docs/examples/custom-evaluators/",
+            },
+          ],
+        },
+        {
+          label: "API Reference",
+          items: [{ label: "Overview", link: "/docs/api/" }],
         },
       ],
     }),
