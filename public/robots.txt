@@ -1,10 +1,4 @@
-# ArtemisKit robots.txt
 User-agent: *
 Allow: /
-
-# Disallow admin pages
-Disallow: /admin
 Disallow: /admin/
-
-# Sitemap
-Sitemap: https://artemiskit.vercel.app/sitemap-index.xml
+Sitemap: https://artemiskit.vorbtech.com.ng/sitemap-index.xml

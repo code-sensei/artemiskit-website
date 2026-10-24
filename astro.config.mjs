@@ -7,7 +7,17 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://artemiskit.vercel.app",
+  site: "https://artemiskit.vorbtech.com.ng",
+  output: "static",
+  server: { allowedHosts: ["terminal.local"] },
+  trailingSlash: "always",
+  redirects: {
+    "/results": "/leaderboard/",
+    "/ai-red-team": "/docs/cli/commands/redteam/",
+    "/ai-security-testing": "/toolkit/",
+    "/llm-testing": "/docs/getting-started/",
+    "/prompt-injection-testing": "/docs/cli/commands/redteam/",
+  },
   integrations: [
     sitemap({
       filter: (page) => !page.includes("/admin"),
@@ -16,8 +26,8 @@ export default defineConfig({
       title: "ArtemisKit",
       favicon: "/favicon-32.png",
       logo: {
-        light: "./public/artemiskit-logo-dark.svg",
-        dark: "./public/artemiskit-logo.svg",
+        light: "./public/artemiskit-wordmark-dark.webp",
+        dark: "./public/artemiskit-wordmark-light.webp",
         alt: "ArtemisKit",
         replacesTitle: true,
       },
@@ -28,7 +38,9 @@ export default defineConfig({
           href: "https://github.com/code-sensei/artemiskit",
         },
       ],
-      customCss: ["./src/styles/global.css"],
+      customCss: ["./src/styles/docs-identity.css"],
+      head: [{ tag: "meta", attrs: { name: "theme-color", content: "#0D1115" } }],
+      lastUpdated: false,
       sidebar: [
         {
           label: "Home",
@@ -166,6 +178,16 @@ export default defineConfig({
               link: "/docs/examples/custom-evaluators/",
             },
           ],
+        },
+        {
+          label: "Agent workflows",
+          collapsed: false,
+          autogenerate: { directory: "docs/workflows" },
+        },
+        {
+          label: "Current reference guides",
+          collapsed: true,
+          autogenerate: { directory: "docs/reference" },
         },
         {
           label: "API Reference",

@@ -3,6 +3,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
+import '../styles/identity.css';
 
 interface Props {
   title: string;
@@ -59,8 +60,8 @@ const categoryInfo = categoryMap[category] || { label: category, color: 'bg-zinc
 
 // Breadcrumbs for schema
 const breadcrumbs = [
-  { name: 'Home', url: 'https://artemiskit.vercel.app/' },
-  { name: 'Blog', url: 'https://artemiskit.vercel.app/blog/' },
+  { name: 'Home', url: 'https://artemiskit.vorbtech.com.ng/' },
+  { name: 'Blog', url: 'https://artemiskit.vorbtech.com.ng/blog/' },
   { name: title, url: Astro.url.href },
 ];
 
@@ -70,7 +71,7 @@ const articleSchema = {
   "@type": "Article",
   "headline": title,
   "description": description,
-  "image": image ? `https://artemiskit.vercel.app${image.src}` : "https://artemiskit.vercel.app/og-image.png",
+  "image": image ? `https://artemiskit.vorbtech.com.ng${image.src}` : "https://artemiskit.vorbtech.com.ng/og-image.png",
   "datePublished": pubDate.toISOString(),
   "dateModified": (updatedDate || pubDate).toISOString(),
   "author": {
@@ -82,7 +83,7 @@ const articleSchema = {
     "name": "ArtemisKit",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://artemiskit.vercel.app/artemiskit-icon.png"
+      "url": "https://artemiskit.vorbtech.com.ng/artemiskit-icon.png"
     }
   },
   "mainEntityOfPage": {
@@ -103,7 +104,7 @@ const articleSchema = {
     />
     <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
   </head>
-  <body class="min-h-screen bg-bg-primary text-stone-100 overflow-x-hidden">
+  <body class="ak-site ak-legacy min-h-screen bg-bg-primary text-stone-100 overflow-x-hidden">
     <Header />
     <main>
       <article class="py-20 md:py-32">

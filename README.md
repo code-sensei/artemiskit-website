@@ -1,49 +1,48 @@
-# Starlight Starter Kit: Basics
+# ArtemisKit website
 
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
+The static website and Starlight documentation for the open-source AI assurance toolkit by Vorbtech Innovative Solutions.
 
-```
-npm create astro@latest -- --template starlight
-```
+Recommended canonical URL: `https://artemiskit.vorbtech.com.ng`, with `akit.vorbtech.com.ng` redirecting to it. VPS/DNS cutover is separate from a local build.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Local work
 
-## 🚀 Project Structure
-
-Inside of your Astro + Starlight project, you'll see the following folders and files:
-
-```
-.
-├── public/
-├── src/
-│   ├── assets/
-│   ├── content/
-│   │   └── docs/
-│   └── content.config.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
+```sh
+git submodule update --init --recursive
+npm ci
+npm run dev
 ```
 
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
+## Production build
 
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
+```sh
+npm run check
+npm run build
+npm run verify
+```
 
-Static assets, like favicons, can be placed in the `public/` directory.
+Static output is in `dist/`. No database or runtime model credentials are required. Documentation search is generated during the production build (Pagefind does not fully run in Astro development mode).
 
-## 🧞 Commands
+- `brand/ArtemisKit_Brand_System_v3.md`: positioning, visual language, personality, voice, tone and claim rules.
+- `deploy/README.md`: VPS release, TLS, canonical redirect and rollback instructions.
+- `deploy/nginx.conf` / `deploy/Caddyfile`: alternatives to integrate into the existing VPS stack after host validation.
+- `Dockerfile`: optional static container behind the existing TLS proxy.
+- `scripts/verify-site.mjs`: generated-page metadata, H1, local-link and required-output checks.
 
-All commands are run from the root of the project, from a terminal:
+## Documentation ownership
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+`src/content/docs/docs` remains the existing `artemiskit-docs` git submodule, pinned to a reviewable commit. Commit/push documentation there before updating the website's gitlink. A recursive checkout reproduces the same content.
 
-## 👀 Want to learn more?
+To refresh the source-backed workflow and package guides:
 
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+```sh
+cd src/content/docs/docs
+node scripts/sync-core-docs.mjs /absolute/path/to/artemiskit
+```
+
+The script reads committed core files, records the exact SHA and remaps known guide links to local docs. Review the diff; manual tutorial pages still need review when product behaviour changes.
+
+## Evidence and publication
+
+Examples are labelled as examples, not measured results. The methodology page contains no invented leaderboard entries. Legal-certification and universal-safety claims are excluded. Toolkit adoption and VIS-led assessments are separate paths. Existing editorial articles remain an archive with their publication dates.
+
+The prepared privacy description covers this static site's code; reconcile actual server/CDN logs and retention before production launch. No SSH, DNS or TLS changes are made by building this repository.
