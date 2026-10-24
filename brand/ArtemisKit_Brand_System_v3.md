@@ -161,3 +161,18 @@ Check product claims against the exact core snapshot, mobile/desktop layout, key
 - `code-sensei/artemiskit` core snapshot `e58778bef40bf77b4294805e47f2d16c89cece0a`.
 - Core `docs/website-ai-assurance-brief.md`, `AI_ASSURANCE.md`, workflow guides and 0.6.4 release records.
 - Existing official website logo files, retained without redesign.
+
+
+## Approved website refinements — 24 October 2026
+
+Babangida requested the assessment brief and private submission flow directly on the website, plus system-default light/dark/high-contrast modes, explicit creator and main-maintainer attribution, LinkedIn CTAs, official VIS logo CTAs and tasteful use of the approved Owl Inspector.
+
+Credit: **Created and primarily maintained by Babangida Tsowa.** Canonical personal LinkedIn: https://linkedin.com/in/btsowa. Place a compact creator credit on the homepage, a substantive creator section on About, and useful links in the footer, docs footer and assessment receipt. Preserve the distinction between the individual creator and VIS as the organisation behind the project.
+
+Use the original VIS dark/light logo variants on their appropriate surfaces. The logo links to VIS on About and in the footer. Nuru may be used in a future iteration from canonical references; it is not needed alongside the VIS logo in this iteration.
+
+The approved owl poses appear as small supporting guides: inspecting an edge case on the open-source section, thinking on the request form and contribution page. Keep code, calls to action and the official ArtemisKit logo dominant. Optimise the provided artwork without redrawing it or altering its identity.
+
+The theme selector is shared with documentation. Default to System, react to OS colour/contrast changes, persist only an explicit choice and honour forced colours. High contrast uses black/white surfaces, strong borders and visible textual states. Never use colour alone for form errors, selection or results.
+
+The request flow must stay on site: brief → contact/decision → workflow → review/consent → receipt. Submissions notify VIS privately through Resend, always BCCing tsowababangida@gmail.com. Missing configuration or an unconfirmed email send must never be presented as a successful request.

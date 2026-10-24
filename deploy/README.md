@@ -2,7 +2,7 @@
 
 Canonical host: `artemiskit.vorbtech.com.ng`. Convenience alias: `akit.vorbtech.com.ng`, permanent redirect preserving path and query. These are recommendations; DNS has not been changed by preparing this repository.
 
-The site is static Astro output including Starlight documentation and Pagefind search. No Node process, database, model key or Supabase service is needed at runtime.
+The site is static Astro output including Starlight documentation and Pagefind search. The pages need no database or model credentials. The assessment form additionally requires the server-side request endpoint, Node 24 and the existing VIS Resend key. Serving only dist/ will not activate submissions.
 
 ## Build
 
@@ -43,3 +43,32 @@ After the new hostname passes live checks, configure permanent path-preserving r
 ## Verification limits
 
 Local build and browser checks cannot verify the remote server, DNS ownership, certificates, firewall, proxy stack or a successful production cutover. Record those checks in the live deployment run. The supplied web-server configurations require validation on the actual host.
+
+
+## Assessment endpoint and Resend
+
+The brief, three-step form, review, consent and receipt stay on the ArtemisKit site. A browser POST to `/api/assessment` reaches the server, which sends one plain-text notification through Resend to `admin@vorbtech.com.ng`, with BCC fixed to `tsowababangida@gmail.com` and Reply-To set to the validated requester. No public GitHub issue or automatic marketing enrolment is created. The browser receives success only after Resend returns an accepted email id; acceptance does not guarantee final inbox delivery.
+
+The source has no production API key. Reuse the existing VIS Resend key through the deployment's secret/environment settings. Never commit it, prefix it with PUBLIC_, expose it in a browser bundle, or put it in shell arguments. `.env.example` documents the non-secret field names. Existing sender configuration is `notifications@vorbtech.com.ng`; confirm that the active VIS account verifies that domain before a live send.
+
+### VPS service
+
+The static root remains `/srv/artemiskit/current`. Separately deploy `server/` and `src/lib/assessment-schema.mjs` under `/srv/artemiskit/source`, plus `package.json` (`type: module`). No npm runtime dependency is needed by this endpoint.
+
+Create a dedicated unprivileged `artemiskit` service account and a protected environment file at `/etc/artemiskit/assessment.env`, owned by root with mode 0600. Supply the values from `.env.example`, including the real key through your existing secret-management route. Set `ASSESSMENT_TRUST_PROXY=loopback` only with the supplied proxy headers; do not expose port 8787 publicly. The Node process binds to 127.0.0.1. Validate the Node binary path and source path before installing `artemiskit-assessment.service`.
+
+Enable the service through the host's normal systemd administration flow and validate the existing nginx/Caddy configuration before reload. The nginx example includes proxy-level request limiting and a body limit. Caddy users should configure equivalent edge limits as appropriate; the handler also provides bounded process-local rate limiting.
+
+### Existing Vercel preview
+
+`api/assessment.mjs` is a native Node function that imports the same handler. Set `RESEND_API_KEY`, `EMAIL_FROM` and `ADMIN_EMAIL` in the appropriate Vercel environment, then redeploy. `VERCEL_URL` permits the deployment's exact preview origin; add any stable preview aliases explicitly to `ASSESSMENT_ALLOWED_ORIGINS`. Do not allow arbitrary `*.vercel.app` origins. Confirm that the deployed build includes the function and check its GET/POST routes; static Astro build success alone does not verify function deployment.
+
+The rate limiter is process-local, so serverless instances and restarts do not share counters. Use the deployment platform's edge/WAF request limits for global protection. No raw IPs, request contents or provider diagnostics are logged by application code. Infrastructure access logs and mailbox/provider retention still need an agreed production configuration.
+
+### Testing and failures
+
+`npm test` uses an injected email transport; it sends no live mail. It verifies validation, required consent, fixed BCC, permitted origins, bounded bodies, signed/expiring form sessions, retry idempotency and provider failures. It also verifies shared theme behaviour.
+
+For a live smoke test, use an explicitly marked synthetic request after configuration, verify both the VIS inbox and the BCC recipient, then verify the in-page receipt. A missing key returns 503 and no success receipt. Resend rejection/timeouts retain the user's entries on the page. Retrying an unchanged logical request reuses the provider idempotency key.
+
+The optional existing Dockerfile serves static pages only. Its reverse proxy must be connected to a separately deployed endpoint before form submissions work. The primary supplied full deployment path is the VPS Node service plus nginx/Caddy.

@@ -3,6 +3,11 @@
 artemiskit.vorbtech.com.ng {
     root * /srv/artemiskit/current
     encode zstd gzip
+    @assessment path /api/assessment /api/assessment/
+    reverse_proxy @assessment 127.0.0.1:8787 {
+        header_up X-Real-IP {remote_host}
+        header_up Host {host}
+    }
     file_server
     header {
         X-Content-Type-Options nosniff

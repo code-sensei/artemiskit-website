@@ -4,6 +4,25 @@ import starlight from "@astrojs/starlight";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
+import { loadEnv } from "vite";
+import { createNodeAssessmentListener } from "./server/http.mjs";
+
+/** @returns {import("vite").Plugin} */
+function assessmentPreview() {
+  /** @param {import("vite").ViteDevServer | import("vite").PreviewServer} server @param {boolean} [isPreview] */
+  function mount(server, isPreview = false) {
+    const port = (isPreview ? server.config.preview.port : server.config.server.port) || 4321;
+    const env = { ...loadEnv("development", process.cwd(), ""), ...process.env };
+    env.ASSESSMENT_ALLOWED_ORIGINS = [env.ASSESSMENT_ALLOWED_ORIGINS, `http://terminal.local:${port}`, `http://localhost:${port}`].filter(Boolean).join(",");
+    const handle = createNodeAssessmentListener({ env });
+    server.middlewares.use((req, res, next) => {
+      const path = (req.url || "").split("?")[0];
+      if (path === "/api/assessment" || path === "/api/assessment/") return handle(req, res);
+      next();
+    });
+  }
+  return { name: "assessment-local-endpoint", configureServer: server => mount(server), configurePreviewServer: server => mount(server, true) };
+}
 
 // https://astro.build/config
 export default defineConfig({
@@ -24,6 +43,7 @@ export default defineConfig({
     }),
     starlight({
       title: "ArtemisKit",
+      components: { ThemeProvider: "./src/components/ThemeProvider.astro", ThemeSelect: "./src/components/ThemeSelect.astro", Footer: "./src/components/docs/Footer.astro" },
       favicon: "/favicon-32.png",
       logo: {
         light: "./public/artemiskit-wordmark-dark.webp",
@@ -198,6 +218,6 @@ export default defineConfig({
     react(),
   ],
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), assessmentPreview()],
   },
 });

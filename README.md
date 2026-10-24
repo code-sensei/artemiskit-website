@@ -20,7 +20,7 @@ npm run build
 npm run verify
 ```
 
-Static output is in `dist/`. No database or runtime model credentials are required. Documentation search is generated during the production build (Pagefind does not fully run in Astro development mode).
+Static output is in `dist/`. No database or model credentials are required. The assessment form requires the server-side Resend configuration described in `deploy/README.md`. Documentation search is generated during the production build (Pagefind does not fully run in Astro development mode).
 
 - `brand/ArtemisKit_Brand_System_v3.md`: positioning, visual language, personality, voice, tone and claim rules.
 - `deploy/README.md`: VPS release, TLS, canonical redirect and rollback instructions.
@@ -46,3 +46,5 @@ The script reads committed core files, records the exact SHA and remaps known gu
 Examples are labelled as examples, not measured results. The methodology page contains no invented leaderboard entries. Legal-certification and universal-safety claims are excluded. Toolkit adoption and VIS-led assessments are separate paths. Existing editorial articles remain an archive with their publication dates.
 
 The prepared privacy description covers this static site's code; reconcile actual server/CDN logs and retention before production launch. No SSH, DNS or TLS changes are made by building this repository.
+
+`npm test` exercises the email endpoint with a mock transport and the shared system/light/dark/high-contrast theme controller. No live emails are sent by the tests.
