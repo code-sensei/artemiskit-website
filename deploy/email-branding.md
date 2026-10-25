@@ -21,7 +21,7 @@ node scripts/preview-assessment-emails.mjs /absolute/output-directory
 python3 -m http.server 4186 --bind 127.0.0.1 --directory /absolute/output-directory
 ```
 
-Open `/notification.html` and `/acknowledgement.html` at `http://127.0.0.1:4186`, checking desktop and narrow layouts. Real Gmail/Outlook rendering still needs an approved live test after deployment.
+Open `/notification.html` and `/acknowledgement.html` at `http://127.0.0.1:4186`, checking desktop and narrow layouts. Their website links default to the real `https://artemiskit.vercel.app` site; only the preview image is served locally. Pass a third argument with an approved HTTPS website origin to review links to a feature-branch Preview instead. Real Gmail/Outlook rendering still needs an approved live test after deployment.
 
 ## Inbox sender picture is separate
 
