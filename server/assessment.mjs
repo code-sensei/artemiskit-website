@@ -1,5 +1,6 @@
 import { createHmac, timingSafeEqual, randomUUID, createHash } from 'node:crypto';
-import { fields, validateAssessment } from '../src/lib/assessment-schema.mjs';
+import { fields, emailPattern, validateAssessment } from '../src/lib/assessment-schema.mjs';
+import { buildAssessmentEmails, SENDER_NAME, PUBLIC_LOGO_URL } from './assessment-emails.mjs';
 
 export const MAX_BODY_BYTES = 24000;
 const BCC = 'tsowababangida@gmail.com';
@@ -44,10 +45,22 @@ async function readBody(request) {
 function configuration(env) {
   const originList = ['https://artemiskit.vorbtech.com.ng', ...(env.ASSESSMENT_ALLOWED_ORIGINS || '').split(',').map(v => v.trim()).filter(Boolean)];
   if (env.VERCEL_URL) originList.push(`https://${env.VERCEL_URL}`);
-  const from = env.EMAIL_FROM || 'ArtemisKit by Vorbtech <notifications@vorbtech.com.ng>';
+  const sender = env.EMAIL_FROM || 'artemiskit@vorbtech.com.ng';
+  const address = (sender.match(/^[^<>]*<([^<>]+)>$/)?.[1] || sender).trim();
+  const from = `${SENDER_NAME} <${address}>`;
   const to = env.ADMIN_EMAIL || 'admin@vorbtech.com.ng';
-  if (!env.RESEND_API_KEY || /[\r\n]/.test(from + to)) return null;
-  return { secret: env.ASSESSMENT_SIGNING_SECRET || env.RESEND_API_KEY, from, to, origins: new Set(originList), key: env.RESEND_API_KEY };
+  if (!env.RESEND_API_KEY || /[\r\n]/.test(sender + to) || !emailPattern.test(address) || !emailPattern.test(to)) return null;
+  let siteUrl; let logoUrl;
+  try {
+    const deploymentHost = (env.VERCEL_ENV === 'production' && env.VERCEL_PROJECT_PRODUCTION_URL) || env.VERCEL_BRANCH_URL || env.VERCEL_URL;
+    const site = new URL(env.EMAIL_SITE_URL || (deploymentHost ? `https://${deploymentHost}` : 'https://artemiskit.vercel.app'));
+    if (site.protocol !== 'https:' || site.username || site.password) return null;
+    siteUrl = site.origin;
+    const logo = new URL(env.EMAIL_LOGO_URL || PUBLIC_LOGO_URL);
+    if (logo.protocol !== 'https:' || logo.username || logo.password) return null;
+    logoUrl = logo.href;
+  } catch { return null; }
+  return { secret: env.ASSESSMENT_SIGNING_SECRET || env.RESEND_API_KEY, from, to, siteUrl, logoUrl, origins: new Set(originList), key: env.RESEND_API_KEY };
 }
 export function createAssessmentHandler({ env = process.env, send = fetch, now = Date.now, limit = createRateLimiter() } = {}) {
   return async function handle(request, { clientId = 'unknown' } = {}) {
@@ -81,22 +94,23 @@ export function createAssessmentHandler({ env = process.env, send = fetch, now =
     if (Object.keys(errors).length) return json(422, { error: 'Review the highlighted fields.', errors });
     const hash = digest(JSON.stringify(value));
     const reference = `AK-${token.id.replaceAll('-', '').slice(0, 12).toUpperCase()}-${hash.slice(0, 4).toUpperCase()}`;
-    const text = [
-      'ArtemisKit AI Assurance assessment request', `Reference: ${reference}`, '',
-      ...fields.flatMap(field => [field.label, value[field.name] || 'Not specified', '']),
-      'Permission: The requester agreed to VIS reviewing and responding to this request.',
-      'This request does not authorise testing or create an engagement. Agree scope, access, data handling and terms separately.',
-    ].join('\n');
+    const { notification, acknowledgement } = buildAssessmentEmails({ value, reference, siteUrl: config.siteUrl, logoUrl: config.logoUrl });
+    const messages = [
+      { purpose: 'team', payload: { from: config.from, to: [config.to], bcc: [BCC], reply_to: value.email, ...notification } },
+      { purpose: 'acknowledgement', payload: { from: config.from, to: [value.email], ...(value.email.toLowerCase() === BCC ? {} : { bcc: [BCC] }), reply_to: config.to, ...acknowledgement } },
+    ];
     try {
-      const response = await send('https://api.resend.com/emails', {
-        method: 'POST', headers: { Authorization: `Bearer ${config.key}`, 'Content-Type': 'application/json', 'Idempotency-Key': `ak-assessment/${token.id}/${hash}` },
-        body: JSON.stringify({ from: config.from, to: [config.to], bcc: [BCC], reply_to: value.email, subject: `ArtemisKit assessment request · ${reference}`, text }),
-        signal: AbortSignal.timeout(12000),
-      });
-      if (!response.ok) return json(502, { error: 'We could not confirm receipt. Please retry this same request. Your entries have been kept on this page.', code: 'delivery_unconfirmed' });
-      const delivery = await response.json();
-      if (!delivery || typeof delivery.id !== 'string' || !delivery.id) return json(502, { error: 'We could not confirm receipt. Please retry this same request.', code: 'delivery_unconfirmed' });
-      return json(200, { accepted: true, reference, message: 'Your request was accepted by our email service for the VIS assessment team. We will review fit and contact you using the email provided.' });
+      const signal = AbortSignal.timeout(12000);
+      for (const { purpose, payload } of messages) {
+        const response = await send('https://api.resend.com/emails', {
+          method: 'POST', headers: { Authorization: `Bearer ${config.key}`, 'Content-Type': 'application/json', 'Idempotency-Key': `ak-assessment-v2/${purpose}/${token.id}/${hash}` },
+          body: JSON.stringify(payload), signal,
+        });
+        if (!response.ok) throw new Error('delivery_unconfirmed');
+        const delivery = await response.json();
+        if (!delivery || typeof delivery.id !== 'string' || !delivery.id) throw new Error('delivery_unconfirmed');
+      }
+      return json(200, { accepted: true, reference, message: 'Your request and confirmation email were accepted by our email service. A Vorbtech representative will get back to you soon.' });
     } catch {
       return json(502, { error: 'We could not confirm receipt. Please retry this same request. Your entries have been kept on this page.', code: 'delivery_unconfirmed' });
     }

@@ -19,6 +19,17 @@ test('valid request uses fixed admin notification, BCC and requester reply-to', 
   assert.equal((await response.json()).accepted, true);
   const payload = JSON.parse(s.calls[0].options.body);
   assert.deepEqual(payload.to, ['admin@vorbtech.com.ng']); assert.deepEqual(payload.bcc, ['tsowababangida@gmail.com']); assert.equal(payload.reply_to, valid.email);
+  assert.equal(payload.from, 'ArtemisKit by Vorbtech <artemiskit@vorbtech.com.ng>');
+  assert.match(payload.html, /artemiskit-logo\.png/);
+  assert.equal(s.calls.length, 2);
+  const acknowledgement = JSON.parse(s.calls[1].options.body);
+  assert.deepEqual(acknowledgement.to, [valid.email]);
+  assert.deepEqual(acknowledgement.bcc, ['tsowababangida@gmail.com']);
+  assert.equal(acknowledgement.reply_to, 'admin@vorbtech.com.ng');
+  assert.match(acknowledgement.text, /representative.*get back to you soon/);
+  assert.match(acknowledgement.html, /We’ve received your request/);
+  assert.ok(!acknowledgement.text.includes(valid.workflow));
+  assert.ok(!acknowledgement.html.includes(valid.risks));
   assert.equal(s.calls[0].url, 'https://api.resend.com/emails'); assert.match(payload.text, /Success criteria\nApproved rules/);
 });
 test('no key never produces a successful receipt or sends email', async () => { const s = setup({ env: {} }); const response = await s.post('anything'); assert.equal(response.status, 503); assert.equal(s.calls.length, 0); });
@@ -31,6 +42,54 @@ test('Resend rejection, timeout and missing delivery id never show acceptance', 
 test('same logical submission preserves Resend idempotency key after an uncertain send', async()=>{const sent=[];const s=setup({send:async(url,options)=>{sent.push(options);if(sent.length===1)throw new Error('network lost');return Response.json({id:'accepted'})}});const session=await s.getToken();s.advance(3000);assert.equal((await s.post(session.token)).status,502);assert.equal((await s.post(session.token)).status,200);assert.equal(sent[0].headers['Idempotency-Key'],sent[1].headers['Idempotency-Key']);assert.equal(sent[0].body,sent[1].body);});
 test('rate limiter bounds requests, expires entries and refuses excess cardinality',()=>{const limit=createRateLimiter({maximumEntries:2});assert.equal(limit('one',0,1,10),true);assert.equal(limit('one',1,1,10),false);assert.equal(limit('two',1,1,10),true);assert.equal(limit('three',2,1,10),false);assert.equal(limit('three',12,1,10),true);});
 test('token refresh retains request identity for a retry',async()=>{const s=setup();const first=await s.getToken();const response=await s.handle(new Request(origin+'/api/assessment?requestId='+first.requestId));assert.equal(response.status,200);assert.equal((await response.json()).requestId,first.requestId);});
-test('plain-text content prevents user input from becoming HTML',async()=>{const s=setup();const session=await s.getToken();s.advance(3000);assert.equal((await s.post(session.token,{...valid,workflow:'<script>alert("x")</script> A synthetic workflow description.'})).status,200);const payload=JSON.parse(s.calls[0].options.body);assert.equal(payload.html,undefined);assert.ok(payload.text.includes('<script>'));});
+test('HTML templates escape user input while retaining the plain-text alternative',async()=>{const s=setup();const session=await s.getToken();s.advance(3000);assert.equal((await s.post(session.token,{...valid,name:'<img src=x onerror="bad">',workflow:'<script>alert("x")</script> A synthetic workflow description.'})).status,200);const payload=JSON.parse(s.calls[0].options.body);assert.ok(payload.text.includes('<script>'));assert.ok(payload.html.includes('&lt;script&gt;'));assert.ok(!payload.html.includes('<script>'));const acknowledgement=JSON.parse(s.calls[1].options.body);assert.ok(acknowledgement.html.includes('&lt;img src=x onerror=&quot;bad&quot;&gt;'));assert.ok(!acknowledgement.html.includes('<img src=x'));});
+test('acknowledgement failure keeps the request retryable without duplicating the team notification',async()=>{
+  const cache=new Map();const attempts=[];let failAcknowledgement=true;let physicalSends=0;
+  const s=setup({send:async(_url,options)=>{
+    const key=options.headers['Idempotency-Key'];attempts.push({key,body:options.body});
+    if(cache.has(key))return Response.json(cache.get(key));
+    if(key.includes('/acknowledgement/')&&failAcknowledgement){failAcknowledgement=false;throw Error('uncertain acknowledgement');}
+    const result={id:`email-${++physicalSends}`};cache.set(key,result);return Response.json(result);
+  }});
+  const session=await s.getToken();s.advance(3000);
+  const failed=await s.post(session.token);assert.equal(failed.status,502);assert.equal((await failed.json()).accepted,undefined);
+  const retried=await s.post(session.token);assert.equal(retried.status,200);assert.match((await retried.json()).message,/confirmation email/);
+  assert.equal(physicalSends,2);assert.equal(attempts.length,4);
+  assert.notEqual(attempts[0].key,attempts[1].key);
+  assert.equal(attempts[0].key,attempts[2].key);assert.equal(attempts[0].body,attempts[2].body);
+  assert.equal(attempts[1].key,attempts[3].key);assert.equal(attempts[1].body,attempts[3].body);
+});
+test('a team notification failure never sends an acknowledgement',async()=>{
+  const calls=[];const s=setup({send:async(_url,options)=>{calls.push(options);return new Response('',{status:403});}});
+  const session=await s.getToken();s.advance(3000);assert.equal((await s.post(session.token)).status,502);
+  assert.equal(calls.length,1);assert.match(calls[0].headers['Idempotency-Key'],/\/team\//);
+});
+test('a requester who is the fixed BCC recipient receives one acknowledgement copy',async()=>{
+  const s=setup();const session=await s.getToken();s.advance(3000);assert.equal((await s.post(session.token,{...valid,email:'TsowaBabangida@gmail.com'})).status,200);
+  const acknowledgement=JSON.parse(s.calls[1].options.body);assert.deepEqual(acknowledgement.to,['TsowaBabangida@gmail.com']);assert.equal(acknowledgement.bcc,undefined);
+  assert.deepEqual(JSON.parse(s.calls[0].options.body).bcc,['tsowababangida@gmail.com']);
+});
+test('acknowledgement rejection or missing provider id never produces a receipt',async()=>{
+  for(const second of [()=>new Response('',{status:403}),()=>Response.json({})]){
+    let sends=0;const s=setup({send:async()=>++sends===1?Response.json({id:'team-id'}):second()});
+    const session=await s.getToken();s.advance(3000);const response=await s.post(session.token);
+    assert.equal(response.status,502);assert.equal((await response.json()).accepted,undefined);assert.equal(sends,2);
+  }
+});
+test('sender branding preserves the configured mailbox and uses public logo and site links',async()=>{
+  for(const sender of ['artemiskit@vorbtech.com.ng','Old display name <artemiskit@vorbtech.com.ng>']){
+    const s=setup({env:{RESEND_API_KEY:'not-real',EMAIL_FROM:sender,VERCEL_URL:'preview.example.com',EMAIL_SITE_URL:'https://site.example.com/',EMAIL_LOGO_URL:'https://assets.example.com/logo.png'}});
+    const session=await s.getToken();s.advance(3000);assert.equal((await s.post(session.token)).status,200);
+    for(const call of s.calls){const payload=JSON.parse(call.options.body);assert.equal(payload.from,'ArtemisKit by Vorbtech <artemiskit@vorbtech.com.ng>');assert.match(payload.html,/https:\/\/assets\.example\.com\/logo\.png/);assert.match(payload.html,/href="https:\/\/site\.example\.com\//);}
+  }
+  const s=setup({env:{RESEND_API_KEY:'not-real',VERCEL_URL:'deployment.example.com'}});const session=await s.getToken();s.advance(3000);assert.equal((await s.post(session.token)).status,200);assert.match(JSON.parse(s.calls[1].options.body).html,/href="https:\/\/deployment\.example\.com\//);
+  const branch=setup({env:{RESEND_API_KEY:'not-real',VERCEL_BRANCH_URL:'branch.example.com',VERCEL_URL:'deployment.example.com'}});const branchSession=await branch.getToken();branch.advance(3000);assert.equal((await branch.post(branchSession.token)).status,200);const previewHtml=JSON.parse(branch.calls[1].options.body).html;assert.match(previewHtml,/href="https:\/\/branch\.example\.com\//);assert.match(previewHtml,/src="https:\/\/artemiskit\.vercel\.app\/artemiskit-logo\.png/);assert.ok(!previewHtml.includes('src="https://branch.example.com'));
+  const production=setup({env:{RESEND_API_KEY:'not-real',VERCEL_ENV:'production',VERCEL_PROJECT_PRODUCTION_URL:'public.example.com',VERCEL_BRANCH_URL:'private-branch.example.com'}});const productionSession=await production.getToken();production.advance(3000);assert.equal((await production.post(productionSession.token)).status,200);assert.match(JSON.parse(production.calls[1].options.body).html,/href="https:\/\/public\.example\.com\//);
+});
+test('invalid sender, recipient or public URL configuration fails before sending',async()=>{
+  for(const extra of [{EMAIL_FROM:'bad\r\nBcc: attacker@example.com'},{EMAIL_FROM:'not-an-address'},{ADMIN_EMAIL:'admin@example.com,attacker@example.com'},{EMAIL_SITE_URL:'javascript:alert(1)'},{EMAIL_SITE_URL:'https://user:password@example.com'},{EMAIL_LOGO_URL:'http://assets.example.com/logo.png'},{EMAIL_LOGO_URL:'https://user:password@example.com/logo.png'}]){
+    const s=setup({env:{RESEND_API_KEY:'not-real',...extra}});const result=await s.getToken();assert.equal(result.response.status,503);assert.equal(s.calls.length,0);
+  }
+});
 test('standalone HTTP adapter enforces route and delivers through the shared handler',async t=>{let sends=0;const server=createAssessmentServer({env:{RESEND_API_KEY:'not-real',ASSESSMENT_ALLOWED_ORIGINS:origin},now:()=>100000,send:async()=>{sends++;return Response.json({id:'id'})}});await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));t.after(()=>new Promise(resolve=>server.close(resolve)));const url=`http://127.0.0.1:${server.address().port}`;assert.equal((await fetch(url+'/unexpected')).status,404);const result=await fetch(url+'/api/assessment',{headers:{Origin:origin}});assert.equal(result.status,200);assert.ok((await result.json()).token);assert.equal(sends,0);});
 test('TLS reverse-proxy GET token works without a browser Origin header',async t=>{const server=createAssessmentServer({env:{RESEND_API_KEY:'not-real'},trustProxy:true,send:async()=>{throw Error('must not send')}});await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));t.after(()=>new Promise(resolve=>server.close(resolve)));const response=await new Promise((resolve,reject)=>{const req=httpRequest({host:'127.0.0.1',port:server.address().port,path:'/api/assessment',headers:{Host:'artemiskit.vorbtech.com.ng','X-Forwarded-Proto':'https','X-Real-IP':'192.0.2.1'}},res=>{let body='';res.on('data',chunk=>body+=chunk);res.on('end',()=>resolve({status:res.statusCode,body:JSON.parse(body)}))});req.on('error',reject);req.end()});assert.equal(response.status,200);assert.ok(response.body.token);});

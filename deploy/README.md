@@ -47,9 +47,9 @@ Local build and browser checks cannot verify the remote server, DNS ownership, c
 
 ## Assessment endpoint and Resend
 
-The brief, three-step form, review, consent and receipt stay on the ArtemisKit site. A browser POST to `/api/assessment` reaches the server, which sends one plain-text notification through Resend to `admin@vorbtech.com.ng`, with BCC fixed to `tsowababangida@gmail.com` and Reply-To set to the validated requester. No public GitHub issue or automatic marketing enrolment is created. The browser receives success only after Resend returns an accepted email id; acceptance does not guarantee final inbox delivery.
+The brief, three-step form, review, consent and receipt stay on the ArtemisKit site. A browser POST to `/api/assessment` reaches the server, which sends a branded HTML/plain-text team notification through Resend to `admin@vorbtech.com.ng`, then a branded acknowledgement to the validated requester. Both BCC `tsowababangida@gmail.com`. Team notification replies go to the requester; acknowledgement replies go to the team. No public GitHub issue or automatic marketing enrolment is created. The browser receives success only after Resend returns accepted IDs for both messages; acceptance does not guarantee final inbox delivery. See [email branding and sender-picture setup](email-branding.md) for template ownership, preview commands and BIMI prerequisites.
 
-The source has no production API key. Reuse the existing VIS Resend key through the deployment's secret/environment settings. Never commit it, prefix it with PUBLIC_, expose it in a browser bundle, or put it in shell arguments. `.env.example` documents the non-secret field names. Existing sender configuration is `notifications@vorbtech.com.ng`; confirm that the active VIS account verifies that domain before a live send.
+The source has no production API key. Reuse the existing VIS Resend key through the deployment's secret/environment settings. Never commit it, prefix it with PUBLIC_, expose it in a browser bundle, or put it in shell arguments. `.env.example` documents the non-secret field names. The verified preview sender mailbox is `artemiskit@vorbtech.com.ng`; the server applies the display name `ArtemisKit by Vorbtech`. Confirm that the active VIS account verifies that domain before a live send.
 
 ### VPS service
 
@@ -69,6 +69,6 @@ The rate limiter is process-local, so serverless instances and restarts do not s
 
 `npm test` uses an injected email transport; it sends no live mail. It verifies validation, required consent, fixed BCC, permitted origins, bounded bodies, signed/expiring form sessions, retry idempotency and provider failures. It also verifies shared theme behaviour.
 
-For a live smoke test, use an explicitly marked synthetic request after configuration, verify both the VIS inbox and the BCC recipient, then verify the in-page receipt. A missing key returns 503 and no success receipt. Resend rejection/timeouts retain the user's entries on the page. Retrying an unchanged logical request reuses the provider idempotency key.
+For an approved live smoke test, use an explicitly marked synthetic request after configuration, verify the team notification in the VIS inbox, the acknowledgement in the requester inbox, both BCC copies, and the in-page receipt. A missing key returns 503 and no success receipt. Resend rejection/timeouts retain the user's entries on the page. Retrying an unchanged logical request reuses a separate provider idempotency key for each message.
 
 The optional existing Dockerfile serves static pages only. Its reverse proxy must be connected to a separately deployed endpoint before form submissions work. The primary supplied full deployment path is the VPS Node service plus nginx/Caddy.
