@@ -2,7 +2,7 @@
 
 The static website and Starlight documentation for the open-source AI assurance toolkit by Vorbtech Innovative Solutions.
 
-Recommended canonical URL: `https://artemiskit.vorbtech.com.ng`, with `akit.vorbtech.com.ng` redirecting to it. VPS/DNS cutover is separate from a local build.
+Canonical URL: `https://artemiskit.vorbtech.com.ng`, hosted on Vercel. Redirect the existing `artemiskit.vercel.app` host to the same paths on the canonical domain after verification. VIS mailboxes remain on the VPS. Domain activation and a Production release require a separate approved cutover; a local build does not activate them.
 
 ## Local work
 
@@ -23,7 +23,7 @@ npm run verify
 Static output is in `dist/`. No database or model credentials are required. The assessment form requires the server-side Resend configuration described in `deploy/README.md`. Documentation search is generated during the production build (Pagefind does not fully run in Astro development mode).
 
 - `brand/ArtemisKit_Brand_System_v3.md`: positioning, visual language, personality, voice, tone and claim rules.
-- `deploy/README.md`: VPS release, TLS, canonical redirect and rollback instructions.
+- `deploy/README.md`: Vercel custom-domain cutover, canonical redirect and rollback; optional VPS deployment instructions.
 - `deploy/nginx.conf` / `deploy/Caddyfile`: alternatives to integrate into the existing VPS stack after host validation.
 - `Dockerfile`: optional static container behind the existing TLS proxy.
 - `scripts/verify-site.mjs`: generated-page metadata, H1, local-link and required-output checks.

@@ -52,8 +52,7 @@ function configuration(env) {
   if (!env.RESEND_API_KEY || /[\r\n]/.test(sender + to) || !emailPattern.test(address) || !emailPattern.test(to)) return null;
   let siteUrl; let logoUrl;
   try {
-    const deploymentHost = (env.VERCEL_ENV === 'production' && env.VERCEL_PROJECT_PRODUCTION_URL) || env.VERCEL_BRANCH_URL || env.VERCEL_URL;
-    const site = new URL(env.EMAIL_SITE_URL || (deploymentHost ? `https://${deploymentHost}` : 'https://artemiskit.vercel.app'));
+    const site = new URL(env.EMAIL_SITE_URL || 'https://artemiskit.vorbtech.com.ng');
     if (site.protocol !== 'https:' || site.username || site.password) return null;
     siteUrl = site.origin;
     const logo = new URL(env.EMAIL_LOGO_URL || PUBLIC_LOGO_URL);
@@ -103,7 +102,7 @@ export function createAssessmentHandler({ env = process.env, send = fetch, now =
       const signal = AbortSignal.timeout(12000);
       for (const { purpose, payload } of messages) {
         const response = await send('https://api.resend.com/emails', {
-          method: 'POST', headers: { Authorization: `Bearer ${config.key}`, 'Content-Type': 'application/json', 'Idempotency-Key': `ak-assessment-v2/${purpose}/${token.id}/${hash}` },
+          method: 'POST', headers: { Authorization: `Bearer ${config.key}`, 'Content-Type': 'application/json', 'Idempotency-Key': `ak-assessment-v3/${purpose}/${token.id}/${hash}` },
           body: JSON.stringify(payload), signal,
         });
         if (!response.ok) throw new Error('delivery_unconfirmed');

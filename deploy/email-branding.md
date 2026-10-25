@@ -10,7 +10,7 @@ After consent and validation, the endpoint sends the team notification, then the
 
 The browser receives success only after Resend accepts both messages. If either message is rejected, times out or has no provider ID, the request stays retryable. Separate, versioned `team` and `acknowledgement` idempotency keys preserve the same payload on an unchanged retry. This avoids resending an accepted team notification if the acknowledgement fails. Resend retains idempotency keys for 24 hours; this is not a durable queue, and provider acceptance does not guarantee inbox delivery. The form’s one-hour session/retry flow remains in place.
 
-`EMAIL_SITE_URL` optionally supplies the public HTTPS origin for the website link. In Vercel Production it prefers `VERCEL_PROJECT_PRODUCTION_URL`, so recipients do not get a protected branch alias. In Preview it uses the stable `VERCEL_BRANCH_URL`, falling back to `VERCEL_URL`. Outside Vercel it falls back to the existing public `https://artemiskit.vercel.app` host. On the VPS, set it to the confirmed canonical origin after cutover. Private-preview links require Vercel access until a public release.
+The canonical website and default email-link destination is **`https://artemiskit.vorbtech.com.ng`**, including in Preview email. Vercel deployment metadata must not substitute a protected branch alias or the old `artemiskit.vercel.app` host. `EMAIL_SITE_URL` can explicitly override the HTTPS origin for a separate environment, but the normal Production and Preview setting is the canonical host. The website is hosted on Vercel; the sender mailbox remains on the VIS VPS. The custom domain must be attached and verified before public use of these links.
 
 The logo defaults separately to the official public `https://artemiskit.vercel.app/artemiskit-logo.png`, verified to return `200 image/png` without authentication. The feature-branch image URL redirects to Vercel sign-in, so it must not be used as the email image. `EMAIL_LOGO_URL` can override the logo after a confirmed public asset move. Do not use localhost, a private host or a signed/authenticated asset URL in live email settings. Recipients may still need to allow remote images in their email client. Bump the idempotency-key version when changing template payloads so cached provider requests do not conflict across releases.
 
@@ -21,7 +21,7 @@ node scripts/preview-assessment-emails.mjs /absolute/output-directory
 python3 -m http.server 4186 --bind 127.0.0.1 --directory /absolute/output-directory
 ```
 
-Open `/notification.html` and `/acknowledgement.html` at `http://127.0.0.1:4186`, checking desktop and narrow layouts. Their website links default to the real `https://artemiskit.vercel.app` site; only the preview image is served locally. Pass a third argument with an approved HTTPS website origin to review links to a feature-branch Preview instead. Real Gmail/Outlook rendering still needs an approved live test after deployment.
+Open `/notification.html` and `/acknowledgement.html` at `http://127.0.0.1:4186`, checking desktop and narrow layouts. Their website links default to the canonical `https://artemiskit.vorbtech.com.ng` host; only the preview image is served locally. Pass a third argument with an approved HTTPS website origin only when deliberately testing another destination. Real Gmail/Outlook rendering still needs an approved live test after deployment.
 
 ## Inbox sender picture is separate
 
