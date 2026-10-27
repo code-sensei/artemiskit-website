@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-const root=path.resolve('dist');const canonical='https://artemiskit.vorbtech.com.ng';const errors=[];let count=0,docs=0;
+const root=path.resolve('dist');const canonical='https://www.artemiskit.dev';const errors=[];let count=0,docs=0;
 function walk(dir){return fs.readdirSync(dir,{withFileTypes:true}).flatMap(d=>d.isDirectory()?walk(path.join(dir,d.name)):[path.join(dir,d.name)])}
 const files=walk(root);const pages=files.filter(p=>p.endsWith('.html'));const redirects=new Set(['results','ai-red-team','ai-security-testing','llm-testing','prompt-injection-testing']);
 for(const file of pages){const text=fs.readFileSync(file,'utf8');const relative=path.relative(root,file);const isRedirect=redirects.has(relative.split(path.sep)[0]);

@@ -1,7 +1,7 @@
 import { fields } from '../src/lib/assessment-schema.mjs';
 
 export const SENDER_NAME = 'ArtemisKit by Vorbtech';
-export const PUBLIC_LOGO_URL = 'https://artemiskit.vercel.app/artemiskit-logo.png';
+export const PUBLIC_LOGO_URL = 'https://www.artemiskit.dev/artemiskit-logo.png';
 const escape = value => String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
 const paragraph = content => `<p style="margin:0 0 20px;font-size:16px;line-height:1.65;">${content}</p>`;
 

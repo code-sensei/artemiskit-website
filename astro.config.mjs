@@ -26,7 +26,7 @@ function assessmentPreview() {
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://artemiskit.vorbtech.com.ng",
+  site: "https://www.artemiskit.dev",
   output: "static",
   server: { allowedHosts: ["terminal.local"] },
   trailingSlash: "always",
@@ -59,7 +59,13 @@ export default defineConfig({
         },
       ],
       customCss: ["./src/styles/docs-identity.css"],
-      head: [{ tag: "meta", attrs: { name: "theme-color", content: "#0D1115" } }],
+      head: [
+        { tag: "meta", attrs: { name: "theme-color", content: "#0D1115" } },
+        { tag: "meta", attrs: { property: "og:image", content: "https://www.artemiskit.dev/og-image.png" } },
+        { tag: "meta", attrs: { property: "og:image:alt", content: "ArtemisKit — open-source AI assurance" } },
+        { tag: "meta", attrs: { name: "twitter:image", content: "https://www.artemiskit.dev/og-image.png" } },
+        { tag: "meta", attrs: { name: "twitter:image:alt", content: "ArtemisKit — open-source AI assurance" } },
+      ],
       lastUpdated: false,
       sidebar: [
         {

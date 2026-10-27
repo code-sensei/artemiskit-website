@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
-Sitemap: https://artemiskit.vorbtech.com.ng/sitemap-index.xml
+Sitemap: https://www.artemiskit.dev/sitemap-index.xml

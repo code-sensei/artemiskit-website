@@ -43,7 +43,7 @@ async function readBody(request) {
   return JSON.parse(Buffer.concat(chunks).toString('utf8'));
 }
 function configuration(env) {
-  const originList = ['https://artemiskit.vorbtech.com.ng', ...(env.ASSESSMENT_ALLOWED_ORIGINS || '').split(',').map(v => v.trim()).filter(Boolean)];
+  const originList = ['https://www.artemiskit.dev', 'https://artemiskit.dev', 'https://artemiskit.vorbtech.com.ng', ...(env.ASSESSMENT_ALLOWED_ORIGINS || '').split(',').map(v => v.trim()).filter(Boolean)];
   if (env.VERCEL_URL) originList.push(`https://${env.VERCEL_URL}`);
   const sender = env.EMAIL_FROM || 'artemiskit@vorbtech.com.ng';
   const address = (sender.match(/^[^<>]*<([^<>]+)>$/)?.[1] || sender).trim();
@@ -52,9 +52,9 @@ function configuration(env) {
   if (!env.RESEND_API_KEY || /[\r\n]/.test(sender + to) || !emailPattern.test(address) || !emailPattern.test(to)) return null;
   let siteUrl; let logoUrl;
   try {
-    const site = new URL(env.EMAIL_SITE_URL || 'https://artemiskit.vorbtech.com.ng');
+    const site = new URL(env.EMAIL_SITE_URL || 'https://www.artemiskit.dev');
     if (site.protocol !== 'https:' || site.username || site.password) return null;
-    siteUrl = site.origin;
+    siteUrl = ['https://artemiskit.vorbtech.com.ng', 'https://artemiskit.dev'].includes(site.origin) ? 'https://www.artemiskit.dev' : site.origin;
     const logo = new URL(env.EMAIL_LOGO_URL || PUBLIC_LOGO_URL);
     if (logo.protocol !== 'https:' || logo.username || logo.password) return null;
     logoUrl = logo.href;
@@ -102,7 +102,7 @@ export function createAssessmentHandler({ env = process.env, send = fetch, now =
       const signal = AbortSignal.timeout(12000);
       for (const { purpose, payload } of messages) {
         const response = await send('https://api.resend.com/emails', {
-          method: 'POST', headers: { Authorization: `Bearer ${config.key}`, 'Content-Type': 'application/json', 'Idempotency-Key': `ak-assessment-v3/${purpose}/${token.id}/${hash}` },
+          method: 'POST', headers: { Authorization: `Bearer ${config.key}`, 'Content-Type': 'application/json', 'Idempotency-Key': `ak-assessment-v4/${purpose}/${token.id}/${hash}` },
           body: JSON.stringify(payload), signal,
         });
         if (!response.ok) throw new Error('delivery_unconfirmed');

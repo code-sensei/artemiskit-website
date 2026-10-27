@@ -6,7 +6,7 @@ import { buildAssessmentEmails } from '../server/assessment-emails.mjs';
 if (!process.argv[2]) throw new Error('Usage: node scripts/preview-assessment-emails.mjs /absolute/output-directory [https://website-origin]');
 const output = resolve(process.argv[2]);
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const website = new URL(process.argv[3] || 'https://artemiskit.vorbtech.com.ng');
+const website = new URL(process.argv[3] || 'https://www.artemiskit.dev');
 if (website.protocol !== 'https:' || website.username || website.password) throw new Error('Use the public HTTPS website origin for preview links.');
 const value = {
   name: 'Alex Morgan', email: 'alex@example.org', organisation: 'Example Organisation', role: 'Product lead',

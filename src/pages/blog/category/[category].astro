@@ -82,9 +82,9 @@ const formatDate = (date: Date) => {
 
 // Breadcrumbs for schema
 const breadcrumbs = [
-  { name: 'Home', url: 'https://artemiskit.vorbtech.com.ng/' },
-  { name: 'Blog', url: 'https://artemiskit.vorbtech.com.ng/blog/' },
-  { name: info.label, url: `https://artemiskit.vorbtech.com.ng/blog/category/${category}/` },
+  { name: 'Home', url: 'https://www.artemiskit.dev/' },
+  { name: 'Blog', url: 'https://www.artemiskit.dev/blog/' },
+  { name: info.label, url: `https://www.artemiskit.dev/blog/category/${category}/` },
 ];
 
 // CollectionPage schema for category pages
@@ -93,18 +93,18 @@ const collectionSchema = {
   "@type": "CollectionPage",
   "name": `${info.label} - ArtemisKit Blog`,
   "description": info.description,
-  "url": `https://artemiskit.vorbtech.com.ng/blog/category/${category}/`,
+  "url": `https://www.artemiskit.dev/blog/category/${category}/`,
   "isPartOf": {
     "@type": "Blog",
     "name": "ArtemisKit Blog",
-    "url": "https://artemiskit.vorbtech.com.ng/blog/"
+    "url": "https://www.artemiskit.dev/blog/"
   },
   "numberOfItems": sortedPosts.length,
   "hasPart": sortedPosts.slice(0, 10).map(post => ({
     "@type": "BlogPosting",
     "headline": post.data.title,
     "description": post.data.description,
-    "url": `https://artemiskit.vorbtech.com.ng/blog/${post.id.replace(/\.mdx$/, '')}/`,
+    "url": `https://www.artemiskit.dev/blog/${post.id.replace(/\.mdx$/, '')}/`,
     "datePublished": post.data.pubDate.toISOString()
   }))
 };

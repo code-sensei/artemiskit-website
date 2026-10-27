@@ -62,8 +62,8 @@ const categoryInfo = categoryMap[category] || { label: category, color: 'bg-zinc
 
 // Breadcrumbs for schema
 const breadcrumbs = [
-  { name: 'Home', url: 'https://artemiskit.vorbtech.com.ng/' },
-  { name: 'Blog', url: 'https://artemiskit.vorbtech.com.ng/blog/' },
+  { name: 'Home', url: 'https://www.artemiskit.dev/' },
+  { name: 'Blog', url: 'https://www.artemiskit.dev/blog/' },
   { name: title, url: Astro.url.href },
 ];
 
@@ -73,7 +73,7 @@ const articleSchema = {
   "@type": "Article",
   "headline": title,
   "description": description,
-  "image": image ? `https://artemiskit.vorbtech.com.ng${image.src}` : "https://artemiskit.vorbtech.com.ng/og-image.png",
+  "image": image ? `https://www.artemiskit.dev${image.src}` : "https://www.artemiskit.dev/og-image.png",
   "datePublished": pubDate.toISOString(),
   "dateModified": (updatedDate || pubDate).toISOString(),
   "author": {
@@ -85,7 +85,7 @@ const articleSchema = {
     "name": "ArtemisKit",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://artemiskit.vorbtech.com.ng/artemiskit-icon.png"
+      "url": "https://www.artemiskit.dev/artemiskit-icon.png"
     }
   },
   "mainEntityOfPage": {

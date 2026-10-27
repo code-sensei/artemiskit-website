@@ -3,7 +3,7 @@ import { request as httpRequest } from 'node:http';
 import assert from 'node:assert/strict';
 import { createAssessmentHandler, createRateLimiter } from '../server/assessment.mjs';
 import { createAssessmentServer } from '../server/http.mjs';
-const origin = 'https://artemiskit.vorbtech.com.ng';
+const origin = 'https://www.artemiskit.dev';
 const valid = { name: 'Demo Requester', email: 'requester@example.com', organisation: 'Example Organisation', role: 'Engineering', sector: 'Public sector', goal: 'Deployment review', workflow: 'Answer synthetic service questions and escalate exceptions for review.', target: 'A staging support assistant using synthetic fixtures.', risks: 'Disclosure of synthetic account information or an unauthorised action.', rules: 'Escalate restricted decisions.', success: 'Approved rules are respected.', dataAccess: 'Synthetic records only.', stakeholders: 'Engineering and privacy owners.', timing: 'To be discussed', budget: '', consent: true, website: '' };
 function setup({ env, send } = {}) {
   let clock = 100000;
@@ -84,8 +84,19 @@ test('sender branding preserves the configured mailbox and uses public logo and 
   }
   for(const deployment of [{VERCEL_URL:'deployment.example.com'},{VERCEL_BRANCH_URL:'branch.example.com',VERCEL_URL:'deployment.example.com'},{VERCEL_ENV:'production',VERCEL_PROJECT_PRODUCTION_URL:'public.example.com'}]){
     const s=setup({env:{RESEND_API_KEY:'not-real',...deployment}});const session=await s.getToken();s.advance(3000);assert.equal((await s.post(session.token)).status,200);
-    const email=JSON.parse(s.calls[1].options.body);assert.match(email.html,/href="https:\/\/artemiskit\.vorbtech\.com\.ng\//);assert.match(email.text,/Explore ArtemisKit: https:\/\/artemiskit\.vorbtech\.com\.ng\//);assert.match(email.html,/src="https:\/\/artemiskit\.vercel\.app\/artemiskit-logo\.png/);
+    const email=JSON.parse(s.calls[1].options.body);assert.match(email.html,/href="https:\/\/www\.artemiskit\.dev\//);assert.match(email.text,/Explore ArtemisKit: https:\/\/www\.artemiskit\.dev\//);assert.match(email.html,/src="https:\/\/www\.artemiskit\.dev\/artemiskit-logo\.png/);
   }
+});
+test('both canonical and legacy website origins work, while unrelated origins stay blocked', async () => {
+  const s = setup({ env: { RESEND_API_KEY: 'not-real', EMAIL_SITE_URL: 'https://artemiskit.vorbtech.com.ng' } });
+  for (const allowed of ['https://www.artemiskit.dev', 'https://artemiskit.dev', 'https://artemiskit.vorbtech.com.ng']) {
+    const session = await s.getToken(allowed);
+    assert.equal(session.response.status, 200);
+    s.advance(3000);
+    assert.equal((await s.post(session.token, valid, allowed)).status, 200);
+  }
+  assert.match(JSON.parse(s.calls[1].options.body).text, /Explore ArtemisKit: https:\/\/www\.artemiskit\.dev\//);
+  assert.equal((await s.getToken('https://unrelated.example')).response.status, 403);
 });
 test('invalid sender, recipient or public URL configuration fails before sending',async()=>{
   for(const extra of [{EMAIL_FROM:'bad\r\nBcc: attacker@example.com'},{EMAIL_FROM:'not-an-address'},{ADMIN_EMAIL:'admin@example.com,attacker@example.com'},{EMAIL_SITE_URL:'javascript:alert(1)'},{EMAIL_SITE_URL:'https://user:password@example.com'},{EMAIL_LOGO_URL:'http://assets.example.com/logo.png'},{EMAIL_LOGO_URL:'https://user:password@example.com/logo.png'}]){
@@ -93,4 +104,4 @@ test('invalid sender, recipient or public URL configuration fails before sending
   }
 });
 test('standalone HTTP adapter enforces route and delivers through the shared handler',async t=>{let sends=0;const server=createAssessmentServer({env:{RESEND_API_KEY:'not-real',ASSESSMENT_ALLOWED_ORIGINS:origin},now:()=>100000,send:async()=>{sends++;return Response.json({id:'id'})}});await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));t.after(()=>new Promise(resolve=>server.close(resolve)));const url=`http://127.0.0.1:${server.address().port}`;assert.equal((await fetch(url+'/unexpected')).status,404);const result=await fetch(url+'/api/assessment',{headers:{Origin:origin}});assert.equal(result.status,200);assert.ok((await result.json()).token);assert.equal(sends,0);});
-test('TLS reverse-proxy GET token works without a browser Origin header',async t=>{const server=createAssessmentServer({env:{RESEND_API_KEY:'not-real'},trustProxy:true,send:async()=>{throw Error('must not send')}});await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));t.after(()=>new Promise(resolve=>server.close(resolve)));const response=await new Promise((resolve,reject)=>{const req=httpRequest({host:'127.0.0.1',port:server.address().port,path:'/api/assessment',headers:{Host:'artemiskit.vorbtech.com.ng','X-Forwarded-Proto':'https','X-Real-IP':'192.0.2.1'}},res=>{let body='';res.on('data',chunk=>body+=chunk);res.on('end',()=>resolve({status:res.statusCode,body:JSON.parse(body)}))});req.on('error',reject);req.end()});assert.equal(response.status,200);assert.ok(response.body.token);});
+test('TLS reverse-proxy GET token works without a browser Origin header',async t=>{const server=createAssessmentServer({env:{RESEND_API_KEY:'not-real'},trustProxy:true,send:async()=>{throw Error('must not send')}});await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));t.after(()=>new Promise(resolve=>server.close(resolve)));const response=await new Promise((resolve,reject)=>{const req=httpRequest({host:'127.0.0.1',port:server.address().port,path:'/api/assessment',headers:{Host:'www.artemiskit.dev','X-Forwarded-Proto':'https','X-Real-IP':'192.0.2.1'}},res=>{let body='';res.on('data',chunk=>body+=chunk);res.on('end',()=>resolve({status:res.statusCode,body:JSON.parse(body)}))});req.on('error',reject);req.end()});assert.equal(response.status,200);assert.ok(response.body.token);});

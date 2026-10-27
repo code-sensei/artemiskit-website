@@ -1,17 +1,15 @@
 # Vercel hosting and optional VPS deployment
 
-Canonical website host: `artemiskit.vorbtech.com.ng`, hosted on the existing Vercel project. The old `artemiskit.vercel.app` host will permanently redirect to the canonical host, preserving path and query. VIS mailboxes stay on the VPS. A possible `akit` alias is separate and is not part of this cutover.
+Canonical website host: `www.artemiskit.dev`, hosted on the existing Vercel project. The apex `artemiskit.dev` redirects to the www host. Vercel's host-specific redirect in `vercel.json` sends the former `artemiskit.vorbtech.com.ng` website to the same path and query on the canonical domain. VIS mailboxes remain on the VPS.
 
-## Vercel custom-domain cutover
+## Vercel domain migration
 
-1. Confirm the reviewed commit to publish. The approved feature branch may still be a draft Preview while Production serves the older main-branch deployment; attaching a Production domain alone does not publish the new design.
-2. With explicit cutover approval, add `artemiskit.vorbtech.com.ng` to the existing `artemiskit-website` project in Vercel Domains. Use the exact DNS configuration/verification shown by Vercel; do not guess an IP or overwrite unrelated records. The parent domain currently uses Vercel nameservers and the subdomain resolves to Vercel, but it was not attached to the project as of 25 October 2026.
-3. Wait for valid domain configuration and HTTPS, then publish/promote only the reviewed website release with separate Production approval. Preserve the existing Resend settings. No mailbox, MX, SPF, DKIM or DMARC change is required for this website host.
-4. Verify the canonical home, docs, deep routes, assets, search, health endpoint, canonical metadata and assessment flow before enabling the old-domain redirect. Email links default to this canonical origin; the old public logo URL remains available during cutover.
-5. In Vercel Domains, edit only `artemiskit.vercel.app` to redirect to `artemiskit.vorbtech.com.ng` with a permanent 308 redirect. Verify the root, a deep path such as `/docs/getting-started/`, and a query string. Keep Preview aliases and the canonical domain free of this redirect to avoid loops. Do not add a second competing redirect in application code.
-6. Record the previous Production deployment and domain settings. Rollback restores that deployment and removes/reverts only the newly configured old-domain redirect and custom-domain attachment as needed. Do not delete or alter the parent domain, other VIS projects or email DNS records.
+1. Verify the new domain and HTTPS in the existing Vercel project, then build and review the exact release before promoting it to Production.
+2. Keep email and DNS settings unchanged unless separately authorised. The assessment endpoint accepts both current and former website origins during the transition; `EMAIL_SITE_URL` may override outgoing links. A legacy website-origin override is mapped to the new canonical host.
+3. After deployment, verify the home page, docs and deep links, video and assets, `/robots.txt`, sitemap, canonical and social metadata. Test the previous website host's root and a deep path with a query string, and verify the request endpoint with a safe read-only check.
+4. Retain the previous Production deployment for rollback. Revert this code's host-specific redirect and redeploy the previous release if needed. Do not alter unrelated domains, VIS projects or mail DNS records.
 
-The following VPS procedure remains an optional alternative; it is not the current website hosting plan.
+The following VPS procedure remains an optional alternative; it is not the current website hosting plan. The nginx and Caddy examples are legacy configurations and must be reviewed for the new host before any VPS deployment.
 
 The site is static Astro output including Starlight documentation and Pagefind search. The pages need no database or model credentials. The assessment form additionally requires the server-side request endpoint, Node 24 and the existing VIS Resend key. Serving only dist/ will not activate submissions.
 

@@ -2,7 +2,7 @@
 
 The static website and Starlight documentation for the open-source AI assurance toolkit by Vorbtech Innovative Solutions.
 
-Canonical URL: `https://artemiskit.vorbtech.com.ng`, hosted on Vercel. Redirect the existing `artemiskit.vercel.app` host to the same paths on the canonical domain after verification. VIS mailboxes remain on the VPS. Domain activation and a Production release require a separate approved cutover; a local build does not activate them.
+Canonical URL: `https://www.artemiskit.dev`, hosted on Vercel. The former `artemiskit.vorbtech.com.ng` website redirects to the corresponding path on the canonical domain. VIS mailboxes remain on the VPS.
 
 ## Local work
 
