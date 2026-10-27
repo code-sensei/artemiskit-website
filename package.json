@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/generate-llms.mjs && node --test scripts/verify-llms.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
@@ -33,6 +33,7 @@
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
     "@fontsource-variable/geist": "^5.2.8",
-    "@fontsource-variable/geist-mono": "^5.2.7"
+    "@fontsource-variable/geist-mono": "^5.2.7",
+    "parse5": "7.3.0"
   }
 }
