@@ -132,7 +132,7 @@ function TerminalLineComponent({
       transition: {
         duration: 0.15,
         delay: baseDelay,
-        ease: "easeOut",
+        ease: "easeOut" as const,
       },
     },
   };

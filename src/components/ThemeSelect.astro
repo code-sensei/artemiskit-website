@@ -1,0 +1,16 @@
+<label class="ak-theme-choice">
+  <span class="ak-theme-label">Colour theme</span>
+  <select data-ak-theme-picker aria-label="Colour theme">
+    <option value="system" selected>System</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="contrast">High contrast</option>
+  </select>
+</label>
+<style is:global>
+.ak-theme-label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.ak-theme-choice{display:inline-flex;align-items:center;position:relative;flex:none}
+.ak-theme-choice select{font:12px/1.4 var(--ak-font,var(--sl-font,sans-serif));color:var(--ak-ink,var(--sl-color-white));background:var(--ak-paper,var(--sl-color-black));border:1px solid var(--ak-line,var(--sl-color-gray-5));border-radius:0;padding:10px 23px 10px 10px;min-height:42px;max-width:130px;cursor:pointer}
+.ak-theme-choice select:focus-visible{outline:3px solid var(--ak-link,var(--sl-color-accent));outline-offset:3px}
+@media(max-width:760px){.ak-theme-choice select{max-width:105px;padding-left:8px;font-size:11px}}
+</style>

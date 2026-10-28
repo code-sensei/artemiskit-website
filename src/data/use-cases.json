@@ -1,0 +1,156 @@
+[
+  [
+    "financial-services",
+    "Financial services",
+    "A disputed payment request",
+    "An assistant handles a payment dispute and prepares an escalation without exposing unrelated customer data.",
+    "Account verification, private data, approval limits and regulated communications.",
+    [
+      "Sensitive-data handling and source boundaries",
+      "Escalation and refund/approval authority",
+      "Exception handling and language coverage"
+    ],
+    "A scoped set of response checks, tool decisions and escalation evidence.",
+    "Synthetic accounts only. No automated credit, investment or regulatory decision is implied."
+  ],
+  [
+    "healthcare",
+    "Healthcare",
+    "A patient-information handoff",
+    "An operations assistant retrieves approved information and escalates a request needing clinical judgment.",
+    "Unsafe advice, source quality, patient privacy and missed human review.",
+    [
+      "Approved-source use and information accuracy",
+      "Harmful-advice boundaries and escalation",
+      "Sensitive-data treatment and incomplete information"
+    ],
+    "Source checks, escalation records and the observed handoff outcome.",
+    "Operational testing does not establish clinical validity or replace clinical review."
+  ],
+  [
+    "public-sector",
+    "Public sector",
+    "A citizen-service request",
+    "An assistant explains an approved service process, protects citizen information and escalates an exception.",
+    "Inconsistent guidance, exclusion, private data exposure and opaque escalation.",
+    [
+      "Policy and approved-source boundaries",
+      "Language, accessibility and consistency needs in the agreed scope",
+      "Sensitive-data handling and traceable human handoffs"
+    ],
+    "Scenario-level findings, response checks and escalation evidence for technical and governance review.",
+    "No agency endorsement, legal certification or production deployment is implied. Language and accessibility coverage must be agreed and tested."
+  ],
+  [
+    "telecommunications",
+    "Telecommunications",
+    "An outage and account-support enquiry",
+    "A support assistant explains an outage using approved sources without bypassing account-verification rules.",
+    "Account privacy, inaccurate outage claims and unauthorised account changes.",
+    [
+      "Account verification and data boundaries",
+      "Outage-source accuracy and missing information",
+      "Escalation and restricted account tools"
+    ],
+    "Response/source checks and authorised-action or escalation evidence.",
+    "Synthetic subscribers and controlled tool fixtures; not a live network assurance claim."
+  ],
+  [
+    "critical-infrastructure",
+    "Critical infrastructure",
+    "A restricted operational request",
+    "An assistant reviews operational information and requests human approval before a restricted action.",
+    "Unsafe control actions, excess permissions and missing approval.",
+    [
+      "Tool authority and human approval boundaries",
+      "Safe handling of unavailable or incomplete state",
+      "Traceability and bounded recovery"
+    ],
+    "Permission decisions, tool traces and independently checked state.",
+    "Use isolated simulation or explicitly authorised sandboxes. No live infrastructure safety certification."
+  ],
+  [
+    "logistics",
+    "Logistics",
+    "A delayed-shipment exception",
+    "An agent checks declared shipment records, explains uncertainty and requests approval for an exception.",
+    "Invented shipment status, duplicate actions and inappropriate commitments.",
+    [
+      "Shipment-state integrity and source checks",
+      "Tool selection and approval limits",
+      "Timeout, missing-record and recovery behaviour"
+    ],
+    "Tool observations, exception decisions and final-state checks.",
+    "Fixtures reflect an agreed workflow; findings do not establish live fleet performance."
+  ],
+  [
+    "commerce",
+    "Commerce",
+    "A return outside the usual policy",
+    "An assistant retrieves approved product and returns information and escalates an exception.",
+    "Invented availability, incorrect prices, unsafe refunds and private-data exposure.",
+    [
+      "Product/source boundaries and uncertainty",
+      "Returns policy and refund authority",
+      "Privacy and human escalation"
+    ],
+    "Response assertions, tool decisions and return-handoff state.",
+    "Synthetic inventory and customer records; no sales or conversion claim."
+  ],
+  [
+    "education",
+    "Education",
+    "A learner-support request",
+    "An assistant gives approved course information and escalates a sensitive learner-support issue.",
+    "Inaccurate guidance, inappropriate content, exclusion and learner privacy.",
+    [
+      "Content/source accuracy and regional context",
+      "Agreed age-appropriate and escalation rules",
+      "Privacy, language and accessibility requirements"
+    ],
+    "Scenario checks, source evidence and escalation records.",
+    "No claim of learning improvement, universal fairness or complete child-safety coverage."
+  ],
+  [
+    "hr-and-recruitment",
+    "HR & recruitment",
+    "A candidate-information enquiry",
+    "An assistant answers process questions from approved material and escalates an exception without making an employment decision.",
+    "Sensitive candidate data, inconsistent guidance and unsupported decision-making.",
+    [
+      "Candidate privacy and approved communications",
+      "Human decision and escalation boundaries",
+      "Scoped fairness/bias-review support"
+    ],
+    "Communication checks, policy observations and human-handoff evidence.",
+    "No automated hiring suitability or legal-compliance determination. Fairness needs domain-led assessment."
+  ],
+  [
+    "enterprise-operations",
+    "Enterprise operations",
+    "A document review and approval handoff",
+    "An agent reviews approved records and prepares a decision for the authorised owner.",
+    "Access-boundary violations, invented source facts and unauthorised actions.",
+    [
+      "Approved-source use and role boundaries",
+      "Tool permissions and approval rules",
+      "Incomplete information and recovery limits"
+    ],
+    "Declared tool traces, permission decisions and independently checked state.",
+    "Findings apply to configured permissions and test fixtures, not all organisational access paths."
+  ],
+  [
+    "model-providers",
+    "Model providers",
+    "A controlled agent task",
+    "A candidate model performs a declared workflow with the same bounded tools, fixtures and outcome criteria.",
+    "Misleading aggregate scores, unobserved failures and incomparable configurations.",
+    [
+      "Scenario-specific task completion",
+      "Tool use, policy adherence and recovery",
+      "Evidence validity and declared operational measures"
+    ],
+    "Versioned configuration records, eligible outcomes, limitations and sanitised evidence.",
+    "No universal ranking. Comparison needs compatible methods and sufficient independent evidence."
+  ]
+]

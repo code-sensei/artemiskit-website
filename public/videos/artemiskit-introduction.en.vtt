@@ -1,0 +1,80 @@
+WEBVTT
+
+00:00.000 --> 00:01.820
+Your AI answer looks right.
+
+00:02.290 --> 00:07.140
+But does it still work when the request
+changes, or when an important detail is
+missing?
+
+00:07.780 --> 00:11.560
+If you can't repeat the check, every
+prompt edit becomes guesswork.
+
+00:12.250 --> 00:19.370
+ArtemisKit is an open-source toolkit for
+evaluating AI behavior against the cases
+and expectations you choose.
+
+00:19.900 --> 00:26.000
+It gives you a repeatable way to see what
+was tested, what happened, and where you
+still need to investigate.
+
+00:26.540 --> 00:27.750
+Let's run a first test.
+
+00:28.260 --> 00:29.900
+The command-line tool needs Bun.
+
+00:30.500 --> 00:33.790
+With Bun installed, install the CLI, and
+check its version.
+
+00:34.460 --> 00:38.660
+Next, configure a supported model provider
+using your own credentials.
+
+00:39.190 --> 00:41.000
+Create a small YAML scenario.
+
+00:41.540 --> 00:45.220
+Give a case a prompt, then specify what
+the response must contain.
+
+00:45.770 --> 00:48.320
+For this example, the expected value is
+four.
+
+00:48.930 --> 00:52.110
+Run the scenario with ArtemisKit using the
+command on screen.
+
+00:52.770 --> 00:56.910
+Here, we've connected a local model
+through an OpenAI-compatible endpoint.
+
+00:57.420 --> 01:01.570
+ArtemisKit records the response and the
+check alongside the run details.
+
+01:02.100 --> 01:03.550
+This single case passed.
+
+01:04.010 --> 01:08.200
+That tells us only that this model, in
+this run, met this one check.
+
+01:08.790 --> 01:12.240
+Now add a boundary case, change one thing,
+and run it again.
+
+01:12.500 --> 01:15.180
+Discover more at artemiskit.dev.
+
+01:15.620 --> 01:17.110
+Your AI has a job.
+
+01:17.480 --> 01:18.769
+Test it for that job.

@@ -1,0 +1,23 @@
+[Unit]
+Description=ArtemisKit assessment request endpoint
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=artemiskit
+Group=artemiskit
+WorkingDirectory=/srv/artemiskit/source
+EnvironmentFile=/etc/artemiskit/assessment.env
+ExecStart=/usr/bin/node /srv/artemiskit/source/server/http.mjs
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

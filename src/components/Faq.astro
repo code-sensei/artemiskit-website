@@ -1,0 +1,4 @@
+---
+const {items}=Astro.props as {items:Array<{question:string;answer:string}>};
+---
+<div class="ak-faqs"><h2>Good questions.</h2>{items.map(item=><details><summary>{item.question}</summary><p>{item.answer}</p></details>)}</div>

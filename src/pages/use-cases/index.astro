@@ -1,0 +1,4 @@
+---
+import Page from '../../layouts/ContentPage.astro';import sectors from '../../data/use-cases.json';
+---
+<Page title="Test the work in its context." description="AI systems encounter different rules and failure costs in different sectors. Start with a declared workflow, then agree the data, permissions and success criteria. These use cases illustrate possible assessment scopes; they are not customer stories, benchmark results or claims of sector certification." eyebrow="Use cases"><div class="ak-sectors">{sectors.map(s=><a class="ak-sector" href={`/use-cases/${s[0]}/`}><div><h3>{s[1]}</h3><p>{s[2]}</p></div><span aria-hidden="true">↗</span></a>)}</div><h2>What should a useful scenario contain?</h2><p>A clear task, authorised inputs, explicit rules, observable success criteria and the limitations that reviewers need to see.</p><a class="ak-btn" href="/apply/">Prepare an assessment request ↗</a></Page>

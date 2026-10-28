@@ -1,0 +1,25 @@
+# Alternative to nginx. Merge with the existing Caddy configuration; do not run
+# a second web server on ports already owned by the current reverse proxy.
+artemiskit.vorbtech.com.ng {
+    root * /srv/artemiskit/current
+    encode zstd gzip
+    @assessment path /api/assessment /api/assessment/
+    reverse_proxy @assessment 127.0.0.1:8787 {
+        header_up X-Real-IP {remote_host}
+        header_up Host {host}
+    }
+    file_server
+    header {
+        X-Content-Type-Options nosniff
+        Referrer-Policy strict-origin-when-cross-origin
+        Permissions-Policy "camera=(), microphone=(), geolocation=()"
+        X-Frame-Options DENY
+    }
+    @assets path /_astro/*
+    header @assets Cache-Control "public, max-age=31536000, immutable"
+    @health path /health.txt
+    header @health Cache-Control no-store
+}
+akit.vorbtech.com.ng {
+    redir https://artemiskit.vorbtech.com.ng{uri} permanent
+}

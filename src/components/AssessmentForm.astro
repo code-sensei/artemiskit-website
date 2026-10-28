@@ -1,0 +1,140 @@
+---
+import { fields, goals } from '../lib/assessment-schema.mjs';
+const spec = Object.fromEntries(fields.map(field => [field.name, field]));
+const sectors = ['Public sector', 'Financial services', 'Healthcare', 'Telecommunications', 'Critical infrastructure', 'Logistics', 'Commerce', 'Education', 'HR & recruitment', 'Enterprise operations', 'Model provider', 'Other'];
+const help: Record<string,string> = {
+ name:'The person we should contact about scope.', email:'Use an address where the assessment team can reach you.', organisation:'Your organisation, team or independent practice.', role:'For example, engineering lead, DPO or product owner.', sector:'Choose the closest fit.', goal:'What decision should the assessment help you make?', workflow:'Who uses the system, what job does it do, and what should a successful outcome look like?', target:'Model/provider, application or agent, current stage and relevant configuration. “Not decided yet” is fine.', risks:'Which failures would have the greatest consequence: privacy, unsafe actions, wrong information, cost or disruption?', rules:'Approval limits, escalation, permitted tools, approved sources and actions the system must never take.', success:'Checks, thresholds or acceptance criteria. It is fine to say that these need to be defined.', dataAccess:'Describe available synthetic fixtures, documentation or a sandbox. Do not paste data, credentials or private access links.', stakeholders:'The technical, operations, domain, security, privacy or legal owners involved.', timing:'Desired window, procurement, confidentiality or other constraints.', budget:'An indicative range or “to be discussed”. No commitment is made here.'
+};
+---
+<div class="ak-form-shell" id="assessment-request">
+  <div class="ak-mascot-intro"><img src="/owl/owl_thinking.webp" width="130" height="150" alt="" aria-hidden="true"/><p>Start with one real workflow. Share what you know; we can refine the scope together.</p></div>
+  <details class="ak-form-brief"><summary>What will happen to this request?</summary><p>We send it privately to the VIS assessment team and ArtemisKit’s maintainer, and email you a confirmation. A Vorbtech representative will get back to you soon. You’ll see a receipt here after the email service accepts both messages. No testing begins until scope and terms are agreed. <a class="ak-textlink" href="/assessment-brief/">Read the full brief ↗</a></p></details>
+  <ol class="ak-form-progress" aria-label="Assessment request progress"><li data-progress="1" aria-current="step">1. You & your decision</li><li data-progress="2">2. The workflow</li><li data-progress="3">3. Review & submit</li></ol>
+  <noscript><p class="ak-form-noscript">Enable JavaScript to complete this form and review your request before sending it. The <a href="/assessment-brief/">full assessment brief</a> is available without JavaScript.</p></noscript>
+  <form id="assessment-form" novalidate>
+    <div class="ak-trap" aria-hidden="true"><label for="assessment-website">Website</label><input id="assessment-website" name="website" type="text" tabindex="-1" autocomplete="off"/></div>
+    <fieldset class="ak-form-section" data-form-step="1">
+      <legend tabindex="-1">You & the decision</legend><p>Tell us who to contact and what this assessment needs to help you decide. Required fields are marked “required”.</p>
+      <div class="ak-form-grid">
+        {['name','email','organisation','role'].map(name => <div class="ak-form-field"><label for={`assessment-${name}`}>{spec[name].label}{spec[name].required ? ' (required)' : ' (optional)'}</label><input id={`assessment-${name}`} name={name} type={name === 'email' ? 'email' : 'text'} required={spec[name].required} maxlength={spec[name].max} autocomplete={name === 'name' ? 'name' : name === 'email' ? 'email' : name === 'organisation' ? 'organization' : 'organization-title'} aria-describedby={`${name}-help ${name}-error`}/><small id={`${name}-help`}>{help[name]}</small><span class="ak-field-error" id={`${name}-error`}></span></div>)}
+        <div class="ak-form-field"><label for="assessment-sector">Sector (optional)</label><select id="assessment-sector" name="sector" aria-describedby="sector-help sector-error"><option value="">Choose a sector</option>{sectors.map(sector => <option value={sector}>{sector}</option>)}</select><small id="sector-help">{help.sector}</small><span class="ak-field-error" id="sector-error"></span></div>
+        <div class="ak-form-field"><label for="assessment-goal">Decision you need to make (required)</label><select id="assessment-goal" name="goal" required aria-describedby="goal-help goal-error"><option value="">Choose a goal</option>{goals.map(goal => <option value={goal}>{goal}</option>)}</select><small id="goal-help">{help.goal}</small><span class="ak-field-error" id="goal-error"></span></div>
+      </div>
+    </fieldset>
+    <fieldset class="ak-form-section" data-form-step="2" hidden>
+      <legend tabindex="-1">Describe the workflow</legend><p>A high-level description is enough to start. Keep passwords, API keys, personal records and proprietary documents out of this form.</p>
+      <div class="ak-form-grid">
+        {['workflow','target','risks'].map(name => <div class="ak-form-field wide"><label for={`assessment-${name}`}>{spec[name].label} (required)</label><textarea id={`assessment-${name}`} name={name} required maxlength={spec[name].max} rows="4" aria-describedby={`${name}-help ${name}-error`}></textarea><small id={`${name}-help`}>{help[name]} Up to {spec[name].max} characters.</small><span class="ak-field-error" id={`${name}-error`}></span></div>)}
+      </div>
+      <details class="ak-scope-details"><summary>Add scope details (optional)</summary><div class="ak-form-grid" style="margin-top:24px">
+        {['rules','success','dataAccess','stakeholders','timing','budget'].map(name => <div class="ak-form-field wide"><label for={`assessment-${name}`}>{spec[name].label} (optional)</label><textarea id={`assessment-${name}`} name={name} maxlength={spec[name].max} rows={name === 'budget' ? 2 : 3} aria-describedby={`${name}-help ${name}-error`}></textarea><small id={`${name}-help`}>{help[name]}</small><span class="ak-field-error" id={`${name}-error`}></span></div>)}
+      </div></details>
+    </fieldset>
+    <fieldset class="ak-form-section" data-form-step="3" hidden>
+      <legend tabindex="-1">Review before you send</legend><p>Check the contact details and scope below. Use Back to edit anything. This request is private and will not create a public GitHub issue.</p>
+      <dl class="ak-review" id="assessment-review"></dl>
+      <label class="ak-form-check" for="assessment-consent"><input id="assessment-consent" name="consent" type="checkbox" required aria-describedby="consent-error"/><span>I agree that Vorbtech Innovative Solutions and the project’s maintainer may review this information and contact me about the assessment. I am authorised to share it and understand that this request does not authorise testing or create an engagement. <a class="ak-textlink" href="/legal/privacy/">Privacy information</a></span></label><span class="ak-field-error" id="consent-error"></span>
+    </fieldset>
+    <div class="ak-form-status" id="assessment-status" role="status" aria-live="polite" tabindex="-1"></div>
+    <div class="ak-form-toolbar"><p class="ak-form-help">Entries stay on this page until you submit.<br/>They are not saved as a browser draft.</p><div class="ak-actions"><button class="ak-btn outline" id="assessment-back" type="button" hidden>Back</button><button class="ak-btn" id="assessment-next" type="button">Continue →</button><button class="ak-btn" id="assessment-submit" type="submit" hidden>Send assessment request ↗</button></div></div>
+  </form>
+  <section class="ak-receipt" id="assessment-receipt" hidden aria-labelledby="receipt-title" tabindex="-1"><div class="ak-kicker">Assessment request</div><h2 id="receipt-title">Your request is on its way.</h2><p id="receipt-message"></p><p>Reference: <code id="receipt-reference"></code></p><p>We’ll review fit and contact you using the email you provided. Scope, access, timing and commercial terms will be agreed before testing begins.</p><div class="ak-actions"><a class="ak-btn" href="https://linkedin.com/in/btsowa">Connect with Babangida on LinkedIn ↗</a><button class="ak-btn outline" type="button" id="assessment-another">Start another request</button></div></section>
+</div>
+<script>
+  import { fields, validateAssessment } from '../lib/assessment-schema.mjs';
+  const form = document.querySelector<HTMLFormElement>('#assessment-form');
+  if (form) {
+    const next = document.querySelector<HTMLButtonElement>('#assessment-next')!;
+    const back = document.querySelector<HTMLButtonElement>('#assessment-back')!;
+    const submit = document.querySelector<HTMLButtonElement>('#assessment-submit')!;
+    const status = document.querySelector<HTMLElement>('#assessment-status')!;
+    const endpoint = import.meta.env.DEV ? '/api/assessment/' : '/api/assessment';
+    const receipt = document.querySelector<HTMLElement>('#assessment-receipt')!;
+    let step = 1;
+    let token: { token: string; requestId: string } | null = null;
+    let pending: Promise<void> | null = null;
+    let busy = false;
+    function values() {
+      const data: Record<string, FormDataEntryValue | boolean> = Object.fromEntries(new FormData(form!));
+      data.consent = (form!.elements.namedItem('consent') as HTMLInputElement).checked;
+      return data;
+    }
+    function showErrors(errors: Record<string,string>) {
+      fields.forEach(field => {
+        const input = form!.elements.namedItem(field.name) as HTMLInputElement;
+        input.setAttribute('aria-invalid', errors[field.name] ? 'true' : 'false');
+        document.getElementById(`${field.name}-error`)!.textContent = errors[field.name] || '';
+      });
+      const consent = form!.elements.namedItem('consent') as HTMLInputElement;
+      consent.setAttribute('aria-invalid', errors.consent ? 'true' : 'false');
+      document.getElementById('consent-error')!.textContent = errors.consent || '';
+      if (Object.keys(errors).length) {
+        const first = fields.find(field => errors[field.name]);
+        if (first) { if (first.step !== step) showStep(first.step); const input = form!.elements.namedItem(first.name) as HTMLElement; input.closest('details')?.setAttribute('open',''); input.focus(); }
+        else consent.focus();
+        status.textContent = 'Please review the highlighted fields before continuing.';
+      }
+    }
+    function showStep(value: number) {
+      step = value;
+      document.querySelectorAll<HTMLElement>('[data-form-step]').forEach(el => { el.hidden = Number(el.dataset.formStep) !== step; });
+      document.querySelectorAll<HTMLElement>('[data-progress]').forEach(el => { if (Number(el.dataset.progress) === step) el.setAttribute('aria-current','step'); else el.removeAttribute('aria-current'); });
+      back.hidden = step === 1; next.hidden = step === 3; submit.hidden = step !== 3;
+      next.textContent = step === 2 ? 'Review request →' : 'Continue →';
+      status.textContent = '';
+      if (step === 3) {
+        const data = values(); const review = document.querySelector('#assessment-review')!; review.replaceChildren();
+        fields.forEach(field => {
+          const row = document.createElement('div'); row.className = 'ak-review-row';
+          const term = document.createElement('dt'); term.textContent = field.label;
+          const description = document.createElement('dd'); description.textContent = String(data[field.name] || 'Not specified');
+          row.append(term,description); review.append(row);
+        });
+      }
+      document.querySelector<HTMLElement>(`[data-form-step="${step}"] legend`)?.focus();
+    }
+    async function session(refresh = false) {
+      if (token && !refresh) return;
+      const previous = token?.requestId;
+      const response = await fetch(`${endpoint}${previous ? `?requestId=${encodeURIComponent(previous)}` : ''}`, { cache: 'no-store', credentials: 'same-origin' });
+      const result = await response.json().catch(() => ({ error: response.status === 429 ? "Too many attempts. Please wait before trying again." : "The request service could not be reached. Your form has not been confirmed; please retry." }));
+      if (!response.ok || !result.token || !result.requestId) throw new Error(result.error || 'The request service is unavailable. Your form has not been sent.');
+      token = result;
+    }
+    next.addEventListener('click', () => {
+      const { errors } = validateAssessment(values(), step); showErrors(errors);
+      if (Object.keys(errors).length) return;
+      if (step === 1 && !token && !pending) pending = session().catch(() => {}).finally(() => { pending = null; });
+      showStep(step + 1);
+    });
+    back.addEventListener('click', () => { if (!busy) showStep(step - 1); });
+    form.addEventListener('input', event => {
+      const target = event.target as HTMLInputElement;
+      if (target.name && document.getElementById(`${target.name}-error`)) { target.removeAttribute('aria-invalid'); document.getElementById(`${target.name}-error`)!.textContent = ''; }
+    });
+    form.addEventListener('submit', async event => {
+      event.preventDefault(); if (busy) return;
+      if (step !== 3) { next.click(); return; }
+      const data = values(); const { errors } = validateAssessment(data); showErrors(errors); if (Object.keys(errors).length) return;
+      busy = true; back.disabled = true; submit.disabled = true; submit.textContent = 'Sending…'; status.textContent = 'Sending your request securely. Please keep this page open.'; form.setAttribute('aria-busy','true');
+      try {
+        if (pending) await pending;
+        await session();
+        const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'same-origin', body: JSON.stringify({ ...data, token: token!.token }) });
+        const result = await response.json().catch(() => ({ error: response.status === 429 ? "Too many attempts. Please wait before trying again." : "The request service could not be reached. Your form has not been confirmed; please retry." }));
+        if (!response.ok) {
+          if (result.code === 'token_expired') { await session(true); throw new Error('Your form session has been refreshed. Review your entries, then send the request again.'); }
+          if (result.errors) showErrors(result.errors);
+          throw new Error(result.error || 'We could not confirm receipt. Please retry this same request.');
+        }
+        if (!result.accepted || !result.reference) throw new Error('We could not confirm receipt. Please retry this same request.');
+        document.querySelector('#receipt-reference')!.textContent = result.reference;
+        document.querySelector('#receipt-message')!.textContent = result.message;
+        form.hidden = true; document.querySelector<HTMLElement>('.ak-form-progress')!.hidden = true; receipt.hidden = false; receipt.focus();
+        form.reset(); token = null;
+      } catch (error) { status.textContent = error instanceof Error ? error.message : 'We could not confirm receipt. Please retry this same request. Your entries are still here.'; status.focus(); }
+      finally { busy = false; submit.disabled = false; back.disabled = false; submit.textContent = 'Send assessment request ↗'; form.removeAttribute('aria-busy'); }
+    });
+    document.querySelector('#assessment-another')!.addEventListener('click', () => { receipt.hidden = true; form!.hidden = false; document.querySelector<HTMLElement>('.ak-form-progress')!.hidden = false; showErrors({}); showStep(1); });
+  }
+</script>

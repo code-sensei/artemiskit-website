@@ -1,0 +1,11 @@
+node_modules
+.git
+.astro
+dist
+.env
+.env.*
+!.env.example
+*.tar.gz
+.agents
+.claude
+.cursor

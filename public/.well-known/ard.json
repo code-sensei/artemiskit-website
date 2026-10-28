@@ -1,0 +1,42 @@
+{
+  "specVersion": "1.0",
+  "entries": [
+    {
+      "identifier": "urn:air:artemiskit.dev:skill:artemiskit-cli",
+      "displayName": "ArtemisKit CLI Skill",
+      "type": "application/agent-skills+md",
+      "url": "https://raw.githubusercontent.com/code-sensei/artemiskit/main/skills/artemiskit-cli/SKILL.md",
+      "description": "Use the ArtemisKit CLI skill to help you build repeatable tests for AI applications and agents. Create and validate scenarios, evaluate model responses, run authorized red-team and stress tests, automate checks in CI, compare runs, and inspect evidence and reports. It also guides agent workflow setup, preflight, execution, recovery, and offline assessment so you can understand what was tested and what the evidence supports.",
+      "capabilities": [
+        "scenario-validation",
+        "model-evaluation",
+        "ai-application-testing",
+        "red-team-testing",
+        "stress-testing",
+        "ci-test-automation",
+        "run-comparison",
+        "evidence-reporting",
+        "agent-workflow-assessment"
+      ],
+      "representativeQueries": [
+        "How can I create and validate repeatable scenarios to test an AI application or evaluate model responses?",
+        "How do I red-team an authorized LLM application for prompt injection and other adversarial scenarios?",
+        "How can I stress test an AI application and assess behavior under an agreed request volume and concurrency?",
+        "How do I run AI evaluation tests in CI, export JUnit results, compare runs, and investigate regressions?",
+        "How can I preflight, run or resume an agent workflow, then inspect its evidence and generate an offline assessment?"
+      ],
+      "tags": [
+        "ai-testing",
+        "llm-evaluation",
+        "agent-reliability",
+        "scenario-based-testing",
+        "prompt-injection-testing",
+        "load-testing",
+        "continuous-integration",
+        "junit",
+        "offline-assessment",
+        "open-source"
+      ]
+    }
+  ]
+}

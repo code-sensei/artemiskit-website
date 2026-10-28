@@ -4,5 +4,18 @@
   },
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "framework": "astro"
+  "framework": "astro",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "artemiskit.vorbtech.com.ng"
+        }
+      ],
+      "destination": "https://www.artemiskit.dev/:path*",
+      "permanent": true
+    }
+  ]
 }

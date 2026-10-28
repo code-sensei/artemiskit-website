@@ -1,0 +1,6 @@
+---
+import { getCollection } from 'astro:content';import Page from '../../../layouts/ContentPage.astro';
+export async function getStaticPaths(){const posts=await getCollection('blog',({data})=>!data.draft);const tags=[...new Set(posts.flatMap(p=>p.data.tags))];return tags.map(tag=>({params:{tag},props:{tag,posts:posts.filter(p=>p.data.tags.includes(tag)).sort((a,b)=>b.data.pubDate.valueOf()-a.data.pubDate.valueOf())}}))}
+const {tag,posts}=Astro.props;
+---
+<Page title={`Articles tagged “${tag}”.`} description={`Explore existing ArtemisKit articles about ${tag}. Publication dates and original article context are retained. Consult the current toolkit documentation for version-specific instructions.`} eyebrow="Article archive"><div class="ak-oss-links">{posts.map(p=><a href={`/blog/${p.id}/`}><span>{p.data.title}</span><span>↗</span></a>)}</div><p><a href="/blog/">All articles</a></p></Page>

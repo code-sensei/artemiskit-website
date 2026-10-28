@@ -1,0 +1,15 @@
+# ArtemisKit
+
+> ArtemisKit is an open-source AI evaluation and assurance toolkit by Vorbtech Innovative Solutions. It provides scenario-based testing and inspectable evidence.
+
+The CLI requires Bun. A result is scoped to the tested scenario and does not certify safety or compliance.
+
+## Start here
+
+- [Website](https://www.artemiskit.dev/): Product overview and use cases.
+- [Documentation](https://www.artemiskit.dev/docs/): Concepts, CLI, SDK and workflows.
+- [Getting started](https://www.artemiskit.dev/docs/getting-started/): Install the CLI and run a first evaluation.
+- [Source code](https://github.com/code-sensei/artemiskit): Repository, license and examples.
+- [Full website text](https://www.artemiskit.dev/llms-full.txt): Build-generated public website and documentation content.
+- [Documentation index](https://www.artemiskit.dev/docs/llms.txt): Build-generated index of documentation pages.
+- [Full documentation text](https://www.artemiskit.dev/docs/llms-full.txt): Build-generated public documentation content.
