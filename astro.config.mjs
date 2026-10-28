@@ -60,6 +60,7 @@ export default defineConfig({
       ],
       customCss: ["./src/styles/docs-identity.css"],
       head: [
+        { tag: "link", attrs: { rel: "ard", href: "/.well-known/ard.json" } },
         { tag: "meta", attrs: { name: "theme-color", content: "#0D1115" } },
         { tag: "meta", attrs: { property: "og:image", content: "https://www.artemiskit.dev/og-image.png" } },
         { tag: "meta", attrs: { property: "og:image:alt", content: "ArtemisKit — open-source AI assurance" } },

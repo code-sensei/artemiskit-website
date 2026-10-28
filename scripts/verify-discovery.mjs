@@ -54,3 +54,9 @@ for (const match of captions.matchAll(/^(\d{2}:\d{2}(?::\d{2})?\.\d{3}) --> (\d{
 }
 if (count < 15) throw new Error('Video captions are incomplete');
 console.log(`Verified canonical sitemap and metadata for ${urls.length} pages, social images for ${docs} docs pages, and video schema plus ${count} caption cues.`);
+
+// Keep the legacy discovery path byte-for-byte aligned with the canonical catalog.
+const canonicalCatalog = await readFile(path.join(root, '.well-known/ard.json'), 'utf8');
+const legacyCatalog = await readFile(path.join(root, '.well-known/ai-catalog.json'), 'utf8');
+if (legacyCatalog !== canonicalCatalog) throw new Error('ARD compatibility catalog differs from canonical catalog');
+console.log('Verified ARD compatibility catalog matches the canonical catalog.');

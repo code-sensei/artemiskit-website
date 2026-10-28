@@ -1,0 +1,18 @@
+{
+  "specVersion": "1.0",
+  "entries": [
+    {
+      "identifier": "urn:air:artemiskit.dev:skill:artemiskit-cli",
+      "displayName": "ArtemisKit CLI Skill",
+      "type": "application/agent-skills+md",
+      "url": "https://raw.githubusercontent.com/code-sensei/artemiskit/main/skills/artemiskit-cli/SKILL.md",
+      "description": "Guidance for using the ArtemisKit CLI to validate scenarios, evaluate model responses, run authorized tests, inspect evidence and work with agent workflows.",
+      "capabilities": ["scenario-validation", "model-evaluation", "red-team-testing", "stress-testing", "agent-workflow-assessment"],
+      "representativeQueries": [
+        "How do I validate and run an ArtemisKit evaluation scenario?",
+        "How can I test an authorized AI application with the ArtemisKit CLI?",
+        "How do I assess an agent workflow and produce an offline report?"
+      ]
+    }
+  ]
+}
