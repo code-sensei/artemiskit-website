@@ -2,14 +2,14 @@
 import Layout from '../../layouts/Layout.astro';
 import Faq from '../../components/Faq.astro';
 import '../../styles/evals.css';
-import { benchmarks, models, results, pct } from '../../lib/evals';
+import { listedBenchmarks as benchmarks, models, results, pct, statusLabel } from '../../lib/evals';
 
 const faq = [
   { question: 'What is an ArtemisKit benchmark?', answer: 'A versioned set of scenarios that represent one kind of real work, such as reviewing an AML alert or triaging a security alert, with deterministic pass and fail checks for every case.' },
-  { question: 'What does “draft, not yet reviewed” mean?', answer: 'The pack uses a synthetic rulebook and synthetic data and has not yet been reviewed by a qualified domain expert. Results are valid measurements of the declared checks, but the rulebook may not match any real organisation.' },
+  { question: 'What does “New” mean?', answer: 'The benchmark was first published with its latest evaluation. Like every ArtemisKit compliance-workflow pack, it uses a synthetic rulebook and synthetic data, so results measure the declared checks rather than any real organisation’s policy.' },
   { question: 'Can I run a benchmark myself?', answer: 'The compliance-workflow packs are open source in the ArtemisKit repository. The regression pack is available on request. Each runs with the ArtemisKit CLI against any supported provider.' },
 ];
-const description = 'Versioned ArtemisKit benchmarks for real AI workflows: what each one tests, how it is graded, its review status and the models evaluated on it.';
+const description = 'Versioned ArtemisKit benchmarks for real AI workflows: what each one tests, how it is graded, its status and the models evaluated on it.';
 ---
 <Layout title="Benchmarks: Versioned Scenario Sets — ArtemisKit" description={description} faq={faq}
   breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Benchmarks', url: '/benchmarks/' }]}>
@@ -29,7 +29,7 @@ const description = 'Versioned ArtemisKit benchmarks for real AI workflows: what
           const best = rows.reduce((top, r) => ((r.rate ?? -1) > (top?.rate ?? -1) ? r : top), rows[0]);
           return (
             <a class="ak-card-link" href={`/benchmarks/${b.id}/`}>
-              <span class:list={['ak-status-pill', b.status]}>{b.status === 'stable' ? 'Stable' : 'Draft, not yet reviewed'}</span>
+              <span class:list={['ak-status-pill', b.status]}>{statusLabel(b.status)}</span>
               <h3>{b.name}</h3>
               <p>{b.tests}</p>
               <div class="ak-meta-row">

@@ -15,7 +15,7 @@
    "Text and tool-use workflows only; image and video input were not assessed.",
    "All tests ran on 19 November 2026 at temperature 0 with one API key.",
    "Compliance packs ran once or twice per case for Ling-3.1-flash and Ling-3.2-flash; pack-level gaps are reported as level, not as findings.",
-   "Compliance packs use synthetic rulebooks and data and have not been reviewed by domain experts."
+   "Compliance packs use synthetic rulebooks and synthetic data."
   ]
  },
  "models": [
@@ -51,6 +51,7 @@
    "tests": "Tool-using support agent, contact-data fidelity, structured extraction, instruction following, multi-turn state, grounded Q&A and abstention, business arithmetic, code reasoning, Chinese and French, professional requests and long context (about 47k to 230k tokens).",
    "graders": "Deterministic only: regex, JSON Schema const/enum, tool-trace rules and exact-argument tool fixtures.",
    "status": "stable",
+   "listed": true,
    "availability": "Available on request",
    "runsPerCase": 3,
    "conditions": [
@@ -66,7 +67,8 @@
    "packCases": 177,
    "tests": "Anti-money-laundering alert review under a synthetic rulebook: typologies, sanctions, PEPs, virtual assets, tipping-off and STR narratives. Structured decision, rule IDs and rationale.",
    "graders": "Deterministic JSON Schema and regex checks per case.",
-   "status": "draft-unreviewed",
+   "status": "new",
+   "listed": true,
    "availability": "https://github.com/code-sensei/artemiskit/tree/main/packs/aml-transaction-review",
    "runsPerCase": "1 to 2",
    "conditions": [
@@ -74,15 +76,16 @@
    ]
   },
   {
-   "id": "ng-public-service-rules",
-   "name": "Nigerian Public-Service Rules",
+   "id": "public-services",
+   "name": "Public Services",
    "short": "Public services",
+   "listed": false,
    "cases": 183,
    "packCases": 183,
-   "tests": "Eligibility and records decisions under a synthetic rulebook modelled on Nigerian public services: identity, residence, data protection, FOI notices and fair access.",
+   "tests": "Eligibility and records decisions for public services under a synthetic rulebook: identity, residence, data protection, freedom-of-information notices and fair access.",
    "graders": "Deterministic JSON Schema and regex checks per case.",
-   "status": "draft-unreviewed",
-   "availability": "https://github.com/code-sensei/artemiskit/tree/main/packs/ng-egov-services",
+   "status": "new",
+   "availability": "Available on request",
    "runsPerCase": "1 to 2",
    "conditions": [
     "thinking-on"
@@ -96,7 +99,8 @@
    "packCases": 207,
    "tests": "Security-operations alert triage: classification, severity, MITRE ATT&CK mapping, evidence steps and human-approval rules, including injected instructions in alert data.",
    "graders": "Deterministic JSON Schema and regex checks per case.",
-   "status": "draft-unreviewed",
+   "status": "new",
+   "listed": true,
    "availability": "https://github.com/code-sensei/artemiskit/tree/main/packs/soc-alert-triage",
    "runsPerCase": "1 to 2",
    "conditions": [
@@ -682,7 +686,7 @@
    "note": "Mean per-case pass rate over 1 to 2 runs per case"
   },
   {
-   "benchmark": "ng-public-service-rules",
+   "benchmark": "public-services",
    "model": "ling-3-0-flash",
    "condition": "thinking-on",
    "passed": null,
@@ -691,7 +695,7 @@
    "note": "Mean per-case pass rate over 1 to 2 runs per case"
   },
   {
-   "benchmark": "ng-public-service-rules",
+   "benchmark": "public-services",
    "model": "ling-3-1-flash",
    "condition": "thinking-on",
    "passed": null,
@@ -700,7 +704,7 @@
    "note": "Mean per-case pass rate over 1 to 2 runs per case"
   },
   {
-   "benchmark": "ng-public-service-rules",
+   "benchmark": "public-services",
    "model": "ling-3-2-flash",
    "condition": "thinking-on",
    "passed": null,

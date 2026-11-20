@@ -10,7 +10,9 @@ export type Condition = 'thinking-on' | 'thinking-off';
 export interface Model { id: string; name: string; provider: string; providerName: string; access: string }
 export interface Benchmark {
   id: string; name: string; short: string; cases: number; packCases?: number; groups?: number; tests: string;
-  graders: string; status: 'stable' | 'draft-unreviewed'; availability: string; runsPerCase: number | string;
+  graders: string; status: 'stable' | 'new'; availability: string; runsPerCase: number | string;
+  /** False keeps a benchmark's results on the leaderboard and reports but gives it no benchmark page. */
+  listed: boolean;
   conditions: Condition[];
 }
 export interface Rate { passed: number | null; total: number; rate: number | null }
@@ -46,6 +48,8 @@ export const evaluations: Evaluation[] = Object.values(files).sort((a, b) =>
 
 export const models: Model[] = dedupe(evaluations.flatMap((e) => e.models));
 export const benchmarks: Benchmark[] = dedupe(evaluations.flatMap((e) => e.benchmarks));
+/** Benchmarks shown in the index and given their own page. */
+export const listedBenchmarks: Benchmark[] = benchmarks.filter((b) => b.listed);
 export const results: Result[] = evaluations.flatMap((e) => e.results);
 export const operational: Operational[] = evaluations.flatMap((e) => e.operational);
 
@@ -73,6 +77,7 @@ export function ops(model: string, condition: Condition): Operational | undefine
 export const pct = (value: number | null | undefined, digits = 1) =>
   value == null ? '–' : `${(value * 100).toFixed(digits)}%`;
 export const seconds = (ms: number) => `${(ms / 1000).toFixed(1)} s`;
+export const statusLabel = (status: Benchmark['status']) => (status === 'stable' ? 'Stable' : 'New');
 export const conditionLabel = (c: Condition) => (c === 'thinking-on' ? 'Thinking on' : 'Thinking off');
 export const formatDate = (iso: string) =>
   new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });

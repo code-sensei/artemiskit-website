@@ -5,10 +5,10 @@ import GroupBars from '../../components/evals/GroupBars.astro';
 import ChartCard from '../../components/evals/ChartCard.astro';
 import ModelKey from '../../components/evals/ModelKey.astro';
 import '../../styles/evals.css';
-import { benchmarks, models, result, evaluations, seriesSlot, pct, conditionLabel, formatDate, type Benchmark } from '../../lib/evals';
+import { listedBenchmarks, models, result, evaluations, seriesSlot, pct, conditionLabel, formatDate, statusLabel, type Benchmark } from '../../lib/evals';
 
 export function getStaticPaths() {
-  return benchmarks.map((b) => ({ params: { id: b.id }, props: { benchmark: b } }));
+  return listedBenchmarks.map((b) => ({ params: { id: b.id }, props: { benchmark: b } }));
 }
 const { benchmark: b } = Astro.props as { benchmark: Benchmark };
 const evaluation = evaluations.find((e) => e.benchmarks.some((x) => x.id === b.id))!;
@@ -40,7 +40,7 @@ const article = {
   </div></section>
   <div class="ak-wrap">
     <div class="ak-status">
-      <span class:list={['ak-status-pill', b.status]}>{b.status === 'stable' ? 'Stable' : 'Draft, not yet reviewed'}</span>
+      <span class:list={['ak-status-pill', b.status]}>{statusLabel(b.status)}</span>
       <span><b>{b.cases}</b> cases with results{b.packCases && b.packCases !== b.cases ? ` (pack has ${b.packCases})` : ''}</span>
       <span><b>{b.runsPerCase}</b> runs per case</span>
       <span>Tested <b>{formatDate(evaluation.evaluation.testedOn)}</b></span>
@@ -87,7 +87,7 @@ const article = {
         <div class="ak-ev-prose">
           <h3>Limitations</h3>
           <ul>
-            {b.status !== 'stable' && <li>Draft pack: synthetic rulebook and synthetic data, not yet reviewed by a domain expert.</li>}
+            {b.status !== 'stable' && <li>Synthetic rulebook and synthetic data.</li>}
             {evaluation.evaluation.limitations.slice(0, 2).map((l) => <li>{l}</li>)}
           </ul>
           <p>Full context is in the <a href={`/reports/${evaluation.evaluation.reportSlug}/`}>{evaluation.evaluation.title}</a>.</p>

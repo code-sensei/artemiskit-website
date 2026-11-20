@@ -117,7 +117,7 @@
 .ak-meta-row b { color: var(--ak-ink); font-weight: 560; }
 .ak-status-pill { font: 10.5px/1 var(--ak-mono, ui-monospace, monospace); text-transform: uppercase; letter-spacing: .08em; padding: 5px 8px; border-radius: 4px; border: 1px solid var(--ak-line); align-self: flex-start; }
 .ak-status-pill.stable { border-color: var(--ak-good); color: var(--ak-good); }
-.ak-status-pill.draft-unreviewed { border-color: var(--ak-medium); color: var(--ak-medium); }
+.ak-status-pill.new { border-color: var(--ak-link); color: var(--ak-link); }
 
 .ak-ev-prose { max-width: 74ch; display: flex; flex-direction: column; gap: 14px; color: var(--ak-muted); line-height: 1.65; }
 .ak-ev-prose h3 { color: var(--ak-ink); margin: 10px 0 0; font-size: 19px; }

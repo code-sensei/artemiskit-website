@@ -13,7 +13,7 @@ import {
 
 const latest = evaluations[0];
 const conditions: Condition[] = ['thinking-on', 'thinking-off'];
-const packIds = ['aml-transaction-review', 'ng-public-service-rules', 'soc-alert-triage'];
+const packIds = ['aml-transaction-review', 'public-services', 'soc-alert-triage'];
 
 function benchItems(benchmark: string, condition: Condition) {
   return models.map((m) => {
@@ -119,9 +119,9 @@ const description = 'Scenario-specific results for language models on versioned 
             {c === 'thinking-on' && packIds.map((id) => {
               const b = benchmarks.find((x) => x.id === id)!;
               return (
-                <ChartCard title={b.name} href={`/benchmarks/${b.id}/`} better="higher"
+                <ChartCard title={b.name} href={b.listed ? `/benchmarks/${b.id}/` : undefined} better="higher"
                   subtitle={`${b.cases} cases run on all models · thinking on`}
-                  foot={`Draft pack, not yet reviewed by domain experts. ${b.runsPerCase} runs per case.`}>
+                  foot={`New benchmark. ${b.runsPerCase} runs per case.`}>
                   <BarChart items={benchItems(id, c)} max={1} ticks={[0, 0.5, 1]} label={`${b.name} pass rate`} />
                 </ChartCard>
               );
