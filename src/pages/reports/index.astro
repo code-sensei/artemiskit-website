@@ -1,0 +1,36 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/evals.css';
+import { evaluations, modelName, formatDate } from '../../lib/evals';
+const description = 'ArtemisKit evaluation reports: model regression and assurance findings with method, confirmed results, reproductions and limitations.';
+---
+<Layout title="Reports: Model Evaluation Findings — ArtemisKit" description={description}
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Reports', url: '/reports/' }]}>
+  <section class="ak-ev-head"><div class="ak-wrap">
+    <nav class="ak-ev-crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>Reports</span></nav>
+    <h1>Evaluation reports</h1>
+    <p class="ak-answer">ArtemisKit reports explain what an evaluation found, how it was measured and what it cannot show.
+      Each one lists confirmed regressions and improvements, gives single-request reproductions, and links to the
+      benchmark data behind every number. A downloadable PDF accompanies each report.</p>
+  </div></section>
+  <div class="ak-wrap">
+    <section class="ak-ev-section" aria-labelledby="latest">
+      <header><div><h2 id="latest">Published reports</h2></div></header>
+      <div class="ak-cards">
+        {evaluations.map((e) => (
+          <a class="ak-card-link" href={`/reports/${e.evaluation.reportSlug}/`}>
+            <span class="ak-status-pill">Model regression evaluation</span>
+            <h3>{e.evaluation.title}</h3>
+            <p>{modelName(e.evaluation.subject)} compared with {e.models.filter((m) => m.id !== e.evaluation.subject).map((m) => m.name).join(' and ')} on agent and data-pipeline workflows.
+              {e.findings.length} confirmed regressions, with the areas that improved.</p>
+            <div class="ak-meta-row">
+              <span>Published <b>{formatDate(e.evaluation.published)}</b></span>
+              <span><b>{e.models.length}</b> models</span>
+              <span><b>{e.evaluation.requests.toLocaleString('en-GB')}</b> requests</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>

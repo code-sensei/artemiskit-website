@@ -1,0 +1,47 @@
+---
+/**
+ * Horizontal grouped bars: one row per group (for example a benchmark's workflow groups), one thin
+ * bar per model, with the pass count printed beside each bar. Static SVG; values also appear as text.
+ */
+interface Bar { model: string; label: string; slot: number; value: number | null; display: string }
+interface Row { label: string; bars: Bar[] }
+interface Props { rows: Row[]; label: string }
+const { rows, label } = Astro.props;
+const W = 1100, labelW = 230, valueW = 96, barH = 10, gap = 4, rowGap = 16, top = 6;
+const plotW = W - labelW - valueW;
+const groupH = (n: number) => n * barH + (n - 1) * gap;
+let cursor = top;
+const layout = rows.map((row) => { const y = cursor; cursor += groupH(row.bars.length) + rowGap; return { ...row, y }; });
+const H = cursor + 16;
+---
+<figure class="ak-chart ak-chart-wide">
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label}>
+    {[0, 0.5, 1].map((t) => (
+      <g>
+        <line x1={labelW + plotW * t} x2={labelW + plotW * t} y1={top - 2} y2={H - 16} class="ak-grid" />
+        <text x={labelW + plotW * t} y={H - 3} class="ak-tick" text-anchor="middle">{Math.round(t * 100)}%</text>
+      </g>
+    ))}
+    {layout.map((row) => (
+      <g>
+        <text x={labelW - 10} y={row.y + groupH(row.bars.length) / 2 + 4} class="ak-rowlabel" text-anchor="end">{row.label}</text>
+        {row.bars.map((bar, i) => {
+          const by = row.y + i * (barH + gap);
+          const w = bar.value == null ? 0 : Math.max(plotW * bar.value, 1.5);
+          const r = Math.min(3, w / 2);
+          return (
+            <g class="ak-bar">
+              <title>{`${row.label} · ${bar.label}: ${bar.display}`}</title>
+              {bar.value != null && (
+                <path d={`M${labelW},${by} H${labelW + w - r} a${r},${r} 0 0 1 ${r},${r} V${by + barH - r} a${r},${r} 0 0 1 -${r},${r} H${labelW} Z`}
+                  style={`fill:var(--ak-series-${bar.slot})`} />
+              )}
+              <text x={labelW + w + 6} y={by + barH - 1} class="ak-value-sm">{bar.display}</text>
+            </g>
+          );
+        })}
+      </g>
+    ))}
+    <line x1={labelW} x2={labelW} y1={top - 2} y2={H - 16} class="ak-axis" />
+  </svg>
+</figure>

@@ -1,0 +1,1149 @@
+{
+ "schemaVersion": 1,
+ "evaluation": {
+  "id": "ling-3x-flash-2026-11",
+  "reportSlug": "ling-3-2-flash-regression",
+  "title": "Ling-3.2-flash regression evaluation",
+  "published": "2026-11-20",
+  "testedOn": "2026-11-19",
+  "subject": "ling-3-2-flash",
+  "baseline": "ling-3-1-flash",
+  "settings": "Temperature 0; thinking enabled and disabled as stated; one API key; OpenAI-compatible endpoint.",
+  "requests": 4915,
+  "pdf": "/reports/artemiskit-ling-3-2-flash-regression-evaluation.pdf",
+  "limitations": [
+   "Text and tool-use workflows only; image and video input were not assessed.",
+   "All tests ran on 19 November 2026 at temperature 0 with one API key.",
+   "Compliance packs ran once or twice per case for Ling-3.1-flash and Ling-3.2-flash; pack-level gaps are reported as level, not as findings.",
+   "Compliance packs use synthetic rulebooks and data and have not been reviewed by domain experts."
+  ]
+ },
+ "models": [
+  {
+   "id": "ling-3-0-flash",
+   "name": "Ling-3.0-flash",
+   "provider": "ant-group",
+   "providerName": "Ant Group (Ling)",
+   "access": "Ling API (api.ant-ling.com), OpenAI-compatible chat completions"
+  },
+  {
+   "id": "ling-3-1-flash",
+   "name": "Ling-3.1-flash",
+   "provider": "ant-group",
+   "providerName": "Ant Group (Ling)",
+   "access": "Ling API (api.ant-ling.com), OpenAI-compatible chat completions"
+  },
+  {
+   "id": "ling-3-2-flash",
+   "name": "Ling-3.2-flash",
+   "provider": "ant-group",
+   "providerName": "Ant Group (Ling)",
+   "access": "Ling API (api.ant-ling.com), OpenAI-compatible chat completions"
+  }
+ ],
+ "benchmarks": [
+  {
+   "id": "artemiskit-regression-pack-v1",
+   "name": "ArtemisKit Regression Pack v1",
+   "short": "Regression Pack",
+   "cases": 76,
+   "groups": 11,
+   "tests": "Tool-using support agent, contact-data fidelity, structured extraction, instruction following, multi-turn state, grounded Q&A and abstention, business arithmetic, code reasoning, Chinese and French, professional requests and long context (about 47k to 230k tokens).",
+   "graders": "Deterministic only: regex, JSON Schema const/enum, tool-trace rules and exact-argument tool fixtures.",
+   "status": "stable",
+   "availability": "Available on request",
+   "runsPerCase": 3,
+   "conditions": [
+    "thinking-on",
+    "thinking-off"
+   ]
+  },
+  {
+   "id": "aml-transaction-review",
+   "name": "AML Transaction Review",
+   "short": "AML",
+   "cases": 177,
+   "packCases": 177,
+   "tests": "Anti-money-laundering alert review under a synthetic rulebook: typologies, sanctions, PEPs, virtual assets, tipping-off and STR narratives. Structured decision, rule IDs and rationale.",
+   "graders": "Deterministic JSON Schema and regex checks per case.",
+   "status": "draft-unreviewed",
+   "availability": "https://github.com/code-sensei/artemiskit/tree/main/packs/aml-transaction-review",
+   "runsPerCase": "1 to 2",
+   "conditions": [
+    "thinking-on"
+   ]
+  },
+  {
+   "id": "ng-public-service-rules",
+   "name": "Nigerian Public-Service Rules",
+   "short": "Public services",
+   "cases": 183,
+   "packCases": 183,
+   "tests": "Eligibility and records decisions under a synthetic rulebook modelled on Nigerian public services: identity, residence, data protection, FOI notices and fair access.",
+   "graders": "Deterministic JSON Schema and regex checks per case.",
+   "status": "draft-unreviewed",
+   "availability": "https://github.com/code-sensei/artemiskit/tree/main/packs/ng-egov-services",
+   "runsPerCase": "1 to 2",
+   "conditions": [
+    "thinking-on"
+   ]
+  },
+  {
+   "id": "soc-alert-triage",
+   "name": "SOC Alert Triage",
+   "short": "SOC",
+   "cases": 47,
+   "packCases": 207,
+   "tests": "Security-operations alert triage: classification, severity, MITRE ATT&CK mapping, evidence steps and human-approval rules, including injected instructions in alert data.",
+   "graders": "Deterministic JSON Schema and regex checks per case.",
+   "status": "draft-unreviewed",
+   "availability": "https://github.com/code-sensei/artemiskit/tree/main/packs/soc-alert-triage",
+   "runsPerCase": "1 to 2",
+   "conditions": [
+    "thinking-on"
+   ]
+  }
+ ],
+ "results": [
+  {
+   "benchmark": "artemiskit-regression-pack-v1",
+   "model": "ling-3-0-flash",
+   "condition": "thinking-on",
+   "passed": 225,
+   "total": 228,
+   "rate": 0.9868,
+   "groups": [
+    {
+     "id": "ops-agent",
+     "label": "Tool-using support agent",
+     "passed": 39,
+     "total": 39,
+     "rate": 1.0
+    },
+    {
+     "id": "pii-fidelity",
+     "label": "Contact-data fidelity",
+     "passed": 18,
+     "total": 18,
+     "rate": 1.0
+    },
+    {
+     "id": "structured-extraction",
+     "label": "Structured extraction",
+     "passed": 24,
+     "total": 24,
+     "rate": 1.0
+    },
+    {
+     "id": "instruction-following",
+     "label": "Instruction following",
+     "passed": 27,
+     "total": 27,
+     "rate": 1.0
+    },
+    {
+     "id": "multi-turn",
+     "label": "Multi-turn state",
+     "passed": 14,
+     "total": 15,
+     "rate": 0.9333
+    },
+    {
+     "id": "grounded-qa",
+     "label": "Grounded Q&A",
+     "passed": 19,
+     "total": 21,
+     "rate": 0.9048
+    },
+    {
+     "id": "business-reasoning",
+     "label": "Business arithmetic",
+     "passed": 24,
+     "total": 24,
+     "rate": 1.0
+    },
+    {
+     "id": "code-tasks",
+     "label": "Code reasoning",
+     "passed": 15,
+     "total": 15,
+     "rate": 1.0
+    },
+    {
+     "id": "multilingual",
+     "label": "Chinese and French",
+     "passed": 15,
+     "total": 15,
+     "rate": 1.0
+    },
+    {
+     "id": "professional-calibration",
+     "label": "Professional requests",
+     "passed": 18,
+     "total": 18,
+     "rate": 1.0
+    },
+    {
+     "id": "long-context",
+     "label": "Long context",
+     "passed": 12,
+     "total": 12,
+     "rate": 1.0
+    }
+   ]
+  },
+  {
+   "benchmark": "artemiskit-regression-pack-v1",
+   "model": "ling-3-1-flash",
+   "condition": "thinking-on",
+   "passed": 226,
+   "total": 228,
+   "rate": 0.9912,
+   "groups": [
+    {
+     "id": "ops-agent",
+     "label": "Tool-using support agent",
+     "passed": 39,
+     "total": 39,
+     "rate": 1.0
+    },
+    {
+     "id": "pii-fidelity",
+     "label": "Contact-data fidelity",
+     "passed": 18,
+     "total": 18,
+     "rate": 1.0
+    },
+    {
+     "id": "structured-extraction",
+     "label": "Structured extraction",
+     "passed": 24,
+     "total": 24,
+     "rate": 1.0
+    },
+    {
+     "id": "instruction-following",
+     "label": "Instruction following",
+     "passed": 27,
+     "total": 27,
+     "rate": 1.0
+    },
+    {
+     "id": "multi-turn",
+     "label": "Multi-turn state",
+     "passed": 15,
+     "total": 15,
+     "rate": 1.0
+    },
+    {
+     "id": "grounded-qa",
+     "label": "Grounded Q&A",
+     "passed": 21,
+     "total": 21,
+     "rate": 1.0
+    },
+    {
+     "id": "business-reasoning",
+     "label": "Business arithmetic",
+     "passed": 24,
+     "total": 24,
+     "rate": 1.0
+    },
+    {
+     "id": "code-tasks",
+     "label": "Code reasoning",
+     "passed": 15,
+     "total": 15,
+     "rate": 1.0
+    },
+    {
+     "id": "multilingual",
+     "label": "Chinese and French",
+     "passed": 15,
+     "total": 15,
+     "rate": 1.0
+    },
+    {
+     "id": "professional-calibration",
+     "label": "Professional requests",
+     "passed": 18,
+     "total": 18,
+     "rate": 1.0
+    },
+    {
+     "id": "long-context",
+     "label": "Long context",
+     "passed": 10,
+     "total": 12,
+     "rate": 0.8333
+    }
+   ]
+  },
+  {
+   "benchmark": "artemiskit-regression-pack-v1",
+   "model": "ling-3-2-flash",
+   "condition": "thinking-on",
+   "passed": 220,
+   "total": 228,
+   "rate": 0.9649,
+   "groups": [
+    {
+     "id": "ops-agent",
+     "label": "Tool-using support agent",
+     "passed": 39,
+     "total": 39,
+     "rate": 1.0
+    },
+    {
+     "id": "pii-fidelity",
+     "label": "Contact-data fidelity",
+     "passed": 16,
+     "total": 18,
+     "rate": 0.8889
+    },
+    {
+     "id": "structured-extraction",
+     "label": "Structured extraction",
+     "passed": 24,
+     "total": 24,
+     "rate": 1.0
+    },
+    {
+     "id": "instruction-following",
+     "label": "Instruction following",
+     "passed": 27,
+     "total": 27,
+     "rate": 1.0
+    },
+    {
+     "id": "multi-turn",
+     "label": "Multi-turn state",
+     "passed": 15,
+     "total": 15,
+     "rate": 1.0
+    },
+    {
+     "id": "grounded-qa",
+     "label": "Grounded Q&A",
+     "passed": 21,
+     "total": 21,
+     "rate": 1.0
+    },
+    {
+     "id": "business-reasoning",
+     "label": "Business arithmetic",
+     "passed": 19,
+     "total": 24,
+     "rate": 0.7917
+    },
+    {
+     "id": "code-tasks",
+     "label": "Code reasoning",
+     "passed": 15,
+     "total": 15,
+     "rate": 1.0
+    },
+    {
+     "id": "multilingual",
+     "label": "Chinese and French",
+     "passed": 15,
+     "total": 15,
+     "rate": 1.0
+    },
+    {
+     "id": "professional-calibration",
+     "label": "Professional requests",
+     "passed": 18,
+     "total": 18,
+     "rate": 1.0
+    },
+    {
+     "id": "long-context",
+     "label": "Long context",
+     "passed": 11,
+     "total": 12,
+     "rate": 0.9167
+    }
+   ]
+  },
+  {
+   "benchmark": "artemiskit-regression-pack-v1",
+   "model": "ling-3-0-flash",
+   "condition": "thinking-off",
+   "passed": 189,
+   "total": 228,
+   "rate": 0.8289,
+   "groups": [
+    {
+     "id": "ops-agent",
+     "label": "Tool-using support agent",
+     "passed": 36,
+     "total": 39,
+     "rate": 0.9231
+    },
+    {
+     "id": "pii-fidelity",
+     "label": "Contact-data fidelity",
+     "passed": 18,
+     "total": 18,
+     "rate": 1.0
+    },
+    {
+     "id": "structured-extraction",
+     "label": "Structured extraction",
+     "passed": 21,
+     "total": 24,
+     "rate": 0.875
+    },
+    {
+     "id": "instruction-following",
+     "label": "Instruction following",
+     "passed": 27,
+     "total": 27,
+     "rate": 1.0
+    },
+    {
+     "id": "multi-turn",
+     "label": "Multi-turn state",
+     "passed": 12,
+     "total": 15,
+     "rate": 0.8
+    },
+    {
+     "id": "grounded-qa",
+     "label": "Grounded Q&A",
+     "passed": 18,
+     "total": 21,
+     "rate": 0.8571
+    },
+    {
+     "id": "business-reasoning",
+     "label": "Business arithmetic",
+     "passed": 6,
+     "total": 24,
+     "rate": 0.25
+    },
+    {
+     "id": "code-tasks",
+     "label": "Code reasoning",
+     "passed": 9,
+     "total": 15,
+     "rate": 0.6
+    },
+    {
+     "id": "multilingual",
+     "label": "Chinese and French",
+     "passed": 15,
+     "total": 15,
+     "rate": 1.0
+    },
+    {
+     "id": "professional-calibration",
+     "label": "Professional requests",
+     "passed": 18,
+     "total": 18,
+     "rate": 1.0
+    },
+    {
+     "id": "long-context",
+     "label": "Long context",
+     "passed": 9,
+     "total": 12,
+     "rate": 0.75
+    }
+   ]
+  },
+  {
+   "benchmark": "artemiskit-regression-pack-v1",
+   "model": "ling-3-1-flash",
+   "condition": "thinking-off",
+   "passed": 158,
+   "total": 228,
+   "rate": 0.693,
+   "groups": [
+    {
+     "id": "ops-agent",
+     "label": "Tool-using support agent",
+     "passed": 39,
+     "total": 39,
+     "rate": 1.0
+    },
+    {
+     "id": "pii-fidelity",
+     "label": "Contact-data fidelity",
+     "passed": 17,
+     "total": 18,
+     "rate": 0.9444
+    },
+    {
+     "id": "structured-extraction",
+     "label": "Structured extraction",
+     "passed": 21,
+     "total": 24,
+     "rate": 0.875
+    },
+    {
+     "id": "instruction-following",
+     "label": "Instruction following",
+     "passed": 18,
+     "total": 27,
+     "rate": 0.6667
+    },
+    {
+     "id": "multi-turn",
+     "label": "Multi-turn state",
+     "passed": 15,
+     "total": 15,
+     "rate": 1.0
+    },
+    {
+     "id": "grounded-qa",
+     "label": "Grounded Q&A",
+     "passed": 15,
+     "total": 21,
+     "rate": 0.7143
+    },
+    {
+     "id": "business-reasoning",
+     "label": "Business arithmetic",
+     "passed": 0,
+     "total": 24,
+     "rate": 0.0
+    },
+    {
+     "id": "code-tasks",
+     "label": "Code reasoning",
+     "passed": 3,
+     "total": 15,
+     "rate": 0.2
+    },
+    {
+     "id": "multilingual",
+     "label": "Chinese and French",
+     "passed": 9,
+     "total": 15,
+     "rate": 0.6
+    },
+    {
+     "id": "professional-calibration",
+     "label": "Professional requests",
+     "passed": 18,
+     "total": 18,
+     "rate": 1.0
+    },
+    {
+     "id": "long-context",
+     "label": "Long context",
+     "passed": 3,
+     "total": 12,
+     "rate": 0.25
+    }
+   ]
+  },
+  {
+   "benchmark": "artemiskit-regression-pack-v1",
+   "model": "ling-3-2-flash",
+   "condition": "thinking-off",
+   "passed": 171,
+   "total": 228,
+   "rate": 0.75,
+   "groups": [
+    {
+     "id": "ops-agent",
+     "label": "Tool-using support agent",
+     "passed": 39,
+     "total": 39,
+     "rate": 1.0
+    },
+    {
+     "id": "pii-fidelity",
+     "label": "Contact-data fidelity",
+     "passed": 15,
+     "total": 18,
+     "rate": 0.8333
+    },
+    {
+     "id": "structured-extraction",
+     "label": "Structured extraction",
+     "passed": 23,
+     "total": 24,
+     "rate": 0.9583
+    },
+    {
+     "id": "instruction-following",
+     "label": "Instruction following",
+     "passed": 21,
+     "total": 27,
+     "rate": 0.7778
+    },
+    {
+     "id": "multi-turn",
+     "label": "Multi-turn state",
+     "passed": 15,
+     "total": 15,
+     "rate": 1.0
+    },
+    {
+     "id": "grounded-qa",
+     "label": "Grounded Q&A",
+     "passed": 21,
+     "total": 21,
+     "rate": 1.0
+    },
+    {
+     "id": "business-reasoning",
+     "label": "Business arithmetic",
+     "passed": 1,
+     "total": 24,
+     "rate": 0.0417
+    },
+    {
+     "id": "code-tasks",
+     "label": "Code reasoning",
+     "passed": 3,
+     "total": 15,
+     "rate": 0.2
+    },
+    {
+     "id": "multilingual",
+     "label": "Chinese and French",
+     "passed": 12,
+     "total": 15,
+     "rate": 0.8
+    },
+    {
+     "id": "professional-calibration",
+     "label": "Professional requests",
+     "passed": 18,
+     "total": 18,
+     "rate": 1.0
+    },
+    {
+     "id": "long-context",
+     "label": "Long context",
+     "passed": 3,
+     "total": 12,
+     "rate": 0.25
+    }
+   ]
+  },
+  {
+   "benchmark": "aml-transaction-review",
+   "model": "ling-3-0-flash",
+   "condition": "thinking-on",
+   "passed": null,
+   "total": 177,
+   "rate": 0.8757,
+   "note": "Mean per-case pass rate over 1 to 2 runs per case"
+  },
+  {
+   "benchmark": "aml-transaction-review",
+   "model": "ling-3-1-flash",
+   "condition": "thinking-on",
+   "passed": null,
+   "total": 177,
+   "rate": 0.904,
+   "note": "Mean per-case pass rate over 1 to 2 runs per case"
+  },
+  {
+   "benchmark": "aml-transaction-review",
+   "model": "ling-3-2-flash",
+   "condition": "thinking-on",
+   "passed": null,
+   "total": 177,
+   "rate": 0.9294,
+   "note": "Mean per-case pass rate over 1 to 2 runs per case"
+  },
+  {
+   "benchmark": "soc-alert-triage",
+   "model": "ling-3-0-flash",
+   "condition": "thinking-on",
+   "passed": null,
+   "total": 47,
+   "rate": 0.5532,
+   "note": "Mean per-case pass rate over 1 to 2 runs per case"
+  },
+  {
+   "benchmark": "soc-alert-triage",
+   "model": "ling-3-1-flash",
+   "condition": "thinking-on",
+   "passed": null,
+   "total": 47,
+   "rate": 0.8298,
+   "note": "Mean per-case pass rate over 1 to 2 runs per case"
+  },
+  {
+   "benchmark": "soc-alert-triage",
+   "model": "ling-3-2-flash",
+   "condition": "thinking-on",
+   "passed": null,
+   "total": 47,
+   "rate": 0.7872,
+   "note": "Mean per-case pass rate over 1 to 2 runs per case"
+  },
+  {
+   "benchmark": "ng-public-service-rules",
+   "model": "ling-3-0-flash",
+   "condition": "thinking-on",
+   "passed": null,
+   "total": 183,
+   "rate": 0.7869,
+   "note": "Mean per-case pass rate over 1 to 2 runs per case"
+  },
+  {
+   "benchmark": "ng-public-service-rules",
+   "model": "ling-3-1-flash",
+   "condition": "thinking-on",
+   "passed": null,
+   "total": 183,
+   "rate": 0.9672,
+   "note": "Mean per-case pass rate over 1 to 2 runs per case"
+  },
+  {
+   "benchmark": "ng-public-service-rules",
+   "model": "ling-3-2-flash",
+   "condition": "thinking-on",
+   "passed": null,
+   "total": 183,
+   "rate": 0.9235,
+   "note": "Mean per-case pass rate over 1 to 2 runs per case"
+  }
+ ],
+ "operational": [
+  {
+   "model": "ling-3-0-flash",
+   "condition": "thinking-on",
+   "requests": 1415,
+   "p50Ms": 6604,
+   "p95Ms": 15460,
+   "meanCompletionTokens": 886,
+   "meanReasoningTokens": 745,
+   "firstTryTransportErrorRate": 0.035,
+   "reasoningInContent": 0
+  },
+  {
+   "model": "ling-3-0-flash",
+   "condition": "thinking-off",
+   "requests": 285,
+   "p50Ms": 3679,
+   "p95Ms": 8530,
+   "meanCompletionTokens": 45,
+   "meanReasoningTokens": 0,
+   "firstTryTransportErrorRate": 0.053,
+   "reasoningInContent": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-on",
+   "requests": 1008,
+   "p50Ms": 15739,
+   "p95Ms": 94405,
+   "meanCompletionTokens": 2090,
+   "meanReasoningTokens": 1962,
+   "firstTryTransportErrorRate": 0.329,
+   "reasoningInContent": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-off",
+   "requests": 478,
+   "p50Ms": 3732,
+   "p95Ms": 16383,
+   "meanCompletionTokens": 82,
+   "meanReasoningTokens": 0,
+   "firstTryTransportErrorRate": 0.408,
+   "reasoningInContent": 0
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-on",
+   "requests": 1152,
+   "p50Ms": 9770,
+   "p95Ms": 89935,
+   "meanCompletionTokens": 1923,
+   "meanReasoningTokens": 1780,
+   "firstTryTransportErrorRate": 0.044,
+   "reasoningInContent": 0
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-off",
+   "requests": 573,
+   "p50Ms": 3512,
+   "p95Ms": 23397,
+   "meanCompletionTokens": 294,
+   "meanReasoningTokens": 0,
+   "firstTryTransportErrorRate": 0.03,
+   "reasoningInContent": 47
+  }
+ ],
+ "contactDataFidelity": [
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-on",
+   "value": "email",
+   "channel": "plain",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-on",
+   "value": "email",
+   "channel": "tool_argument",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-on",
+   "value": "plus_email",
+   "channel": "plain",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-on",
+   "value": "plus_email",
+   "channel": "tool_argument",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-on",
+   "value": "phone",
+   "channel": "plain",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-on",
+   "value": "phone",
+   "channel": "tool_argument",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-on",
+   "value": "account_number",
+   "channel": "plain",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-on",
+   "value": "account_number",
+   "channel": "tool_argument",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-off",
+   "value": "email",
+   "channel": "plain",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-off",
+   "value": "email",
+   "channel": "tool_argument",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-off",
+   "value": "plus_email",
+   "channel": "plain",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-off",
+   "value": "plus_email",
+   "channel": "tool_argument",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-off",
+   "value": "phone",
+   "channel": "plain",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-off",
+   "value": "phone",
+   "channel": "tool_argument",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-off",
+   "value": "account_number",
+   "channel": "plain",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-1-flash",
+   "condition": "thinking-off",
+   "value": "account_number",
+   "channel": "tool_argument",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-on",
+   "value": "email",
+   "channel": "plain",
+   "trials": 20,
+   "exact": 15,
+   "masked": 5
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-on",
+   "value": "email",
+   "channel": "tool_argument",
+   "trials": 20,
+   "exact": 0,
+   "masked": 20
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-on",
+   "value": "plus_email",
+   "channel": "plain",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-on",
+   "value": "plus_email",
+   "channel": "tool_argument",
+   "trials": 20,
+   "exact": 4,
+   "masked": 16
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-on",
+   "value": "phone",
+   "channel": "plain",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-on",
+   "value": "phone",
+   "channel": "tool_argument",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-on",
+   "value": "account_number",
+   "channel": "plain",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-on",
+   "value": "account_number",
+   "channel": "tool_argument",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-off",
+   "value": "email",
+   "channel": "plain",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-off",
+   "value": "email",
+   "channel": "tool_argument",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-off",
+   "value": "plus_email",
+   "channel": "plain",
+   "trials": 20,
+   "exact": 0,
+   "masked": 1
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-off",
+   "value": "plus_email",
+   "channel": "tool_argument",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-off",
+   "value": "phone",
+   "channel": "plain",
+   "trials": 20,
+   "exact": 0,
+   "masked": 11
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-off",
+   "value": "phone",
+   "channel": "tool_argument",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-off",
+   "value": "account_number",
+   "channel": "plain",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  },
+  {
+   "model": "ling-3-2-flash",
+   "condition": "thinking-off",
+   "value": "account_number",
+   "channel": "tool_argument",
+   "trials": 20,
+   "exact": 20,
+   "masked": 0
+  }
+ ],
+ "confirmations": [
+  {
+   "case": "rs-01-proration",
+   "label": "Subscription proration: \"reply with only the dollar amount\"",
+   "condition": "thinking-on",
+   "baseline": {
+    "passed": 8,
+    "total": 8,
+    "rate": 1.0
+   },
+   "candidate": {
+    "passed": 0,
+    "total": 8,
+    "rate": 0.0
+   }
+  },
+  {
+   "case": "if-01-bare-number",
+   "label": "Parcel count: \"reply with only the number\"",
+   "condition": "thinking-off",
+   "baseline": {
+    "passed": 8,
+    "total": 8,
+    "rate": 1.0
+   },
+   "candidate": {
+    "passed": 0,
+    "total": 8,
+    "rate": 0.0
+   }
+  }
+ ],
+ "findings": [
+  {
+   "id": "R1",
+   "severity": "high",
+   "title": "Emails masked inside tool calls",
+   "summary": "With thinking on, Ling-3.2-flash sent cus***@example.test to a CRM tool instead of the given address in 20 of 20 trials. Ling-3.1-flash copied 320 of 320 test values exactly.",
+   "baseline": "320 of 320 exact",
+   "candidate": "20 of 20 masked"
+  },
+  {
+   "id": "R2",
+   "severity": "high",
+   "title": "Reasoning leaks into the answer with thinking disabled",
+   "summary": "47 of 573 thinking-disabled replies carried the internal monologue and a </think> tag in content, billed as output. Worst case: 8,567 tokens to copy a phone number. Ling-3.1-flash and Ling-3.0-flash: none.",
+   "baseline": "0 of 478",
+   "candidate": "47 of 573"
+  },
+  {
+   "id": "R3",
+   "severity": "medium",
+   "title": "\"Reply with only X\" no longer followed",
+   "summary": "Two bare-answer tasks that Ling-3.1-flash passed 8 of 8 times failed 0 of 8 on Ling-3.2-flash: correct answers wrapped in working that breaks parsers.",
+   "baseline": "8 of 8",
+   "candidate": "0 of 8"
+  },
+  {
+   "id": "R4",
+   "severity": "medium",
+   "title": "New refusals on routine customer-data work",
+   "summary": "With thinking off, Ling-3.2-flash refused or lectured in 11 of 20 requests to copy a customer email for a CRM. Ling-3.1-flash copied it 20 of 20 times.",
+   "baseline": "0 of 20",
+   "candidate": "11 of 20"
+  }
+ ],
+ "pairedPackComparison": {
+  "tie": 367,
+  "better": 20,
+  "worse": 20
+ },
+ "packOverall": {
+  "cases": 407,
+  "rates": {
+   "ling-3-0-flash": 0.7985,
+   "ling-3-1-flash": 0.9238,
+   "ling-3-2-flash": 0.9103
+  }
+ }
+}

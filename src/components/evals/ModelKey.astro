@@ -1,0 +1,10 @@
+---
+/** Legend: model identity colours, always paired with the model name. */
+import { models, seriesSlot } from '../../lib/evals';
+interface Props { ids?: string[] }
+const { ids } = Astro.props;
+const shown = ids ? models.filter((m) => ids.includes(m.id)) : models;
+---
+<ul class="ak-model-key" aria-label="Model colours">
+  {shown.map((m) => <li><span class="ak-swatch-dot" style={`background:var(--ak-series-${seriesSlot(m.id)})`}></span>{m.name}<small>{m.providerName}</small></li>)}
+</ul>

@@ -1,0 +1,99 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BarChart from '../../components/evals/BarChart.astro';
+import GroupBars from '../../components/evals/GroupBars.astro';
+import ChartCard from '../../components/evals/ChartCard.astro';
+import ModelKey from '../../components/evals/ModelKey.astro';
+import '../../styles/evals.css';
+import { benchmarks, models, result, evaluations, seriesSlot, pct, conditionLabel, formatDate, type Benchmark } from '../../lib/evals';
+
+export function getStaticPaths() {
+  return benchmarks.map((b) => ({ params: { id: b.id }, props: { benchmark: b } }));
+}
+const { benchmark: b } = Astro.props as { benchmark: Benchmark };
+const evaluation = evaluations.find((e) => e.benchmarks.some((x) => x.id === b.id))!;
+const isRepo = b.availability.startsWith('http');
+const description = `${b.name}: ${b.tests.split('.')[0]}. Deterministic grading, ${b.cases} cases, results for ${models.length} models.`;
+
+const groupRows = (condition: (typeof b.conditions)[number]) => {
+  const first = result(b.id, models[0].id, condition);
+  return (first?.groups ?? []).map((g) => ({
+    label: g.label,
+    bars: models.map((m) => {
+      const cell = result(b.id, m.id, condition)?.groups?.find((x) => x.id === g.id);
+      return { model: m.id, label: m.name, slot: seriesSlot(m.id), value: cell?.rate ?? null, display: cell ? `${cell.passed}/${cell.total}` : '–' };
+    }),
+  }));
+};
+const article = {
+  '@type': 'Dataset', name: `${b.name} results`, description,
+  url: new URL(`/benchmarks/${b.id}/`, Astro.site).href, datePublished: evaluation.evaluation.published,
+  creator: { '@type': 'Organization', name: 'Vorbtech Innovative Solutions' },
+};
+---
+<Layout title={`${b.name} Benchmark — ArtemisKit`} description={description}
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Benchmarks', url: '/benchmarks/' }, { name: b.name, url: `/benchmarks/${b.id}/` }]} schema={[article]}>
+  <section class="ak-ev-head"><div class="ak-wrap">
+    <nav class="ak-ev-crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/benchmarks/">Benchmarks</a><span aria-hidden="true">/</span><span>{b.short}</span></nav>
+    <h1>{b.name}</h1>
+    <p class="ak-answer">{b.tests} {b.graders}</p>
+  </div></section>
+  <div class="ak-wrap">
+    <div class="ak-status">
+      <span class:list={['ak-status-pill', b.status]}>{b.status === 'stable' ? 'Stable' : 'Draft, not yet reviewed'}</span>
+      <span><b>{b.cases}</b> cases with results{b.packCases && b.packCases !== b.cases ? ` (pack has ${b.packCases})` : ''}</span>
+      <span><b>{b.runsPerCase}</b> runs per case</span>
+      <span>Tested <b>{formatDate(evaluation.evaluation.testedOn)}</b></span>
+      {isRepo ? <a href={b.availability}>Source on GitHub ↗</a> : <span>{b.availability}</span>}
+    </div>
+
+    <section class="ak-ev-section" aria-labelledby="results">
+      <header><div><h2 id="results">Results</h2><p>Share of runs passing every check. Ordered within each chart; compare only within the same condition.</p></div></header>
+      <ModelKey />
+      <div class="ak-highlights">
+        {b.conditions.map((c) => (
+          <ChartCard title={conditionLabel(c)} subtitle={`${b.cases} cases`} better="higher">
+            <BarChart max={1} ticks={[0, 0.5, 1]} label={`${b.name} pass rate, ${conditionLabel(c)}`}
+              items={models.map((m) => { const r = result(b.id, m.id, c); return { id: m.id, label: m.name, slot: seriesSlot(m.id), value: r?.rate ?? null, display: pct(r?.rate), detail: r?.passed != null ? `${r.passed} of ${r.total}` : `${r?.total ?? 0} cases` }; })} />
+          </ChartCard>
+        ))}
+      </div>
+      {b.conditions.map((c) => groupRows(c).length > 0 && (
+        <ChartCard wide title={`By workflow group · ${conditionLabel(c).toLowerCase()}`} subtitle="Runs passed out of runs measured, per group">
+          <GroupBars rows={groupRows(c)} label={`${b.name} pass rate by group, ${conditionLabel(c)}`} />
+        </ChartCard>
+      ))}
+      <div class="ak-table-wrap">
+        <table class="ak-table">
+          <caption class="sr-only">{b.name} results by model and condition</caption>
+          <thead><tr><th scope="col">Model</th>{b.conditions.map((c) => <th scope="col" class="num">{conditionLabel(c)}</th>)}</tr></thead>
+          <tbody>{models.map((m) => (
+            <tr><th scope="row"><span class="ak-model-cell"><span class="ak-swatch-dot" style={`background:var(--ak-series-${seriesSlot(m.id)})`}></span>{m.name}</span></th>
+              {b.conditions.map((c) => { const r = result(b.id, m.id, c); return <td class="num">{pct(r?.rate)}<small>{r?.passed != null ? `${r.passed}/${r.total}` : r ? `${r.total} cases` : ''}</small></td>; })}</tr>
+          ))}</tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="ak-ev-section" aria-labelledby="method">
+      <header><div><h2 id="method">How it is graded and what it does not show</h2></div></header>
+      <div class="ak-two">
+        <div class="ak-ev-prose">
+          <h3>Grading</h3>
+          <p>{b.graders} No model grades another model. Rate limits and gateway errors are retried and never counted as failures.</p>
+          <h3>Settings</h3>
+          <p>{evaluation.evaluation.settings}</p>
+        </div>
+        <div class="ak-ev-prose">
+          <h3>Limitations</h3>
+          <ul>
+            {b.status !== 'stable' && <li>Draft pack: synthetic rulebook and synthetic data, not yet reviewed by a domain expert.</li>}
+            {evaluation.evaluation.limitations.slice(0, 2).map((l) => <li>{l}</li>)}
+          </ul>
+          <p>Full context is in the <a href={`/reports/${evaluation.evaluation.reportSlug}/`}>{evaluation.evaluation.title}</a>.</p>
+        </div>
+      </div>
+      <div class="ak-ev-actions"><a class="ak-btn outline" href="/leaderboard/">Back to the leaderboard</a><a class="ak-btn orange" href="/apply/">Request an assessment ↗</a></div>
+    </section>
+  </div>
+</Layout>

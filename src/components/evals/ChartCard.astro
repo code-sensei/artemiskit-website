@@ -1,0 +1,14 @@
+---
+/** A titled chart card: what is measured, which way is better, the sample, and where it comes from. */
+interface Props { title: string; subtitle?: string; better?: 'higher' | 'lower'; foot?: string; href?: string; wide?: boolean }
+const { title, subtitle, better, foot, href, wide = false } = Astro.props;
+---
+<article class:list={['ak-chart-card', { 'ak-chart-card-wide': wide }]}>
+  <header>
+    <h3>{href ? <a href={href}>{title}</a> : title}</h3>
+    {subtitle && <p>{subtitle}</p>}
+    {better && <span class="ak-better">{better === 'higher' ? 'Higher is better' : 'Lower is better'}</span>}
+  </header>
+  <slot />
+  {foot && <footer>{foot}</footer>}
+</article>

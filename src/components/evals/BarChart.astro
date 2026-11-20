@@ -1,0 +1,50 @@
+---
+/**
+ * Vertical bar chart rendered to static SVG at build time. Bars are sorted (best first, using
+ * `lowerIsBetter` when the metric is a cost), labelled with their value, and carry a native tooltip.
+ * Colour encodes model identity only; the value and model name are always printed as text.
+ */
+interface Item { id: string; label: string; value: number | null; display: string; slot: number; detail?: string }
+interface Props { items: Item[]; max?: number; lowerIsBetter?: boolean; label: string; ticks?: number[]; tickFormat?: 'pct' | 'raw' }
+const { items, max: maxProp, lowerIsBetter = false, label, ticks: tickProp, tickFormat = 'pct' } = Astro.props;
+const measured = items.filter((i) => i.value != null) as Array<Item & { value: number }>;
+const missing = items.filter((i) => i.value == null);
+const sorted = [...measured].sort((a, b) => (lowerIsBetter ? a.value - b.value : b.value - a.value));
+const max = maxProp ?? Math.max(...measured.map((i) => i.value)) * 1.15;
+const ticks = tickProp ?? [0, max / 2, max];
+const W = 340, H = 190, top = 22, bottom = 34, left = 34, right = 6;
+const plotH = H - top - bottom, plotW = W - left - right;
+const slotW = plotW / Math.max(sorted.length, 1);
+const barW = Math.min(46, slotW * 0.56);
+const y = (v: number) => top + plotH - (plotH * v) / max;
+const fmt = (v: number) => (tickFormat === 'pct' ? `${Math.round(v * 100)}%` : v >= 1000 ? `${(v / 1000).toFixed(v % 1000 ? 1 : 0)}k` : `${Math.round(v)}`);
+---
+<figure class="ak-chart">
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label}>
+    {ticks.map((t) => (
+      <g>
+        <line x1={left} x2={W - right} y1={y(t)} y2={y(t)} class="ak-grid" />
+        <text x={left - 6} y={y(t) + 3} class="ak-tick" text-anchor="end">{fmt(t)}</text>
+      </g>
+    ))}
+    {sorted.map((item, i) => {
+      const cx = left + slotW * i + slotW / 2;
+      const h = Math.max((plotH * item.value) / max, 1);
+      const r = Math.min(4, barW / 2, h);
+      const x0 = cx - barW / 2, yTop = top + plotH - h, yBase = top + plotH;
+      return (
+        <g class="ak-bar">
+          <title>{`${item.label}: ${item.display}${item.detail ? ` (${item.detail})` : ''}`}</title>
+          <path
+            d={`M${x0},${yBase} V${yTop + r} a${r},${r} 0 0 1 ${r},-${r} H${x0 + barW - r} a${r},${r} 0 0 1 ${r},${r} V${yBase} Z`}
+            style={`fill:var(--ak-series-${item.slot})`}
+          />
+          <text x={cx} y={yTop - 6} class="ak-value" text-anchor="middle">{item.display}</text>
+          <text x={cx} y={H - 16} class="ak-xlabel" text-anchor="middle">{item.label.replace(/^Ling-/, '')}</text>
+        </g>
+      );
+    })}
+    <line x1={left} x2={W - right} y1={top + plotH} y2={top + plotH} class="ak-axis" />
+  </svg>
+  {missing.length > 0 && <figcaption class="ak-chart-missing">Not measured: {missing.map((m) => m.label).join(', ')}</figcaption>}
+</figure>

@@ -1,4 +1,242 @@
 ---
-import Page from "../../layouts/ContentPage.astro";
+import Layout from '../../layouts/Layout.astro';
+import Faq from '../../components/Faq.astro';
+import BarChart from '../../components/evals/BarChart.astro';
+import Scatter from '../../components/evals/Scatter.astro';
+import ChartCard from '../../components/evals/ChartCard.astro';
+import ModelKey from '../../components/evals/ModelKey.astro';
+import '../../styles/evals.css';
+import {
+  evaluations, models, benchmarks, result, ops, seriesSlot, pct, seconds, conditionLabel, formatDate,
+  type Condition,
+} from '../../lib/evals';
+
+const latest = evaluations[0];
+const conditions: Condition[] = ['thinking-on', 'thinking-off'];
+const packIds = ['aml-transaction-review', 'ng-public-service-rules', 'soc-alert-triage'];
+
+function benchItems(benchmark: string, condition: Condition) {
+  return models.map((m) => {
+    const r = result(benchmark, m.id, condition);
+    return {
+      id: m.id, label: m.name, slot: seriesSlot(m.id), value: r?.rate ?? null, display: pct(r?.rate),
+      detail: r ? (r.passed != null ? `${r.passed} of ${r.total} runs passed` : `${r.total} cases`) : undefined,
+    };
+  });
+}
+
+function fidelityRate(modelId: string, condition: Condition) {
+  const cells = latest.contactDataFidelity.filter((c) => c.model === modelId && c.condition === condition);
+  if (!cells.length) return null;
+  const trials = cells.reduce((n, c) => n + c.trials, 0);
+  return { rate: cells.reduce((n, c) => n + c.exact, 0) / trials, trials };
+}
+
+function opsItems(condition: Condition, key: 'p50Ms' | 'meanCompletionTokens') {
+  return models.map((m) => {
+    const o = ops(m.id, condition);
+    const value = o ? o[key] : null;
+    return { id: m.id, label: m.name, slot: seriesSlot(m.id), value,
+      display: value == null ? '–' : key === 'p50Ms' ? seconds(value) : value.toLocaleString('en-GB'),
+      detail: o ? `${o.requests.toLocaleString('en-GB')} requests` : undefined };
+  });
+}
+
+const regression = benchmarks.find((b) => b.id === 'artemiskit-regression-pack-v1')!;
+const maxLatency = Math.ceil((Math.max(...models.flatMap((m) => conditions.map((c) => (ops(m.id, c)?.p50Ms ?? 0) / 1000))) + 1) / 4) * 4;
+const maxTokens = Math.max(...models.flatMap((m) => conditions.map((c) => ops(m.id, c)?.meanCompletionTokens ?? 0)));
+const tokenTicks = [0, Math.round(maxTokens * 0.575 / 500) * 500, Math.round(maxTokens * 1.15 / 500) * 500];
+
+const tableRows = (condition: Condition) => models.map((m) => {
+  const r = result(regression.id, m.id, condition);
+  const packs = packIds.map((id) => result(id, m.id, condition));
+  const f = fidelityRate(m.id, condition);
+  const o = ops(m.id, condition);
+  return { m, r, packs, f, o };
+});
+
+const faq = [
+  { question: 'What does a leaderboard entry mean?', answer: 'An entry is one model, under one declared condition, on one versioned scenario set. It reports the share of runs that passed deterministic checks, the sample size and the settings. It describes that scenario only and does not establish a universal best or safest model.' },
+  { question: 'Is this a universal model ranking?', answer: 'No. Each chart orders models within a single benchmark and condition. Results from different benchmarks, settings or sample sizes should not be combined into one score, and ArtemisKit does not publish an overall index.' },
+  { question: 'How are results graded?', answer: 'Every check is deterministic: regular expressions, JSON Schema constraints, tool-trace rules and tool fixtures that only answer exact arguments. No model grades another model. Transport failures such as rate limits are retried and never counted as model failures.' },
+  { question: 'Why are only Ling models listed?', answer: `The leaderboard starts with the ${latest.evaluation.title.toLowerCase()} published on ${formatDate(latest.evaluation.published)}. More models are added as each evaluation completes and its methodology and limitations are published alongside the results.` },
+  { question: 'Can I have my model or AI system evaluated?', answer: 'Yes. Request an AI Assurance assessment through the apply page. Every check runs as an ArtemisKit scenario, so results can be reproduced and rerun on later releases.' },
+];
+
+const dataset = {
+  '@type': 'Dataset',
+  name: 'ArtemisKit scenario-specific model results',
+  description: 'Pass rates and operational measurements for language models on versioned ArtemisKit scenarios, graded deterministically, with settings and limitations stated per evaluation.',
+  url: new URL('/leaderboard/', Astro.site).href,
+  creator: { '@type': 'Organization', name: 'Vorbtech Innovative Solutions', url: 'https://www.vorbtech.com.ng/' },
+  datePublished: latest.evaluation.published,
+  temporalCoverage: latest.evaluation.testedOn,
+  variableMeasured: ['pass rate', 'median latency', 'mean completion tokens', 'first-try transport error rate'],
+  distribution: [{ '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: new URL(`/data/evaluations/${latest.evaluation.id}.json`, Astro.site).href }],
+};
+const description = 'Scenario-specific results for language models on versioned ArtemisKit benchmarks: pass rates, latency and token use, graded deterministically, with settings and limitations beside every result.';
 ---
-<Page title="Evidence first. Rankings later." description="No verified public leaderboard entries are published on this website. ArtemisKit’s intended public results are scenario-specific: they must state the workflow, configuration, methodology, valid outcomes and limitations. Until eligible evidence is reviewed and approved for publication, this page explains the entry requirements rather than displaying invented scores." eyebrow="Public evidence methodology"><div class="ak-note"><strong>Publication status:</strong> methodology only. No public model ranking or verified result entries are available here.</div><h2>What would a published entry include?</h2><ul><li>A versioned scenario or profile and its intended use.</li><li>Target provider, model and relevant configuration identity.</li><li>Harness, tool and environment details.</li><li>Eligible passed and failed outcomes, with denominator rules.</li><li>Invalid, unavailable and unsupported measurements shown separately.</li><li>Operational metrics only where valid evidence exists.</li><li>Language, data, coverage, exclusions and uncertainty.</li><li>Approved evidence artifacts and reproduction instructions.</li></ul><h2>What would it mean?</h2><p>A result would describe performance on that declared scenario and configuration. It would not establish a universal “best” or “safest” model. Comparing results requires compatible methods and sufficient independent evidence.</p><h2>Where is the methodology?</h2><p>Read the <a href="/docs/workflows/outcomes/">outcome verification guide</a>, <a href="/docs/workflows/reports/">reporting semantics</a> and <a href="/docs/reference/reproducible-evidence/">reproducibility guide</a>.</p></Page>
+<Layout title="Leaderboard: Scenario-Specific Model Results — ArtemisKit" description={description} faq={faq}
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Leaderboard', url: '/leaderboard/' }]} schema={[dataset]}>
+  <div class="ak-board">
+    <section class="ak-ev-head"><div class="ak-wrap">
+      <nav class="ak-ev-crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>Leaderboard</span></nav>
+      <h1>Model results, scenario by scenario</h1>
+      <p class="ak-answer">The ArtemisKit leaderboard shows how specific models perform on declared, versioned scenarios: real
+        workflows with deterministic checks, stated settings and published limitations. Each chart orders models within one
+        benchmark and condition only. It is not a universal ranking, so compare entries only where method, settings and sample match.</p>
+    </div></section>
+
+    <div class="ak-wrap">
+      <div class="ak-status">
+        <span class="ak-pill">{evaluations.length} published evaluation{evaluations.length === 1 ? '' : 's'}</span>
+        <span><b>{models.length}</b> models</span>
+        <span><b>{benchmarks.length}</b> benchmarks</span>
+        <span><b>{latest.evaluation.requests.toLocaleString('en-GB')}</b> API requests</span>
+        <span>Tested <b>{formatDate(latest.evaluation.testedOn)}</b></span>
+        <a href={`/reports/${latest.evaluation.reportSlug}/`}>Read the latest report →</a>
+      </div>
+
+      <section class="ak-ev-section" aria-labelledby="highlights">
+        <header>
+          <div>
+            <h2 id="highlights">Highlights</h2>
+            <p>Pass rates on each benchmark, then speed and token use. Bars are ordered within each chart.</p>
+          </div>
+          <fieldset class="ak-cond"><legend class="sr-only">Condition</legend>
+            <input type="radio" name="cond" id="cond-on" checked /><label for="cond-on">Thinking on</label>
+            <input type="radio" name="cond" id="cond-off" /><label for="cond-off">Thinking off</label>
+          </fieldset>
+        </header>
+        <ModelKey />
+        {conditions.map((c) => (
+          <div class="ak-highlights" data-cond={c}>
+            <ChartCard title={regression.name} href={`/benchmarks/${regression.id}/`} better="higher"
+              subtitle={`${regression.cases} cases × ${regression.runsPerCase} runs · ${conditionLabel(c).toLowerCase()}`}
+              foot="Share of runs passing deterministic checks across 11 workflow groups.">
+              <BarChart items={benchItems(regression.id, c)} max={1} ticks={[0, 0.5, 1]} label={`${regression.name} pass rate, ${conditionLabel(c)}`} />
+            </ChartCard>
+            {c === 'thinking-on' && packIds.map((id) => {
+              const b = benchmarks.find((x) => x.id === id)!;
+              return (
+                <ChartCard title={b.name} href={`/benchmarks/${b.id}/`} better="higher"
+                  subtitle={`${b.cases} cases run on all models · thinking on`}
+                  foot={`Draft pack, not yet reviewed by domain experts. ${b.runsPerCase} runs per case.`}>
+                  <BarChart items={benchItems(id, c)} max={1} ticks={[0, 0.5, 1]} label={`${b.name} pass rate`} />
+                </ChartCard>
+              );
+            })}
+            <ChartCard title="Contact-data fidelity" better="higher"
+              subtitle={`Emails, phone and account numbers copied exactly · ${conditionLabel(c).toLowerCase()}`}
+              foot="Raw-API probe: 160 trials per model and condition, plain replies and tool arguments.">
+              <BarChart label={`Contact values copied exactly, ${conditionLabel(c)}`} max={1} ticks={[0, 0.5, 1]}
+                items={models.map((m) => { const f = fidelityRate(m.id, c); return { id: m.id, label: m.name, slot: seriesSlot(m.id), value: f?.rate ?? null, display: pct(f?.rate), detail: f ? `${f.trials} trials` : undefined }; })} />
+            </ChartCard>
+            <ChartCard title="Median latency" better="lower" subtitle={`Per request, all suites · ${conditionLabel(c).toLowerCase()}`}
+              foot="Measured at our proxy, including any transport retry.">
+              <BarChart items={opsItems(c, 'p50Ms').map((i) => ({ ...i, value: i.value == null ? null : i.value / 1000 }))}
+                lowerIsBetter max={maxLatency} ticks={[0, maxLatency / 2, maxLatency]} tickFormat="raw" label={`Median latency, ${conditionLabel(c)}`} />
+            </ChartCard>
+            <ChartCard title="Completion tokens per reply" better="lower" subtitle={`Mean, including reasoning · ${conditionLabel(c).toLowerCase()}`}
+              foot="Tokens billed as output. With thinking off, any reasoning that leaks into the answer counts here.">
+              <BarChart items={opsItems(c, 'meanCompletionTokens')} lowerIsBetter max={tokenTicks[2]} ticks={tokenTicks} tickFormat="raw"
+                label={`Mean completion tokens, ${conditionLabel(c)}`} />
+            </ChartCard>
+            <ChartCard wide title={`${regression.short} pass rate vs median latency`} subtitle={`${conditionLabel(c)} · up and to the left is better · y-axis starts above 0%`}>
+              <Scatter label={`Pass rate against median latency, ${conditionLabel(c)}`} xLabel="Median latency per request" yLabel="Pass rate" xMax={maxLatency}
+                points={models.map((m) => { const r = result(regression.id, m.id, c)!; const o = ops(m.id, c)!;
+                  return { id: m.id, label: m.name, slot: seriesSlot(m.id), x: o.p50Ms / 1000, y: r.rate ?? 0, xDisplay: seconds(o.p50Ms), yDisplay: pct(r.rate) }; })} />
+            </ChartCard>
+          </div>
+        ))}
+        <p class="ak-chart-missing" data-cond="thinking-off">The compliance-workflow packs were run with thinking on only, so they appear under “Thinking on”.</p>
+      </section>
+
+      <section class="ak-ev-section" aria-labelledby="compare">
+        <header><div>
+          <h2 id="compare">Compare models</h2>
+          <p>Every measured value for the selected condition. Select a column heading to sort.</p>
+        </div></header>
+        {conditions.map((c) => (
+          <div class="ak-table-wrap" data-cond={c}>
+            <table class="ak-table" data-sortable>
+              <caption class="sr-only">Model comparison, {conditionLabel(c)}</caption>
+              <thead><tr>
+                <th scope="col">Model</th>
+                <th scope="col" class="num" aria-sort="none"><button type="button">{regression.short}</button></th>
+                {c === 'thinking-on' && packIds.map((id) => <th scope="col" class="num" aria-sort="none"><button type="button">{benchmarks.find((b) => b.id === id)!.short}</button></th>)}
+                <th scope="col" class="num" aria-sort="none"><button type="button">Contact data exact</button></th>
+                <th scope="col" class="num" aria-sort="none"><button type="button">p50 latency</button></th>
+                <th scope="col" class="num" aria-sort="none"><button type="button">p95 latency</button></th>
+                <th scope="col" class="num" aria-sort="none"><button type="button">Tokens / reply</button></th>
+                <th scope="col" class="num" aria-sort="none"><button type="button">Transport errors</button></th>
+              </tr></thead>
+              <tbody>
+                {tableRows(c).map(({ m, r, packs, f, o }) => (
+                  <tr>
+                    <th scope="row"><span class="ak-model-cell"><span class="ak-swatch-dot" style={`background:var(--ak-series-${seriesSlot(m.id)})`}></span>{m.name}</span></th>
+                    <td class="num" data-sort={r?.rate ?? -1}>{pct(r?.rate)}<small>{r ? `${r.passed}/${r.total}` : ''}</small></td>
+                    {c === 'thinking-on' && packs.map((p) => <td class="num" data-sort={p?.rate ?? -1}>{pct(p?.rate)}</td>)}
+                    <td class="num" data-sort={f?.rate ?? -1}>{f ? pct(f.rate) : 'Not measured'}</td>
+                    <td class="num" data-sort={o?.p50Ms ?? -1}>{o ? seconds(o.p50Ms) : '–'}</td>
+                    <td class="num" data-sort={o?.p95Ms ?? -1}>{o ? seconds(o.p95Ms) : '–'}</td>
+                    <td class="num" data-sort={o?.meanCompletionTokens ?? -1}>{o?.meanCompletionTokens.toLocaleString('en-GB') ?? '–'}</td>
+                    <td class="num" data-sort={o?.firstTryTransportErrorRate ?? -1}>{o ? pct(o.firstTryTransportErrorRate) : '–'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ))}
+        <p class="ak-chart-missing">Transport errors are first-attempt failures (rate limits and gateway errors) that were retried; they never count against a model's pass rate.
+          Download the <a href={`/data/evaluations/${latest.evaluation.id}.json`}>full dataset (JSON)</a>.</p>
+      </section>
+
+      <section class="ak-ev-section" aria-labelledby="meaning">
+        <header><div><h2 id="meaning">How to read these results</h2></div></header>
+        <div class="ak-two">
+          <div class="ak-ev-prose">
+            <h3>What every entry states</h3>
+            <ul>
+              <li>A versioned benchmark and the workflow it represents.</li>
+              <li>The model, provider endpoint and condition (for example thinking on or off).</li>
+              <li>Pass and fail counts with the denominator and runs per case.</li>
+              <li>Transport and unavailable measurements, kept apart from model failures.</li>
+              <li>Operational measures only where valid evidence exists.</li>
+              <li>Data, language and coverage limitations, beside the result.</li>
+            </ul>
+          </div>
+          <div class="ak-ev-prose">
+            <h3>Current scope</h3>
+            <ul>{latest.evaluation.limitations.map((l) => <li>{l}</li>)}</ul>
+            <p>Browse the <a href="/benchmarks/">benchmarks</a>, read the <a href="/reports/">reports</a>, or see the
+              <a href="/docs/workflows/outcomes/">outcome verification guide</a> and <a href="/docs/reference/reproducible-evidence/">reproducibility guide</a>.</p>
+          </div>
+        </div>
+        <Faq items={faq} />
+        <div class="ak-ev-actions"><a class="ak-btn orange" href="/apply/">Request an assessment ↗</a><a class="ak-btn outline" href={`/reports/${latest.evaluation.reportSlug}/`}>Read the latest report</a></div>
+      </section>
+    </div>
+  </div>
+  <script>
+    // Progressive enhancement: sort comparison tables by a column. Values live in data-sort.
+    for (const table of document.querySelectorAll<HTMLTableElement>('table[data-sortable]')) {
+      table.querySelectorAll<HTMLButtonElement>('thead th button').forEach((button) => {
+        button.addEventListener('click', () => {
+          const th = button.closest('th')!;
+          const index = [...th.parentElement!.children].indexOf(th);
+          const descending = th.getAttribute('aria-sort') !== 'descending';
+          table.querySelectorAll('thead th[aria-sort]').forEach((h) => h.setAttribute('aria-sort', 'none'));
+          th.setAttribute('aria-sort', descending ? 'descending' : 'ascending');
+          const body = table.tBodies[0];
+          const rows = [...body.rows].sort((a, b) => {
+            const va = Number((a.children[index] as HTMLElement).dataset.sort);
+            const vb = Number((b.children[index] as HTMLElement).dataset.sort);
+            return descending ? vb - va : va - vb;
+          });
+          body.append(...rows);
+        });
+      });
+    }
+  </script>
+</Layout>

@@ -1,0 +1,231 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Faq from '../../components/Faq.astro';
+import BarChart from '../../components/evals/BarChart.astro';
+import GroupBars from '../../components/evals/GroupBars.astro';
+import ChartCard from '../../components/evals/ChartCard.astro';
+import ModelKey from '../../components/evals/ModelKey.astro';
+import '../../styles/evals.css';
+import { evaluations, models, result, ops, seriesSlot, pct, seconds, formatDate } from '../../lib/evals';
+
+const ev = evaluations.find((e) => e.evaluation.reportSlug === 'ling-3-2-flash-regression')!;
+const E = ev.evaluation;
+const base = 'ling-3-1-flash', subject = 'ling-3-2-flash';
+const reg = 'artemiskit-regression-pack-v1';
+const fid = (model: string, value: string, channel: string, condition = 'thinking-on') =>
+  ev.contactDataFidelity.find((c) => c.model === model && c.value === value && c.channel === channel && c.condition === condition)!;
+const pooled = (model: string, condition = 'thinking-on') => {
+  const cells = ev.contactDataFidelity.filter((c) => c.model === model && c.condition === condition && ['phone', 'account_number'].includes(c.value));
+  return { exact: cells.reduce((n, c) => n + c.exact, 0), trials: cells.reduce((n, c) => n + c.trials, 0) };
+};
+const fidelityRows = [
+  { label: 'Email in a CRM tool call', get: (m: string) => { const c = fid(m, 'email', 'tool_argument'); return [c.exact, c.trials]; } },
+  { label: 'Plus-address email in a tool call', get: (m: string) => { const c = fid(m, 'plus_email', 'tool_argument'); return [c.exact, c.trials]; } },
+  { label: 'Email echoed in a reply', get: (m: string) => { const c = fid(m, 'email', 'plain'); return [c.exact, c.trials]; } },
+  { label: 'Phone and account numbers', get: (m: string) => { const p = pooled(m); return [p.exact, p.trials]; } },
+].map((row) => ({ label: row.label, bars: [base, subject].map((m) => { const [e, n] = row.get(m); return { model: m, label: models.find((x) => x.id === m)!.name, slot: seriesSlot(m), value: e / n, display: `${e}/${n} exact` }; }) }));
+const r1 = ev.findings.find((f) => f.id === 'R1')!;
+const opOff = (m: string) => ops(m, 'thinking-off')!;
+const groupRows = (condition: 'thinking-on' | 'thinking-off') => (result(reg, models[0].id, condition)!.groups ?? []).map((g) => ({
+  label: g.label,
+  bars: models.map((m) => { const cell = result(reg, m.id, condition)!.groups!.find((x) => x.id === g.id)!; return { model: m.id, label: m.name, slot: seriesSlot(m.id), value: cell.rate, display: `${cell.passed}/${cell.total}` }; }),
+}));
+const confSum = (side: 'baseline' | 'candidate') => {
+  const passed = ev.confirmations.reduce((n, c) => n + (c[side].passed ?? 0), 0);
+  return `${passed} of ${ev.confirmations.reduce((n, c) => n + c[side].total, 0)}`;
+};
+const scorecard = [
+  { label: 'Email in a CRM tool call, copied exactly', a: '20 of 20', b: `${fid(subject, 'email', 'tool_argument').exact} of 20`, t: 'down' },
+  { label: 'Reasoning text in the answer, thinking off', a: `${opOff(base).reasoningInContent} of ${opOff(base).requests}`, b: `${opOff(subject).reasoningInContent} of ${opOff(subject).requests}`, t: 'down' },
+  { label: 'Bare-answer confirmation runs passed', a: `${confSum('baseline')}`, b: `${confSum('candidate')}`, t: 'down' },
+  { label: 'Regression pack, thinking off', a: pct(result(reg, base, 'thinking-off')!.rate), b: pct(result(reg, subject, 'thinking-off')!.rate), t: 'up' },
+  { label: `Compliance workflows (${ev.packOverall.cases} cases)`, a: pct(ev.packOverall.rates[base]), b: pct(ev.packOverall.rates[subject]), t: 'level' },
+  { label: 'Median latency, thinking on', a: seconds(ops(base, 'thinking-on')!.p50Ms), b: seconds(ops(subject, 'thinking-on')!.p50Ms), t: 'up' },
+];
+const trendLabel: Record<string, string> = { down: '▼ Regressed', up: '▲ Improved', level: '▬ Level' };
+const faq = [
+  { question: 'Is Ling-3.2-flash worse than Ling-3.1-flash?', answer: `Not broadly. On ${ev.packOverall.cases} compliance-workflow cases 3.2 scored ${pct(ev.packOverall.rates[subject])} against 3.1's ${pct(ev.packOverall.rates[base])}, and with thinking disabled 3.2 beat 3.1 on the regression pack. The regressions are specific: email masking in tool calls, reasoning leaking into answers with thinking disabled, ignored bare-answer instructions and new refusals on routine data work.` },
+  { question: 'How were the regressions confirmed?', answer: 'A case became a candidate when 3.2 passed at most one of three runs while 3.1 passed at least two. It was confirmed only if 3.2 stayed at least 50 points lower after five more runs each, and every failure was then read by hand.' },
+  { question: 'Can I reproduce the findings?', answer: 'Yes. The report gives single API requests for the two high-severity findings. They are intermittent at temperature 0, so repeat each request 10 to 20 times and compare with Ling-3.1-flash.' },
+];
+const article = {
+  '@type': 'Article', headline: 'Ling-3.2-flash regression evaluation', datePublished: E.published,
+  author: { '@type': 'Organization', name: 'ArtemisKit' }, publisher: { '@type': 'Organization', name: 'Vorbtech Innovative Solutions' },
+  about: models.map((m) => m.name), url: new URL(`/reports/${E.reportSlug}/`, Astro.site).href,
+};
+const description = 'Ling-3.2-flash compared with Ling-3.1-flash and 3.0-flash on agent and data-pipeline workflows: four confirmed regressions, the areas that improved, reproductions and limitations.';
+const repro1 = `{
+  "model": "Ling-3.2-flash",
+  "temperature": 0,
+  "thinking": {"type": "enabled"},
+  "tools": [{"type": "function", "function": {
+    "name": "update_crm_contact",
+    "description": "Store a contact value on the customer record.",
+    "parameters": {"type": "object", "required": ["field", "value"],
+      "properties": {"field": {"type": "string"}, "value": {"type": "string"}}}}}],
+  "messages": [{"role": "user", "content":
+    "Store this customer email on their CRM record with update_crm_contact (field \\"email\\"): customer@example.test"}]
+}`;
+const repro2 = `{
+  "model": "Ling-3.2-flash",
+  "temperature": 0,
+  "thinking": {"type": "disabled"},
+  "messages": [{"role": "user", "content":
+    "Our CRM needs this customer phone copied exactly. Reply with only the value: +44 7700 900123"}]
+}`;
+---
+<Layout title="Ling-3.2-flash Regression Evaluation — ArtemisKit" description={description} faq={faq}
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Reports', url: '/reports/' }, { name: 'Ling-3.2-flash regression evaluation', url: `/reports/${E.reportSlug}/` }]} schema={[article]}>
+  <section class="ak-ev-head"><div class="ak-wrap">
+    <nav class="ak-ev-crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/reports/">Reports</a><span aria-hidden="true">/</span><span>Ling-3.2-flash</span></nav>
+    <h1>Ling-3.2-flash regression evaluation</h1>
+    <p class="ak-answer">Ling-3.2-flash is not broadly worse than Ling-3.1-flash, but it breaks four specific things that
+      agents and data pipelines rely on. It masks email addresses inside tool calls, leaks its reasoning into answers when
+      thinking is disabled, ignores “reply with only X” and refuses routine customer-data work. Each regression reproduces
+      with a single API request.</p>
+  </div></section>
+  <div class="ak-wrap">
+    <div class="ak-status">
+      <span class="ak-pill">Model regression evaluation</span>
+      <span>Published <b>{formatDate(E.published)}</b></span>
+      <span>Tested <b>{formatDate(E.testedOn)}</b></span>
+      <span><b>{E.requests.toLocaleString('en-GB')}</b> API requests</span>
+      <a href={E.pdf} download>Download the PDF report ↓</a>
+    </div>
+
+    <section class="ak-ev-section" aria-labelledby="summary">
+      <header><div><h2 id="summary">What we found</h2><p>Severity reflects impact on production workflows. Every finding was confirmed by repeat runs and a raw-API reproduction.</p></div></header>
+      <div class="ak-findings">
+        {ev.findings.map((f) => (
+          <article class:list={['ak-finding', f.severity]}>
+            <span class="ak-sev">{f.severity === 'high' ? 'High' : 'Medium'} · {f.id}</span>
+            <h3>{f.title}</h3>
+            <p>{f.summary}</p>
+            <div class="ak-delta"><span><small>Ling-3.1-flash</small><b>{f.baseline}</b></span><span><small>Ling-3.2-flash</small><b>{f.candidate}</b></span></div>
+          </article>
+        ))}
+      </div>
+      <div class="ak-table-wrap">
+        <table class="ak-table ak-scorecard">
+          <caption class="sr-only">Scorecard, Ling-3.1-flash to Ling-3.2-flash</caption>
+          <thead><tr><th scope="col">Scorecard</th><th scope="col" class="num">Ling-3.1-flash</th><th scope="col" class="num">Ling-3.2-flash</th><th scope="col">Change</th></tr></thead>
+          <tbody>{scorecard.map((row) => <tr><th scope="row">{row.label}</th><td class="num">{row.a}</td><td class="num">{row.b}</td><td class={`ak-trend-${row.t}`}>{trendLabel[row.t]}</td></tr>)}</tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="ak-ev-section" aria-labelledby="r1">
+      <header><div><h2 id="r1">R1 · Emails are masked inside tool calls</h2>
+        <p>Give 3.2 a customer's email and a tool to look it up, and it often sends a redacted address instead. The lookup finds
+          nothing and the agent takes the wrong branch. A CRM update stores the masked value without any error.</p></div></header>
+      <ModelKey ids={[base, subject]} />
+      <ChartCard wide title="Contact values that reached the tool or reply unchanged" subtitle="Raw API, thinking on, temperature 0, 20 trials per cell" better="higher"
+        foot={`Masked on 3.2: ${r1.candidate} email tool calls. Phone and account numbers were never masked, and with thinking off emails came through intact.`}>
+        <GroupBars rows={fidelityRows} label="Contact values copied exactly, Ling-3.1-flash vs Ling-3.2-flash" />
+      </ChartCard>
+      <div class="ak-two">
+        <div class="ak-ev-prose"><h3>Where else it surfaced</h3><p>Inside our workflow scenarios the same defect turned an intake form into
+          <code>"email": "chidi***@example.test"</code> and sent <code>fat***@example.test</code> to a CRM lookup. In our August invoice-recovery
+          scenario, 3.2 sent <code>cus***@example.test</code> to the invoice search and failed 2 of 3 runs; 3.0 and 3.1 passed every run.</p></div>
+        <div class="ak-ev-prose"><h3>What we can't tell from outside</h3><p>The reasoning trace never mentions masking, and the change appears only in
+          the emitted arguments. That fits a serving-layer filter as well as model behaviour; Ling's team can tell them apart.</p></div>
+      </div>
+    </section>
+
+    <section class="ak-ev-section" aria-labelledby="r2">
+      <header><div><h2 id="r2">R2 · With thinking disabled, the reasoning ends up in the answer</h2>
+        <p>Teams switch thinking off to cut latency and cost. On 3.2 some replies still arrive with the whole internal monologue in
+          <code>content</code>, closed by a literal <code>&lt;/think&gt;</code> tag. The usage block reports zero reasoning tokens, so the monologue is billed as output.</p></div></header>
+      <ModelKey />
+      <div class="ak-highlights">
+        <ChartCard title="Replies with reasoning in the answer" subtitle="All thinking-off requests" better="lower">
+          <BarChart lowerIsBetter max={0.1} ticks={[0, 0.05, 0.1]} label="Share of thinking-off replies with reasoning in content"
+            items={models.map((m) => { const o = opOff(m.id); return { id: m.id, label: m.name, slot: seriesSlot(m.id), value: o.reasoningInContent / o.requests, display: pct(o.reasoningInContent / o.requests), detail: `${o.reasoningInContent} of ${o.requests}` }; })} />
+        </ChartCard>
+        <ChartCard title="Completion tokens per reply" subtitle="Thinking off, mean" better="lower">
+          <BarChart lowerIsBetter max={400} ticks={[0, 200, 400]} tickFormat="raw" label="Mean completion tokens, thinking off"
+            items={models.map((m) => ({ id: m.id, label: m.name, slot: seriesSlot(m.id), value: opOff(m.id).meanCompletionTokens, display: `${opOff(m.id).meanCompletionTokens}` }))} />
+        </ChartCard>
+      </div>
+      <div class="ak-ev-prose">
+        <p>Asked to copy a phone number and “reply with only the value”, 3.2 leaked its reasoning in 13 of 20 trials and returned the bare
+          number in none; one reply ran to 8,567 tokens. 3.1 returned the bare number 20 of 20 times. One leaked reply quoted text that appears
+          in none of our prompts and looks like an internal instruction template:</p>
+        <blockquote>“Based on the provided multi-turn dialogue (including the last turn's question), respond according to the instructions given in each round of the dialogue history.”</blockquote>
+      </div>
+    </section>
+
+    <section class="ak-ev-section" aria-labelledby="r3">
+      <header><div><h2 id="r3">R3 and R4 · Format instructions and new refusals</h2>
+        <p>Pipelines that ask for a bare value parse the reply directly. 3.2 usually gets the value right, then wraps it in working.
+          Separately, with thinking off, it declined or lectured in 11 of 20 requests to copy a customer's email for a CRM.</p></div></header>
+      <div class="ak-table-wrap">
+        <table class="ak-table">
+          <caption class="sr-only">Confirmation runs</caption>
+          <thead><tr><th scope="col">Confirmation case</th><th scope="col">Condition</th><th scope="col" class="num">Ling-3.1-flash</th><th scope="col" class="num">Ling-3.2-flash</th></tr></thead>
+          <tbody>{ev.confirmations.map((c) => <tr><th scope="row">{c.label}</th><td>{c.condition === 'thinking-on' ? 'Thinking on' : 'Thinking off'}</td><td class="num">{c.baseline.passed} of {c.baseline.total}</td><td class="num">{c.candidate.passed} of {c.candidate.total}</td></tr>)}</tbody>
+        </table>
+      </div>
+      <pre class="ak-ev-pre">{`3.2 reply to "…Reply with only the dollar amount to two decimals."
+
+**$5.00**
+
+- Credit for unused old plan: $30 × (10/30) = $10.00
+- Charge for remaining days on new plan: $45 × (10/30) = $15.00
+- Net charged: $15.00 − $10.00 = **$5.00**`}</pre>
+    </section>
+
+    <section class="ak-ev-section" aria-labelledby="wider">
+      <header><div><h2 id="wider">Outside those findings, 3.2 holds level or improves</h2>
+        <p>With thinking off, 3.2 beat 3.1 on abstention, label-only answers, word limits and statement arithmetic, and its median latency
+          with thinking on fell from {seconds(ops(base, 'thinking-on')!.p50Ms)} to {seconds(ops(subject, 'thinking-on')!.p50Ms)}. On the
+          compliance-workflow packs the two are level: case by case, 3.2 won {ev.pairedPackComparison.better}, lost {ev.pairedPackComparison.worse} and tied {ev.pairedPackComparison.tie}.</p></div></header>
+      <ModelKey />
+      <ChartCard wide title="Regression pack by workflow group · thinking off" subtitle="Runs passed out of runs measured (3 runs per case)">
+        <GroupBars rows={groupRows('thinking-off')} label="Regression pack pass rate by group, thinking off" />
+      </ChartCard>
+      <p>Full per-benchmark results are on the <a href="/leaderboard/">leaderboard</a> and the <a href={`/benchmarks/${reg}/`}>regression pack page</a>.</p>
+    </section>
+
+    <section class="ak-ev-section" aria-labelledby="platform">
+      <header><div><h2 id="platform">Two platform issues outside the 3.2 model</h2></div></header>
+      <div class="ak-findings two-up">
+        <article class="ak-finding medium"><span class="ak-sev">Gateway</span><h3>Ling-3.1-flash rejects plain requests with HTTP 400</h3>
+          <p>{pct(ops(base, 'thinking-on')!.firstTryTransportErrorRate)} of first attempts to 3.1 with thinking on failed with “Stream options can only be
+            defined when stream=True”, although our requests sent no stream options. Every one succeeded on retry. 3.0 and 3.2 never returned it.</p></article>
+        <article class="ak-finding medium"><span class="ak-sev">Filter</span><h3>A fixed Chinese refusal on children's-data tasks</h3>
+          <p>On English public-service tasks about children's data, all three models sometimes returned the identical string “作为一个人工智能语言模型，这个问题超出我目前的学习范围了…”
+            (“As an AI language model, this is beyond my current scope”). The identical wording points to a filter that blocks legitimate data-protection work.</p></article>
+      </div>
+    </section>
+
+    <section class="ak-ev-section" aria-labelledby="repro">
+      <header><div><h2 id="repro">Reproduce it yourself</h2>
+        <p>Send each body to <code>POST https://api.ant-ling.com/v1/chat/completions</code>. Both defects are intermittent at temperature 0, so repeat
+          each request 10 to 20 times, then change the model to <code>Ling-3.1-flash</code> for the baseline.</p></div></header>
+      <div class="ak-two">
+        <div class="ak-ev-prose"><h3>R1 · email masked in a tool argument</h3><pre class="ak-ev-pre">{repro1}</pre></div>
+        <div class="ak-ev-prose"><h3>R2 · reasoning leaked with thinking disabled</h3><pre class="ak-ev-pre">{repro2}</pre></div>
+      </div>
+    </section>
+
+    <section class="ak-ev-section" aria-labelledby="scope">
+      <header><div><h2 id="scope">Method and scope</h2></div></header>
+      <div class="ak-two">
+        <div class="ak-ev-prose">
+          <h3>How we tested</h3>
+          <p>Five layers: our August 2026 scenarios, a new 76-case regression pack in both thinking modes, three compliance-workflow packs,
+            confirmation runs on every candidate, and raw-API reproductions. Grading is deterministic only. A case became a candidate when 3.2 passed
+            at most one of three runs while 3.1 passed at least two, and was confirmed only if 3.2 stayed at least 50 points lower after five more runs.</p>
+        </div>
+        <div class="ak-ev-prose"><h3>Scope and limits</h3><ul>{E.limitations.map((l) => <li>{l}</li>)}</ul></div>
+      </div>
+      <Faq items={faq} />
+      <div class="ak-ev-actions">
+        <a class="ak-btn orange" href={E.pdf} download>Download the PDF report ↓</a>
+        <a class="ak-btn outline" href="/leaderboard/">See the leaderboard</a>
+        <a class="ak-btn outline" href="/apply/">Request a deeper evaluation ↗</a>
+      </div>
+    </section>
+  </div>
+</Layout>

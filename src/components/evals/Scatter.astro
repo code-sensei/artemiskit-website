@@ -1,0 +1,47 @@
+---
+/**
+ * Two-measure scatter (for example pass rate against median latency), one labelled point per model.
+ * Position encodes value, so the y-range is fitted to the data (labelled ticks, 5-point steps) instead
+ * of starting at zero; the x-axis starts at zero. Labels flip left near the right edge.
+ */
+interface Point { id: string; label: string; x: number; y: number; slot: number; xDisplay: string; yDisplay: string }
+interface Props { points: Point[]; xLabel: string; yLabel: string; xMax: number; label: string }
+const { points, xLabel, yLabel, xMax, label } = Astro.props;
+const W = 720, H = 300, left = 56, right = 24, top = 18, bottom = 44;
+const plotW = W - left - right, plotH = H - top - bottom;
+const sx = (v: number) => left + (plotW * v) / xMax;
+const minY = Math.min(...points.map((p) => p.y));
+const yMin = Math.max(0, Math.floor((minY - 0.03) * 20) / 20);
+const yTicks = Array.from({ length: 5 }, (_, i) => yMin + ((1 - yMin) * i) / 4);
+const sy = (v: number) => top + plotH - (plotH * (v - yMin)) / (1 - yMin);
+const xTicks = [0, xMax / 4, xMax / 2, (3 * xMax) / 4, xMax];
+---
+<figure class="ak-chart ak-chart-wide">
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label}>
+    {yTicks.map((t) => (
+      <g>
+        <line x1={left} x2={W - right} y1={sy(t)} y2={sy(t)} class="ak-grid" />
+        <text x={left - 8} y={sy(t) + 3} class="ak-tick" text-anchor="end">{(t * 100).toFixed(t * 100 % 1 ? 1 : 0)}%</text>
+      </g>
+    ))}
+    {xTicks.map((t) => (
+      <g>
+        <line x1={sx(t)} x2={sx(t)} y1={top} y2={top + plotH} class="ak-grid" />
+        <text x={sx(t)} y={top + plotH + 16} class="ak-tick" text-anchor="middle">{`${t.toFixed(t % 1 ? 1 : 0)} s`}</text>
+      </g>
+    ))}
+    <text x={left + plotW / 2} y={H - 4} class="ak-axislabel" text-anchor="middle">{xLabel}</text>
+    <text x={14} y={top + plotH / 2} class="ak-axislabel" text-anchor="middle" transform={`rotate(-90 14 ${top + plotH / 2})`}>{yLabel}</text>
+    {points.map((p) => (
+      <g class="ak-point">
+        <title>{`${p.label}: ${p.yDisplay}, ${p.xDisplay}`}</title>
+        <circle cx={sx(p.x)} cy={sy(p.y)} r="7" style={`fill:var(--ak-series-${p.slot})`} class="ak-dot-ring" />
+        {sx(p.x) > left + plotW * 0.8
+          ? <text x={sx(p.x) - 12} y={sy(p.y) + 4} class="ak-pointlabel" text-anchor="end">{p.label.replace(/^Ling-/, '')}</text>
+          : <text x={sx(p.x) + 12} y={sy(p.y) + 4} class="ak-pointlabel">{p.label.replace(/^Ling-/, '')}</text>}
+      </g>
+    ))}
+    <line x1={left} x2={W - right} y1={top + plotH} y2={top + plotH} class="ak-axis" />
+    <line x1={left} x2={left} y1={top} y2={top + plotH} class="ak-axis" />
+  </svg>
+</figure>
